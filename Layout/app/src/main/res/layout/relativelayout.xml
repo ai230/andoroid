@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:background="#893168">
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="I'm in this container"
+        android:background="#2F3061"
+        android:textColor="#ffffff"
+        android:layout_margin="10px"
+        android:layout_alignParentLeft="true"/>
+
+    <TextView
+        android:id="@+id/text2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No up here"
+        android:background="#2F3061"
+        android:textColor="#ffffff"
+        android:layout_margin="10px"
+        android:layout_alignParentRight="true"/>
+
+    <TextView
+        android:id="@+id/text3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Wait I'm here"
+        android:textColor="#ffffff"
+        android:background="#2F3061"
+        android:layout_margin="10px"
+        android:layout_alignParentBottom="true"/>
+
+    <TextView
+        android:id="@+id/text4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Actually I'm here"
+        android:background="#2F3061"
+        android:textColor="#ffffff"
+        android:layout_margin="10px"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true" />
+
+</RelativeLayout>
