@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:background="#bbcde5">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="PIZZA ORDER"
+            android:textSize="30sp"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_margin="10sp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="50sp"
+        android:layout_marginRight="50sp">
+
+        <TextView
+            android:id="@+id/txtName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name" />
+
+        <EditText
+            android:id="@+id/editTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20sp"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/txtSize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Size" />
+
+            <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <RadioButton android:id="@+id/radio1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="REGULAR"
+                    android:onClick="onRadioButtonClicked"/>
+                <RadioButton android:id="@+id/radio2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="MEDIUM"
+                    android:onClick="onRadioButtonClicked"/>
+                <RadioButton android:id="@+id/radio3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="LARGE"
+                    android:onClick="onRadioButtonClicked"/>
+            </RadioGroup>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="90pt"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="#758698"
+            android:layout_marginTop="20sp"
+            android:layout_marginBottom="20sp">
+
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20sp"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/txtToppings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Toppings" />
+
+            <CheckBox android:id="@+id/checkbox1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Peperoni"
+                android:onClick="onCheckboxClicked"/>
+
+            <CheckBox android:id="@+id/checkbox2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mashroom"
+                android:onClick="onCheckboxClicked"/>
+
+            <CheckBox android:id="@+id/checkbox3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Black Olives"
+                android:onClick="onCheckboxClicked"/>
+
+            <CheckBox android:id="@+id/checkbox4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pineapple"
+                android:onClick="onCheckboxClicked"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20sp"
+        android:gravity="center">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/txtInfo1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name:......"/>
+
+            <TextView
+                android:id="@+id/txtInfo2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Size:......" />
+
+            <TextView
+                android:id="@+id/txtInfo3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Topping:......" />
+
+            <TextView
+                android:id="@+id/txtInfo4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Price:......" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/btnReset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reset"
+            android:background="#41a8f5"
+            android:textColor="#FFFFFF"
+            android:layout_gravity="top"/>
+
+    </LinearLayout>
+
+</LinearLayout>
