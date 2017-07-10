@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:background="#bbcde5">
+    android:layout_height="match_parent" android:background="@color/colorBg">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -56,38 +56,34 @@
                 android:text="Size" />
 
             <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/rg"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <RadioButton android:id="@+id/radio1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="REGULAR"
+                    android:text="Regular"
                     android:onClick="onRadioButtonClicked"/>
                 <RadioButton android:id="@+id/radio2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="MEDIUM"
+                    android:text="Medium"
                     android:onClick="onRadioButtonClicked"/>
                 <RadioButton android:id="@+id/radio3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="LARGE"
+                    android:text="Large"
                     android:onClick="onRadioButtonClicked"/>
             </RadioGroup>
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="90pt"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:background="#758698"
-            android:layout_marginTop="20sp"
-            android:layout_marginBottom="20sp">
+        <View
+            android:layout_width="5dp"
+            android:layout_height="fill_parent"
+            android:background="@color/colorLine" />
 
-        </LinearLayout>
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -131,53 +127,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20sp"
-        android:gravity="center">
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/txtInfo1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Name:......"/>
-
-            <TextView
-                android:id="@+id/txtInfo2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Size:......" />
-
-            <TextView
-                android:id="@+id/txtInfo3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Topping:......" />
-
-            <TextView
-                android:id="@+id/txtInfo4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Price:......" />
-        </LinearLayout>
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_weight="1">
 
         <Button
-            android:id="@+id/btnReset"
+            android:id="@+id/btnOrder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Reset"
-            android:background="#41a8f5"
-            android:textColor="#FFFFFF"
+            android:text="Order"
+            android:background="@color/coloForOrderBtn"
+            android:textColor="@color/colorForOrderBtnTxt"
             android:layout_gravity="top"/>
 
     </LinearLayout>
