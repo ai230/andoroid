@@ -137,7 +137,8 @@
             android:text="Order"
             android:background="@color/coloForOrderBtn"
             android:textColor="@color/colorForOrderBtnTxt"
-            android:layout_gravity="top"/>
+            android:layout_gravity="top"
+            android:onClick="CreateOrder"/>
 
     </LinearLayout>
 
