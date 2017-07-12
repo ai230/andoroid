@@ -6,4 +6,6 @@
     <color name="colorTxt">#616161</color>
     <color name="colorBtn">#FF9800</color>
     <color name="colorLine">#d6548c</color>
+    <color name="startColor">#FFC502</color>
+    <color name="endColor">#AA9BFF</color>
 </resources>
