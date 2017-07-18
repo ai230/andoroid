@@ -1,0 +1,22 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.yamamotoai.myapplication.MainActivity">
+    <item
+        android:id="@+id/action_settings"
+        android:title="@string/action_settings"
+        app:showAsAction="never" />
+    <item android:id="@+id/search"
+        android:title="search"
+        app:showAsAction="never"/>
+    <item android:id="@+id/saave"
+        android:title="save"
+        app:showAsAction="never"/>
+    <item android:id="@+id/search1"
+        android:title="search"
+        app:showAsAction="always"/>
+    <item android:id="@+id/save"
+        android:title="save"
+        android:icon="@mipmap/ic_launcher"
+        app:showAsAction="always"/>
+</menu>

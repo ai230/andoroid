@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_popupmenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="showPopUpMenu"
+        android:text="Pop up menu example" />
+
+    <Button
+        android:id="@+id/btn_popup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="CLICK HERE FOR POP UP MENU"
+        android:onClick="showPopUpMenu"/>
+
+</LinearLayout>

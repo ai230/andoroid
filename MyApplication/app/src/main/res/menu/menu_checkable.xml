@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--<menu xmlns:android="http://schemas.android.com/apk/res/android">-->
+
+    <!--<item android:id="@+id/menu1"-->
+        <!--android:title="Menu1"-->
+        <!--android:orderInCategory="100" >-->
+
+        <!--<menu>-->
+            <!--<group-->
+                <!--android:checkableBehavior="all"-->
+                <!--&gt;-->
+                <!--<item android:id="@+id/action1_sub1"-->
+                    <!--android:title="menu1_sub1"-->
+                    <!--android:orderInCategory="100"/>-->
+
+                <!--<item android:id="@+id/action1_sub2"-->
+                    <!--android:title="menu1_sub2"-->
+                    <!--android:orderInCategory="100"/>-->
+
+                <!--<item android:id="@+id/action1_sub3"-->
+                    <!--android:title="menu1_sub3"-->
+                    <!--android:orderInCategory="100"/>-->
+            <!--</group>-->
+        <!--</menu>-->
+    <!--</item>-->
+
+
+    <!--<item android:id="@+id/menu2"-->
+        <!--android:title="Menu2"-->
+        <!--android:orderInCategory="100" >-->
+
+        <!--<menu>-->
+            <!--<group-->
+                <!--android:checkableBehavior="single"-->
+                <!--&gt;-->
+                <!--<item android:id="@+id/action2_sub1"-->
+                    <!--android:title="menu2_sub1"-->
+                    <!--android:orderInCategory="100"/>-->
+
+                <!--<item android:id="@+id/action2_sub2"-->
+                    <!--android:title="menu2_sub2"-->
+                    <!--android:orderInCategory="100"/>-->
+
+                <!--<item android:id="@+id/action2_sub3"-->
+                    <!--android:title="menu2_sub3"-->
+                    <!--android:orderInCategory="100"/>-->
+            <!--</group>-->
+        <!--</menu>-->
+    <!--</item>-->
+
+<!--</menu>-->
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <group
+        android:checkableBehavior="all">
+    <item
+        android:id="@+id/one"
+        android:title="One"/>
+
+    <item
+        android:id="@+id/two"
+        android:title="Two"/>
+
+    <item
+        android:id="@+id/three"
+        android:title="Three"/>
+</group>
+</menu>

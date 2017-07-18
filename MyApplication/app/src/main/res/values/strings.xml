@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="action_settings">Settings</string>
+
+    <string-array name="menu_items">
+        <item>Contact Information</item>
+        <item>Time Table</item>
+        <item>Course Information</item>
+        <item>Syllabus</item>
+        <item>Lectures</item>
+        <item>Labs</item>
+        <item>Exams</item>
+        <item>Project</item>
+        <item>Links</item>
+        <item>Contact Information</item>
+        <item>Time Table</item>
+        <item>Course Information</item>
+        <item>Syllabus</item>
+        <item>Lectures</item>
+        <item>Labs</item>
+        <item>Exams</item>
+        <item>Project</item>
+        <item>Links</item>
+        <item>Contact Information</item>
+        <item>Time Table</item>
+        <item>Course Information</item>
+        <item>Syllabus</item>
+        <item>Lectures</item>
+        <item>Labs</item>
+        <item>Exams</item>
+        <item>Project</item>
+        <item>Links</item>
+    </string-array>
+
+
+
+</resources>
