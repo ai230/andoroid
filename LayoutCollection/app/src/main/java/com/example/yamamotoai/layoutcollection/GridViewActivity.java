@@ -72,7 +72,7 @@ public class GridViewActivity extends AppCompatActivity {
 
     public void goToNextView(View v) {
         try {
-            Intent i = new Intent(GridViewActivity.this, MainListActivity.class);
+            Intent i = new Intent(GridViewActivity.this, RecyclerViewActivity.class);
             startActivity(i);
         } catch (Exception e) {
             Log.d("---", "error");

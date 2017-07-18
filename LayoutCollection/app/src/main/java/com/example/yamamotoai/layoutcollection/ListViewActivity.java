@@ -73,7 +73,7 @@ public class ListViewActivity extends AppCompatActivity {
 
     public void goToPreviousView(View v) {
         try {
-            Intent i = new Intent(ListViewActivity.this, MainListActivity.class);
+            Intent i = new Intent(ListViewActivity.this, FrameLayoutActivity.class);
             startActivity(i);
         } catch (Exception e) {
             Log.d("---", "error");
@@ -83,7 +83,7 @@ public class ListViewActivity extends AppCompatActivity {
 
     public void goToNextView(View v) {
         try {
-            Intent i = new Intent(ListViewActivity.this, MainListActivity.class);
+            Intent i = new Intent(ListViewActivity.this, GridViewActivity.class);
             startActivity(i);
         } catch (Exception e) {
             Log.d("---", "error");

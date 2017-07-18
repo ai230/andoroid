@@ -44,9 +44,8 @@ orizontal list will only be one row high the height of the tallest child, plus p
     <string name="tablelayout">TableLayout is a ViewGroup that displays child View elements in rows and columns.</string>
     <string name="framelayout">Frame Layout is designed to block out an area on the screen to display a single item. </string>
     <string name="gridview">GridView is a ViewGroup that displays items in a two-dimensional, scrollable grid. The grid items are automatically inserted to the layout using a ListAdapter.</string>
-    <string name="recyclerview"></string>
+    <string name="recyclerview">The RecyclerView is a new ViewGroup that is prepared to render any adapter-based view in a similar way. It is supposed to be the successor of ListView and GridView, and it can be found in the latest support-v7 version. </string>
     <string name="listview">ListView is a view group that displays a list of scrollable items. The list items are automatically inserted to the list using an Adapter that pulls content from a source such as an array or database query and converts each item result into a view that is placed into the list.</string>
-
     <string name="previousBtn">previous</string>
     <string name="nextBtn">next</string>
 

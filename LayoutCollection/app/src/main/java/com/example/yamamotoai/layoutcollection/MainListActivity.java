@@ -55,7 +55,7 @@ public class MainListActivity extends AppCompatActivity{
                         startActivity(intent5);
                         break;
                     case 6:
-                        Intent intent6 = new Intent(MainListActivity.this, LinearLayoutActivity.class);
+                        Intent intent6 = new Intent(MainListActivity.this, RecyclerViewActivity.class);
                         startActivity(intent6);
                         break;
 
