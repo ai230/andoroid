@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
@@ -26,6 +27,12 @@ public class FrameLayoutActivity extends AppCompatActivity {
         //Create border and set fill color white
         LinearLayout l = (LinearLayout)findViewById(R.id.linear_bg);
         ((GradientDrawable)l.getBackground()).setColor(Color.WHITE);
+
+        //to justify this textview
+        WebView view = new WebView(this);
+        view.setVerticalScrollBarEnabled(false);
+        ((LinearLayout)findViewById(R.id.lv_justified)).addView(view);
+        view.loadData(getString(R.string.framelayout), "text/html; charset=utf-8", "utf-8");
 
     }
 

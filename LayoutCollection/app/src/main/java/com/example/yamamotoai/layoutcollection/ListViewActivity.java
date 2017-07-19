@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -55,6 +56,12 @@ public class ListViewActivity extends AppCompatActivity {
 //        ListView l = (ListView)findViewById(R.id.ListView_menu);
         lv.setAdapter(a);
         registerForContextMenu(lv);
+
+        //to justify this textview
+        WebView view = new WebView(this);
+        view.setVerticalScrollBarEnabled(false);
+        ((LinearLayout)findViewById(R.id.lv_justified)).addView(view);
+        view.loadData(getString(R.string.listview), "text/html; charset=utf-8", "utf-8");
 
 //        lv = (ListView) findViewById(R.id.listview);
 //        lv.setAdapter(new ListView_ImageAdapter(this,FRUITS,fruits_img));

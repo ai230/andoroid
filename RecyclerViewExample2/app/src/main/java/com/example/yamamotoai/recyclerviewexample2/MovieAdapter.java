@@ -16,8 +16,9 @@ import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder> {
 
-    private int count = 0;
     private List<Movie> movie_list;
+
+    private static int viewHolderCount;//total number of viewholder
 
     class MyViewHolder extends RecyclerView.ViewHolder{
         TextView t1;
@@ -28,9 +29,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
             t1 = (TextView) v.findViewById(R.id.tv1);
             t2 = (TextView) v.findViewById(R.id.tv2);
             t3 = (TextView) v.findViewById(R.id.tv3);
-            //setClickListener
-//            v.setOnClickListener((View.OnClickListener) this);
-        count++;
+
+            viewHolderCount++;
         }
 
     }
@@ -48,7 +48,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
         View view = inflater.inflate(R.layout.movie_list_row,parent,false);
         //need to pass this view to NumberViewHolder
         MyViewHolder viewHolder = new MyViewHolder(view);
-
+        int bg = ColorUtility.getViewHolderBackgroundColorFromInstance(context,viewHolderCount);
+        view.setBackgroundColor(bg);
         return viewHolder;
     }
 

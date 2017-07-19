@@ -38,14 +38,49 @@
         <!--<item>R.drawable.mango</item>-->
     <!--</string-array>-->
 
-    <string name="linearlayout">LinearLayout is a view group that aligns all children in a single direction, vertically or horizontally. You canspecify the layout direction with the android:orientation attribute. All children of a LinearLayout are stacked one after the other, so a vertical list will only have one child per row, no matter how wide they are, and a
-orizontal list will only be one row high the height of the tallest child, plus padding).</string>
-    <string name="relativelayout">RelativeLayout is a view group that displays child views in relative positions. The position of each view can be specified as relative to sibling elements (such as to the left-of or below another view) or in positions relative to the parent RelativeLayout area (such as aligned to the bottom, left or center).</string>
-    <string name="tablelayout">TableLayout is a ViewGroup that displays child View elements in rows and columns.</string>
-    <string name="framelayout">Frame Layout is designed to block out an area on the screen to display a single item. </string>
-    <string name="gridview">GridView is a ViewGroup that displays items in a two-dimensional, scrollable grid. The grid items are automatically inserted to the layout using a ListAdapter.</string>
-    <string name="recyclerview">The RecyclerView is a new ViewGroup that is prepared to render any adapter-based view in a similar way. It is supposed to be the successor of ListView and GridView, and it can be found in the latest support-v7 version. </string>
-    <string name="listview">ListView is a view group that displays a list of scrollable items. The list items are automatically inserted to the list using an Adapter that pulls content from a source such as an array or database query and converts each item result into a view that is placed into the list.</string>
+    <string name="linearlayout"><![CDATA[<html>
+        <head></head><body style="text-align:justify;>
+        LinearLayout is a view group that aligns all children in a single direction, vertically or horizontally. You canspecify the layout direction with the android:orientation attribute. All children of a LinearLayout are stacked one after the other, so a vertical list will only have one child per row, no matter how wide they are, and a
+orizontal list will only be one row high the height of the tallest child, plus padding).
+</body></html>]]>
+    </string>
+
+    <string name="relativelayout"><![CDATA[<html>
+        <head></head><body style="text-align:justify;>
+        RelativeLayout is a view group that displays child views in relative positions. The position of each view can be specified as relative to sibling elements (such as to the left-of or below another view) or in positions relative to the parent RelativeLayout area (such as aligned to the bottom, left or center).
+        </body></html>]]>
+    </string>
+
+    <string name="tablelayout"><![CDATA[<html>
+        <head></head><body style="text-align:justify;>
+        TableLayout is a ViewGroup that displays child View elements in rows and columns.
+        </body></html>]]>
+    </string>
+
+    <string name="framelayout"><![CDATA[<html>
+        <head></head><body style="text-align:justify;>
+        Frame Layout is designed to block out an area on the screen to display a single item.
+        </body></html>]]>
+    </string>
+
+    <string name="gridview"><![CDATA[<html>
+        <head></head><body style="text-align:justify;>
+        GridView is a ViewGroup that displays items in a two-dimensional, scrollable grid. The grid items are automatically inserted to the layout using a ListAdapter.
+        </body></html>]]>
+    </string>
+
+    <string name="recyclerview"><![CDATA[<html>
+        <head></head><body style="text-align:justify;>
+        The RecyclerView is a new ViewGroup that is prepared to render any adapter-based view in a similar way. It is supposed to be the successor of ListView and GridView, and it can be found in the latest support-v7 version.
+        </body></html>]]>
+    </string>
+
+    <string name="listview"><![CDATA[<html>
+        <head></head><body style="text-align:justify;>
+        ListView is a view group that displays a list of scrollable items. The list items are automatically inserted to the list using an Adapter that pulls content from a source such as an array or database query and converts each item result into a view that is placed into the list.
+        </body></html>]]>
+    </string>
+
     <string name="previousBtn">previous</string>
     <string name="nextBtn">next</string>
 

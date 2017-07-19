@@ -36,15 +36,16 @@ android:layout_height="match_parent">
 </LinearLayout>
 
 <LinearLayout
+    android:id="@+id/lv_justified"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:gravity="center">
 
     <TextView
+        android:id="@+id/tv_justified"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/framelayout"
         android:layout_margin="10sp" />
 
 

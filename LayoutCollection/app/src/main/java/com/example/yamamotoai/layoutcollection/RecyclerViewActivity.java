@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 
@@ -39,6 +40,13 @@ public class RecyclerViewActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(mAdapter);
         prepareMovieData();
+
+        //to justify this textview
+        WebView view = new WebView(this);
+        view.setVerticalScrollBarEnabled(false);
+        ((LinearLayout)findViewById(R.id.lv_justified)).addView(view);
+        view.loadData(getString(R.string.recyclerview), "text/html; charset=utf-8", "utf-8");
+
     }
 
     public void prepareMovieData() {

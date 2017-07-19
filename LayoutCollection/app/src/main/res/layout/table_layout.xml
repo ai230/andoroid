@@ -4,21 +4,6 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:gravity="center">
-
-    <TextView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="Table Layout"
-        android:textAlignment="center"
-    android:layout_margin="10sp" />
-
-    </LinearLayout>
-
-    <LinearLayout
         android:id="@+id/linear_bg"
         android:background="@drawable/background_border"
         android:layout_width="match_parent"
@@ -97,15 +82,16 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/lv_justified"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center">
 
         <TextView
+            android:id="@+id/tv_justified"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/tablelayout"
             android:layout_margin="10sp" />
 
 

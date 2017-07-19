@@ -27,7 +27,7 @@
 
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:orientation="vertical" android:layout_width="match_parent"
-            android:layout_height="300sp">
+            android:layout_height="200sp">
 
             <TextView
                 android:id="@+id/text"
@@ -90,15 +90,16 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/lv_justified"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center">
 
         <TextView
+            android:id="@+id/tv_justified"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/relativelayout"
             android:layout_margin="10sp" />
 
 

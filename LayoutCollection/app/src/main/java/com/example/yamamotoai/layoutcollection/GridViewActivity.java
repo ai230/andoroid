@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
@@ -58,6 +59,13 @@ public class GridViewActivity extends AppCompatActivity {
                 toast.show();
             }
         });
+
+        //to justify this textview
+        WebView view = new WebView(this);
+        view.setVerticalScrollBarEnabled(false);
+        ((LinearLayout)findViewById(R.id.lv_justified)).addView(view);
+        view.loadData(getString(R.string.gridview), "text/html; charset=utf-8", "utf-8");
+
     }
 
     public void goToPreviousView(View v) {
