@@ -18,19 +18,22 @@ import android.widget.TextView;
  */
 
 public class GreenAdapter extends RecyclerView.Adapter<GreenAdapter.NumberViewHolder>{
+
     private int mNumberListItems;
     private static int viewHolderCount;//total number of viewholder
     //a.Create val of object
-    final private ListItemClickListener onClickListener;//object
+    final private ListItemClickListener listItemClickListener;
+
     //b.implement interface
-    public interface ListItemClickListener {//listner
+    public interface ListItemClickListener {
         void onListItemClick(int index);
     }
 
     public GreenAdapter(int numberListOfItems, ListItemClickListener listener){
         this.mNumberListItems = numberListOfItems;
+        this.listItemClickListener = listener;
         viewHolderCount = 0;
-        onClickListener = listener;
+
     }
 
     //3.create an inner class//c.implenents View.OnClickListener
