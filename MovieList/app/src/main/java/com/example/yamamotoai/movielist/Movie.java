@@ -6,11 +6,11 @@ package com.example.yamamotoai.movielist;
 
 public class Movie {
 
-    private String title, genre, year, img;
+    private String title, detail, year, img;
 
-    public Movie(String title, String genre, String year, String img) {
+    public Movie(String title, String detail, String year, String img) {
         this.title = title;
-        this.genre = genre;
+        this.detail = detail;
         this.year = year;
         this.img = img;
     }
@@ -19,8 +19,8 @@ public class Movie {
         return title;
     }
 
-    public String getGenre() {
-        return genre;
+    public String getDetail() {
+        return detail;
     }
 
     public String getYear() {
