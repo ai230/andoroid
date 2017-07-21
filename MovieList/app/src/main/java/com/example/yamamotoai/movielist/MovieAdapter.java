@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -22,7 +24,6 @@ import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder> {
     private List<Movie> movie_list;
-
     private static int viewHolderCount;//total number of viewholder
 
     int lastPosition = -1;
@@ -40,13 +41,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
         TextView t1;
         TextView t2;
         ImageView imageView;
+        CheckBox checkBox;
 
         MyViewHolder(View view){
             super(view);
             t1 = (TextView) view.findViewById(R.id.tv_title);
             t2 = (TextView) view.findViewById(R.id.tv_detail);
             imageView = (ImageView) view.findViewById(R.id.movie_img);
-
+            checkBox = view.findViewById(R.id.chekcbox);
             //3-1. setClickListener
             view.setOnClickListener((View.OnClickListener) this);
             viewHolderCount++;
@@ -76,23 +78,39 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
         MyViewHolder viewHolder = new MyViewHolder(view);
         int bg = ColorUtility.getViewHolderBackgroundColorFromInstance(context,viewHolderCount);
         view.setBackgroundColor(bg);
-//        checkBoxToggle(view);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
-        Movie movie = movie_list.get(position);
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
+        final Movie movie = movie_list.get(position);
         holder.t1.setText(movie.getTitle());
         holder.t2.setText(movie.getDetail());
+
+        holder.checkBox.setChecked(movie.getSelected());
 
         //getting image
         Context context = MainActivity.getInstance().getApplicationContext();
         int id = context.getResources().getIdentifier(movie.getImg(), "drawable", context.getPackageName());
         holder.imageView.setImageResource(id);
 
+
+        Log.d("------",movie.getTitle());
+        Log.d("------", String.valueOf(movie.getSelected()));
+
         setAnimation(holder.itemView, position);
         setFadeAnimation(holder.itemView);
+
+        holder.checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(holder.checkBox.isChecked()){
+                    movie_list.get(position).setIsSelected(true);
+                }else{
+                    movie_list.get(position).setIsSelected(false);
+                }
+            }
+        });
     }
 
     @Override
@@ -100,12 +118,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
         return movie_list.size();
     }
 
-    public void checkBoxToggle(View view) {
-
-        CheckBox checkBox;
-        checkBox = view.findViewById(R.id.chekcbox);
-        checkBox.toggle();
-    }
 
     //A1.Animation
     private void setAnimation(View view, int position){
