@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">RecipeList</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="sample1">Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet.</string>
+    <string name="sample2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam dolor odio, lobortis non eleifend a, molestie eu risus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</string>
+</resources>

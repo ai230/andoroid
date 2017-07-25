@@ -32,7 +32,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
     //2.
     public interface ListItemClickListener {
         void onListItemClick(int index);
-
     }
 
     //3.implement View.OnClickListener

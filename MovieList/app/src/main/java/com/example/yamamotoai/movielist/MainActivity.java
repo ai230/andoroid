@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         instance = this;
 
         recyclerView = (RecyclerView) findViewById(R.id.recycleview);
-        //8.add this to the listnener
+        //8.add this to the listener
         mAdapter = new MovieAdapter(movieList,this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
