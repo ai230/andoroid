@@ -104,7 +104,6 @@ public class RecipeAdapter  extends RecyclerView.Adapter<RecipeAdapter.MyViewHol
             }
         });
         setAnimation(holder.itemView, position);
-//        setFadeAnimation(holder.itemView);
         Log.d(msg,r.getRecipeName());
     }
 
@@ -115,22 +114,13 @@ public class RecipeAdapter  extends RecyclerView.Adapter<RecipeAdapter.MyViewHol
 
     private void setAnimation(View view, int position)
     {
-        Log.d(msg, String.valueOf(position));
-//        Context c = view.getContext();
+        Log.d(msg, "position: "+String.valueOf(position) + " lastposition: " + String.valueOf(lastPosition));
         if(position > lastPosition)
         {
+            Log.d(msg,"anim1");
             Animation animation = AnimationUtils.loadAnimation(context,android.R.anim.slide_in_left);
-//            animation.setDuration(500);
             view.startAnimation(animation);
             lastPosition = position;
         }
     }
-
-    private void setFadeAnimation(View view) {
-        AlphaAnimation anim = new AlphaAnimation(0.0f, 1.0f);
-        anim.setDuration(1000);
-
-        view.startAnimation(anim);
-    }
-
 }

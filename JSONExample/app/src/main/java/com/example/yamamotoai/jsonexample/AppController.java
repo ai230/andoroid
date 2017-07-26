@@ -12,30 +12,29 @@ import com.android.volley.toolbox.Volley;
  */
 
 public class AppController extends Application {
+    //1.Define your tag and add it to your requests.
     public static final String TAG = AppController.class.getSimpleName();
     private RequestQueue mRequestQueue;
-    private static  AppController mInstance;
+    private static AppController mInstance;
 
+    //setter
     @Override
     public void onCreate() {
         super.onCreate();
-        mInstance=this;
+        mInstance = this;
     }
 
-    public static  synchronized AppController getInstance() {
+    //getter
+    public static synchronized AppController getInstance() {
         return mInstance;
     }
 
+    //need to initialize
     public RequestQueue getRequestQueue() {
-        if(mRequestQueue==null){
+        if(mRequestQueue == null){
             mRequestQueue = Volley.newRequestQueue(getApplicationContext());
         }
         return mRequestQueue;
-    }
-
-    public <T> void addToRequestQueue(Request<T> req, String tag) {
-        req.setTag(TextUtils.isEmpty(tag) ? TAG : tag);
-        getRequestQueue().add(req);
     }
 
 
@@ -43,9 +42,6 @@ public class AppController extends Application {
         req.setTag(TAG);
         getRequestQueue().add(req);
     }
-    public void cancelPendingRequests(Object tag) {
-        if (mRequestQueue != null) {
-            mRequestQueue.cancelAll(tag);
-        }
-    }
+
+
 }

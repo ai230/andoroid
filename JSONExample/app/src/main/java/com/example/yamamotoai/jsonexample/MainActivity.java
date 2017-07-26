@@ -28,6 +28,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity{
     private RecyclerView recyclerView;
     private MovieAdapter mAdapter;
     private List<Boolean> isSelectedArray;
-    //json
+    //getting class name
     private static String TAG = MainActivity.class.getSimpleName();
     //1. json array response url
     private String urlJsonArry = "http://192.168.56.1/moviedata.json";
@@ -59,8 +60,6 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
-//        instance = this;
-
         recyclerView = (RecyclerView) findViewById(R.id.rv_movie);
         //8.add this to the listener
         mAdapter = new MovieAdapter(movieList);
@@ -76,14 +75,15 @@ public class MainActivity extends AppCompatActivity{
      */
     private void makeJsonArrayRequest() {
         Log.d("---","ok");
+        // if it only one object in json. JsonObjectRequest
+        // url, responce ,error
         JsonArrayRequest req = new JsonArrayRequest(urlJsonArry,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse (JSONArray response) {
+                        //response is all of data
                         Log.d(TAG, response.toString());
-                        Log.d("---","ok1");
                         try {
-                            Log.d("---","ok2");
                             Movie moviedata = null;
                             for (int i = 0; i < response.length(); i++) {
                                 moviedata = new Movie();
@@ -107,17 +107,14 @@ public class MainActivity extends AppCompatActivity{
                 },new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("---","ok3");
                 VolleyLog.d(TAG, "Error: " + error.getMessage());
                 Toast.makeText(getApplicationContext(),
                         error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-        Log.d("---", String.valueOf(req));
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(req);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -137,7 +134,6 @@ public class MainActivity extends AppCompatActivity{
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

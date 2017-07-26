@@ -20,8 +20,7 @@
                 android:orientation="horizontal"
                 android:background="@color/cardview_dark_background"
                 android:gravity="center"
-                android:padding="2dp"
-                android:layout_marginBottom="10dp">
+                android:padding="2dp">
 
                 <Button
                     android:id="@+id/selectAllBtn"

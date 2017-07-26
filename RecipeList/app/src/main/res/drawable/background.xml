@@ -5,8 +5,8 @@
         <shape>
             <gradient
                 android:angle="90"
-                android:startColor="#ff4e02"
-                android:endColor="#fff89b"
+                android:startColor="#b6f4ef"
+                android:endColor="#f7b3e0"
                 android:type="linear" />
         </shape>
     </item>
