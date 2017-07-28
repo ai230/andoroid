@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array name="numberOfChoices">
+        <item>2</item>
+        <item>4</item>
+        <item>6</item>
+        <item>8</item>
+    </integer-array>
+
+    <string-array name="regions">
+        <item>Japan</item>
+        <item>Korea</item>
+        <item>Canada</item>
+        <item>Brazil</item>
+    </string-array>
+
+    <string-array name="empty_array"/>
+
+    <string-array name="listArray">
+        <item>item1</item>
+        <item>item2</item>
+        <item>item3</item>
+    </string-array>
+
+    <!--<string-array name="listValues">-->
+        <!--<item>item4</item>-->
+        <!--<item>item5</item>-->
+        <!--<item>item6</item>-->
+    <!--</string-array>-->
+</resources>
