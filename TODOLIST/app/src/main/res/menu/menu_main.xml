@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.yamamotoai.movielist.MainActivity">
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="setting"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/add"
+        android:orderInCategory="100"
+        android:title="+"
+        app:showAsAction="always" />
+</menu>
