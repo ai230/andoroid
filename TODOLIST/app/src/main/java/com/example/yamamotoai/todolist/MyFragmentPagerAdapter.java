@@ -15,12 +15,12 @@ package com.example.yamamotoai.todolist;
 
 public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
 
-    MainActivity mainActivity;
+//    MainActivity mainActivity;
     //    String[] tabs;
-    Context context;
+//    Context context;
 
     //    List<String> tabs = new ArrayList<>();
-    String[] tabs = {"tabtabtab1","tab2","tab3", "tab4","tab5","tab6","tab7","tab8","tab9"};
+    String[] tabs = {"tabtabtab1","tab2","tab3"};
 
     public MyFragmentPagerAdapter(FragmentManager fm) {
         super(fm);

@@ -16,6 +16,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".PreferencesActivity"
+            android:label="PreferenceActivity">
+
+        </activity>
+
+        <activity android:name=".AdditionActivity"
+            android:label="NEW">
+
+        </activity>
+
     </application>
 
 </manifest>

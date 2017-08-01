@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference
+        android:title="Number of Choices"
+        android:summary="Display 2, 4, 6 or 8 buttons"
+        android:key="numberOfChoices"
+        android:defaultValue="1"
+        android:entries="@array/listArray"
+        android:entryValues="@array/listValues" />
+
+    <!--<MultiSelectListPreference-->
+    <!--android:title="Regions"-->
+    <!--android:summary="Regions to include in the quiz"-->
+    <!--android:key="regions"-->
+    <!--android:defaultValue="1"-->
+    <!--android:entries="@array/listArray"-->
+    <!--android:entryValues="@array/listArray"/>-->
+
+</PreferenceScreen>
