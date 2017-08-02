@@ -1,0 +1,23 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.yamamotoai.movielist.MainActivity">
+    <item
+        android:id="@+id/menu_add"
+        android:orderInCategory="100"
+        android:title="add"
+        android:icon="@drawable/ic_add"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_search"
+        android:orderInCategory="100"
+        android:title="setting"
+        android:icon="@drawable/ic_search"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="setting"
+        android:icon="@drawable/ic_settings"
+        app:showAsAction="always" />
+</menu>

@@ -1,20 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/activity_vertical_margin"
+    android:layout_marginLeft="@dimen/activity_vertical_margin"
+    android:layout_marginRight="@dimen/activity_vertical_margin">
+
 
     <TextView
-        android:id="@+id/textview_list_row1"
+        android:id="@+id/textview_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="texttext"
-        android:textSize="20dp"/>
+        android:text="2017/07/01" />
 
-    <TextViewe
-        android:id="@+id/textview_list_row2"
+    <TextView
+        android:id="@+id/textview_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="SUBSUB"
-        android:textSize="10dp"/>
+        android:text="@string/string1"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/textview_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/string2"
+        android:lines="1" />
 
 </LinearLayout>

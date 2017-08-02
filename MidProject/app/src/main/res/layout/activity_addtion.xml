@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="@dimen/activity_vertical_margin"
+    android:background="@color/colorWhite">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,13 +14,15 @@
             android:id="@+id/textview_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Title"/>
+            android:text="Title"
+            android:textStyle="bold"/>
 
         <EditText
             android:id="@+id/edittext_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Type here..." />
+            android:hint="Type here..."
+            android:textSize="@dimen/textsize_hint"/>
     </LinearLayout>
 
 
@@ -31,20 +35,23 @@
             android:id="@+id/textview_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Group"/>
+            android:text="Group"
+            android:textStyle="bold"/>
 
         <EditText
             android:id="@+id/edittext_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Type here..." />
+            android:hint="Type here..."
+            android:textSize="@dimen/textsize_hint"/>
     </LinearLayout>
 
     <EditText
-        android:id="@+id/edittext_memo"
+        android:id="@+id/edittext_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Type here..."
+        android:textSize="@dimen/textsize_hint"
         android:layout_weight="1"
         android:gravity="left"/>
 
@@ -55,17 +62,20 @@
         android:gravity="right">
 
         <TextView
+            android:id="@+id/textview_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="2017/7/10"
+            android:textStyle="bold"
             android:layout_gravity="center"/>
 
         <ImageButton
-            android:id="@+id/imageButton1"
+            android:id="@+id/datePickerButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_event_note"
-            android:backgroundTint="@color/colorWhite"/>
+            android:src="@drawable/ic_date"
+            android:backgroundTint="@color/colorWhite"
+            android:onClick="showDatePickerDialog"/>
 
     </LinearLayout>
 
