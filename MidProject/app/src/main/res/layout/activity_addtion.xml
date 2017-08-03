@@ -12,17 +12,20 @@
 
         <TextView
             android:id="@+id/textview_title"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Title"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:layout_weight="4"
+            android:textAppearance="?android:textAppearanceMedium"/>
 
         <EditText
             android:id="@+id/edittext_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Type here..."
-            android:textSize="@dimen/textsize_hint"/>
+            android:layout_weight="1"
+            android:textAppearance="?android:textAppearanceSmall"/>
     </LinearLayout>
 
 
@@ -33,17 +36,20 @@
 
         <TextView
             android:id="@+id/textview_group"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Group"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:layout_weight="4"
+            android:textAppearance="?android:textAppearanceMedium"/>
 
         <EditText
             android:id="@+id/edittext_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Type here..."
-            android:textSize="@dimen/textsize_hint"/>
+            android:layout_weight="1"
+            android:textAppearance="?android:textAppearanceSmall"/>
     </LinearLayout>
 
     <EditText
@@ -51,7 +57,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Type here..."
-        android:textSize="@dimen/textsize_hint"
+        android:textAppearance="?android:textAppearanceSmall"
         android:layout_weight="1"
         android:gravity="left"/>
 
@@ -66,7 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="2017/7/10"
-            android:textStyle="bold"
+            android:textAppearance="?android:textAppearanceMedium"
             android:layout_gravity="center"/>
 
         <ImageButton

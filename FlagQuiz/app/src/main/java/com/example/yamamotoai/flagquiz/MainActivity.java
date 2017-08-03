@@ -1,6 +1,8 @@
 package com.example.yamamotoai.flagquiz;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
@@ -12,9 +14,16 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
 
+    Context context;
     //TODO 1) keys for reading data from SharedPreference, two strings are keynames
     public static final String CHOICES = "pref_numberOfChoices";//value = 6
     public static final String REGIONS = "pref_regionsToInclude";//value = asia
@@ -26,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 
+        context = this;
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -34,6 +44,11 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        Set<String> temp = sp.getStringSet("pref_regionsToInclude",new HashSet<String>());
+
+         Log.d("in main :",temp.toString());
     }
 
     //TODO 2) Create onStart()
@@ -64,4 +79,9 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
         return super.onOptionsItemSelected(item);
     }
+
+    public Context getContext() {
+        return context;
+    }
+
 }

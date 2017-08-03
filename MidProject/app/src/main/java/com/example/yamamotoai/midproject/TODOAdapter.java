@@ -48,9 +48,9 @@ public class TODOAdapter extends RecyclerView.Adapter<TODOAdapter.MyViewHolder> 
         }
     }
 
-    public TODOAdapter(List<TODO> todoList, ListItemClickListener listener){
+    public TODOAdapter(List<TODO> todoList,ListItemClickListener listener){
         this.todo_List = todoList;
-        this.onClickListener = listener;
+       this.onClickListener = listener;
     }
 
     @Override

@@ -20,6 +20,19 @@ public class MainActivity extends AppCompatActivity implements TODOAdapter.ListI
     private TODOAdapter todoAdapter;
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        TODO todo1 = (TODO)getIntent().getSerializableExtra("TODOObj");
+        if(todo1 != null){
+            Log.d("---", todo1.getTitle());
+            todoList.add(todo1);
+        }
+        todoAdapter = new TODOAdapter(todoList,this);
+        recyclerView.setAdapter(todoAdapter);
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -32,16 +45,17 @@ public class MainActivity extends AppCompatActivity implements TODOAdapter.ListI
         todoAdapter = new TODOAdapter(todoList, this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(todoAdapter);
+
 
         Log.d("---before", String.valueOf(todoList.size()));
-        TODO todo1 = (TODO)getIntent().getSerializableExtra("TODOObj");
-        if(todo1 != null){
-            Log.d("---", todo1.getTitle());
-            todoList.add(todo1);
-        }
+//        TODO todo1 = (TODO)getIntent().getSerializableExtra("TODOObj");
+//        if(todo1 != null){
+//            Log.d("---", todo1.getTitle());
+//            todoList.add(todo1);
+//        }
+        recyclerView.setAdapter(todoAdapter);
         Log.d("---after", String.valueOf(todoList.size()));
-//        prepareTODO();
+        prepareTODO();
     }
 
     @Override
@@ -101,6 +115,7 @@ public class MainActivity extends AppCompatActivity implements TODOAdapter.ListI
         intent.putExtra("TODOObjEdit", todo);
         startActivity(intent);
     }
+
 
 
 }

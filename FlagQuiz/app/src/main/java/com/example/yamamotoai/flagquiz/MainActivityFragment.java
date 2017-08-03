@@ -2,14 +2,18 @@ package com.example.yamamotoai.flagquiz;
 
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
+import android.graphics.Color;
 import android.graphics.Region;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,14 +32,17 @@ import java.util.Set;
  */
 
 public class MainActivityFragment extends Fragment {
-    //Create A int constant for total no of question in FLAGS_IN_QUIZ
-    public static final int FLAGS_IN_QUIZ = 10;//value = 6
+    private Handler handler;
+    int questionCount = 1;
+
 
     //TODO 8) Create a list for quiz
      private List<String> fileNameList; //for flag file names
      private List<String> quizCountriesList; //for countries in current quiz
      private Set<String> regionsSet; //for world regions in current quiz
 
+    //Create A int constant for total no of question in FLAGS_IN_QUIZ
+    public static final int FLAGS_IN_QUIZ = 3;//value = 6
 
     //TODO 9) CREATE a reference variable for all GUI componnets
     private LinearLayout quizLinearLayout; // layout that contains the quiz
@@ -69,9 +76,10 @@ public class MainActivityFragment extends Fragment {
         guessLinearLayouts[3] = view.findViewById(R.id.row4LinearLayout);
         answerTextView = (TextView) view.findViewById(R.id.answerTextView);
 
-        //setquestionNumberTextView's text
-        questionNumberTextView.setText(getString(R.string.question,1,FLAGS_IN_QUIZ));
+//        //setquestionNumberTextView's text
+//        questionNumberTextView.setText(getString(R.string.question,questionCount,FLAGS_IN_QUIZ));
         answerTextView.setText("!!!!!");
+        handler = new Handler();
         return view;
 
     }
@@ -96,6 +104,10 @@ public class MainActivityFragment extends Fragment {
     public void upDateRegions(SharedPreferences sharedPreferences) {
         //set of countries
         regionsSet = sharedPreferences.getStringSet(MainActivity.REGIONS, null);
+        for(String r : regionsSet){
+            Log.d("---REGIONS: ",r);
+        }
+
     }
 
     // TODO 12 ) set up and start the next quiz
@@ -126,11 +138,16 @@ public class MainActivityFragment extends Fragment {
                 quizCountriesList.add(filename); // add the file to the list
                 ++flagCounter;
             }
+
         }
         loadtheflag();
+
     }
     // TODO 13) load the the flag
     private void loadtheflag() {
+        //setquestionNumberTextView's text
+        questionNumberTextView.setText(getString(R.string.question,questionCount,FLAGS_IN_QUIZ));
+
         // loadNextFlag(); // start the quiz by loading the first flag
         // get file name of the next flag and remove it from the list
         String nextImage = quizCountriesList.remove(0);
@@ -177,8 +194,10 @@ public class MainActivityFragment extends Fragment {
                 // get country name and set it as newGuessButton's text
                 String filename = fileNameList.get((row * 2) + column);
                 newGuessButton.setText(getCountryName(filename));
+                newGuessButton.setOnClickListener(guessButtonListener);
             }
         }
+
         // randomly replace one Button with the correct answer
         int row = random.nextInt(guessRows); // pick random row
         int column = random.nextInt(2); // pick random column
@@ -187,12 +206,83 @@ public class MainActivityFragment extends Fragment {
         ((Button) randomRow.getChildAt(column)).setText(countryName);
     }
 
+    private View.OnClickListener guessButtonListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            Button guessButton = ((Button) v);
+            String guess = ((Button) v).getText().toString();
+            String answer = getCountryName(correctAnswer);
+            Log.d("---answer: ", answer);
+            //if the guess is correct
+            // display correct answer in green text
+            if(guess.equals(answer))
+            {
+                questionCount++;
+                Log.d("---questionCount: ", String.valueOf(questionCount));
+
+                answerTextView.setText(answer + "!");
+                //set the text in green Color
+                answerTextView.setTextColor(Color.parseColor("#00CC00"));
+                disableAllButtons();
+                handler.postDelayed(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                if(questionCount > FLAGS_IN_QUIZ){
+                                    doneQuiz();
+                                }else{
+                                    loadtheflag();
+                                }
+                            }
+                        },2000);
+            }
+            else
+            {
+                //  flagImageView.startAnimation(shakeAnimation); // play shake
+                shake(v);
+                // display "Incorrect!" in red
+                answerTextView.setText(R.string.incorrect_answer);
+                answerTextView.setTextColor(Color.parseColor("#FF0000"));
+                //set the text in red Color
+                guessButton.setEnabled(false); // disable incorrect answer
+            }
+
+        }
+    };
+
+    public void doneQuiz(){
+        answerTextView.setText("Fin!");
+        answerTextView.setTextColor(Color.parseColor("#FF0000"));
+    }
+    // utility method that disables all answer Buttons
+    public void disableAllButtons()
+    {
+        for(int row=0;row<guessRows;row++)
+        {
+            LinearLayout guessRow = guessLinearLayouts[row];
+            for(int i=0;i<guessRow.getChildCount();i++)
+            {
+                guessRow.getChildAt(i).setEnabled(false);
+            }
+        }
+    }
+
     // parses the country flag file name and returns the country name
     private String getCountryName(String name) {
         return name.substring(name.indexOf('-') + 1).replace('_', ' ');
     }
 
-    public void loadNextFlag() {
-
+    public void shake(View view){
+        ImageView image = (ImageView)view.findViewById(R.id.flagImageView);
+        Animation animation = AnimationUtils.loadAnimation(getActivity().getApplicationContext(),
+                R.anim.incorrect_shake);
+        view.startAnimation(animation);
     }
+
 }
+
+//    TODO task
+//1) After completeing 1st Question load the next Question.
+//        2) Load the new Flag and new Options
+//        3) Update th etextview text with new value "Question 2 of 10". the text should be changed every time a new Question is loaded.
