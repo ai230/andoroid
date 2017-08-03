@@ -11,6 +11,7 @@ import java.util.List;
 public class TODO implements Serializable {
 
     String date, title, group,content;
+//    int days;
 //    List<TODO> todoList = new ArrayList<>();
 
     public TODO(String date, String title, String group, String content) {

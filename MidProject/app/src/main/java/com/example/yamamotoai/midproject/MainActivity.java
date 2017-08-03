@@ -104,14 +104,6 @@ public class MainActivity extends AppCompatActivity implements TODOAdapter.ListI
         String date = todo.getDate();
         String title = todo.getTitle();
         Toast.makeText(this, "TODO: #" + position + " " + date + " " + title, Toast.LENGTH_SHORT).show();
-//        String recipeName = r.getRecipeName();
-//        String recipeFullDescription = r.getRecipeDescription();
-//        String recipeImage = r.getRecipeImage();
-//        intent.putExtra("recipeNameIntent",recipeName);
-//        intent.putExtra("recipeFullDescriptionIntent",recipeFullDescription);
-//        intent.putExtra("recipeImageIntent",recipeImage);
-//        String recipeURL = r.getUrl();
-//        intent.putExtra("recipeUrlIntent",recipeURL);
         intent.putExtra("TODOObjEdit", todo);
         startActivity(intent);
     }

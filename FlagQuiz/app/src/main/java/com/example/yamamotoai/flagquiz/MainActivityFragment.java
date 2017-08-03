@@ -1,10 +1,14 @@
 package com.example.yamamotoai.flagquiz;
 
+import android.app.Dialog;
+import android.app.FragmentManager;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.graphics.Region;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -40,6 +44,7 @@ public class MainActivityFragment extends Fragment {
      private List<String> fileNameList; //for flag file names
      private List<String> quizCountriesList; //for countries in current quiz
      private Set<String> regionsSet; //for world regions in current quiz
+     public static int guessAns = 0;
 
     //Create A int constant for total no of question in FLAGS_IN_QUIZ
     public static final int FLAGS_IN_QUIZ = 3;//value = 6
@@ -80,6 +85,7 @@ public class MainActivityFragment extends Fragment {
 //        questionNumberTextView.setText(getString(R.string.question,questionCount,FLAGS_IN_QUIZ));
         answerTextView.setText("!!!!!");
         handler = new Handler();
+
         return view;
 
     }
@@ -145,6 +151,7 @@ public class MainActivityFragment extends Fragment {
     }
     // TODO 13) load the the flag
     private void loadtheflag() {
+
         //setquestionNumberTextView's text
         questionNumberTextView.setText(getString(R.string.question,questionCount,FLAGS_IN_QUIZ));
 
@@ -214,6 +221,7 @@ public class MainActivityFragment extends Fragment {
             String guess = ((Button) v).getText().toString();
             String answer = getCountryName(correctAnswer);
             Log.d("---answer: ", answer);
+            ++guessAns;
             //if the guess is correct
             // display correct answer in green text
             if(guess.equals(answer))
@@ -225,6 +233,7 @@ public class MainActivityFragment extends Fragment {
                 //set the text in green Color
                 answerTextView.setTextColor(Color.parseColor("#00CC00"));
                 disableAllButtons();
+
                 handler.postDelayed(
                         new Runnable() {
                             @Override
@@ -232,6 +241,10 @@ public class MainActivityFragment extends Fragment {
                                 if(questionCount > FLAGS_IN_QUIZ){
                                     doneQuiz();
                                 }else{
+                                    // play shake
+                                    Animation animation = AnimationUtils.loadAnimation(getContext(),
+                                            R.anim.fade);
+                                    flagImageView.startAnimation(animation);
                                     loadtheflag();
                                 }
                             }
@@ -239,8 +252,12 @@ public class MainActivityFragment extends Fragment {
             }
             else
             {
-                //  flagImageView.startAnimation(shakeAnimation); // play shake
-                shake(v);
+
+                // play shake
+                Animation animation = AnimationUtils.loadAnimation(getContext(),
+                        R.anim.incorrect_shake);
+                animation.setRepeatCount(2);
+                flagImageView.startAnimation(animation);
                 // display "Incorrect!" in red
                 answerTextView.setText(R.string.incorrect_answer);
                 answerTextView.setTextColor(Color.parseColor("#FF0000"));
@@ -252,6 +269,7 @@ public class MainActivityFragment extends Fragment {
     };
 
     public void doneQuiz(){
+        showResultDialogAlert();
         answerTextView.setText("Fin!");
         answerTextView.setTextColor(Color.parseColor("#FF0000"));
     }
@@ -273,16 +291,12 @@ public class MainActivityFragment extends Fragment {
         return name.substring(name.indexOf('-') + 1).replace('_', ' ');
     }
 
-    public void shake(View view){
-        ImageView image = (ImageView)view.findViewById(R.id.flagImageView);
-        Animation animation = AnimationUtils.loadAnimation(getActivity().getApplicationContext(),
-                R.anim.incorrect_shake);
-        view.startAnimation(animation);
+    private void showResultDialogAlert() {
+        FragmentManager fm = getActivity().getFragmentManager();
+        ResultDialogAlert resultDialogAlert = new ResultDialogAlert();
+        resultDialogAlert.show(fm, "fragment_alert");
+
+
     }
 
 }
-
-//    TODO task
-//1) After completeing 1st Question load the next Question.
-//        2) Load the new Flag and new Options
-//        3) Update th etextview text with new value "Question 2 of 10". the text should be changed every time a new Question is loaded.

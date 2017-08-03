@@ -9,4 +9,7 @@
     <color name="colorMain">#48CFBD</color>
     <color name="colorMainBar">#37BC9B</color>
 
+    <color name="colorDay">#fff700</color>
+
+
 </resources>

@@ -30,6 +30,7 @@ public class TODOAdapter extends RecyclerView.Adapter<TODOAdapter.MyViewHolder> 
         TextView titleTextView;
         TextView groupTextView;
         TextView contentTextView;
+        TextView daysTextView;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -37,6 +38,7 @@ public class TODOAdapter extends RecyclerView.Adapter<TODOAdapter.MyViewHolder> 
             titleTextView = (TextView) itemView.findViewById(R.id.textview_title);
             groupTextView = (TextView) itemView.findViewById(R.id.textview_group);
             contentTextView = (TextView) itemView.findViewById(R.id.textview_content);
+            daysTextView = (TextView) itemView.findViewById(R.id.textview_days);
             itemView.setOnClickListener(this);
         }
 
@@ -74,7 +76,6 @@ public class TODOAdapter extends RecyclerView.Adapter<TODOAdapter.MyViewHolder> 
 
     @Override
     public int getItemCount() {
-        Log.d("---adapter", String.valueOf(todo_List.size()));
         return todo_List.size();
     }
 
