@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">フラグクイズ</string>
+    <string name="action_settings">設定</string>
+
+    <string name="number_of_choices_description">2, 4, 6 or 8つのボタン</string>
+    <string name="number_of_choices">選択ボタンの数</string>
+    <string name="world_regions">地域</string>
+    <string name="world_regions_description">地域を設定する</string>
+    <string name="guess_country">どの国または地域でしょう？</string>
+    <string name="result"> %1$d問中、%2$d問、回答しました。</string>
+    <string name="incorrect_answer">不正解</string>
+    <string name="default_region_message">地域が未設定のためデフォルトのアジアを設定します。</string>
+    <string name="restarting_quiz">これらの設定で再スタートします。</string>
+    <string name="question">問題 %1$d の %2$d</string>
+    <string name="reset_quiz">クイズリセット</string>
+    <string name="image_description">Image of the current flag in the quiz</string>
+    <!--<string name="defalt_region">北アメリカ</string>-->
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="hello_round">Hello Round World!</string>
+    <string name="hello_square">Hello Square World!</string>
+
+    <string name="alert_dialog_msg1">結果は </string>
+    <string name="alert_dialog_msg2">再スタートしますか？</string>
+    <string name="alert_dialog_btn_restart">再スタート</string>
+    <string name="alert_dialog_btn_cancel">終了</string>
+
+</resources>

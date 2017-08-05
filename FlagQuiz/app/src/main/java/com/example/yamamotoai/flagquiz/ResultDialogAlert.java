@@ -20,13 +20,12 @@ public class ResultDialogAlert extends DialogFragment{
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
-        alertDialog.setMessage("RESULT IS " + MainActivityFragment.guessAns+
-                 "\n" + "DO YOU WANT TO RESTART?")
+        alertDialog.setMessage(getString(R.string.result,MainActivityFragment.FLAGS_IN_QUIZ,MainActivityFragment.guessAns))
                 .setPositiveButton("RESTART", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 Activity activity = getActivity();
-                Toast.makeText(getActivity().getApplicationContext(),"RESTART QUIZ!! ",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity().getApplicationContext(),R.string.reset_quiz,Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(activity, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // completely cleared the entire stack and made the new activity the only one in the app
                 activity.finish();
