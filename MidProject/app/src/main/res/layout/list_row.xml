@@ -40,7 +40,8 @@
                     android:textAppearance="?android:textAppearanceSmall"
                     android:paddingLeft="@dimen/activity_vertical_margin"
                     android:paddingRight="@dimen/activity_vertical_margin"
-                    android:text="3"/>
+                    android:text="0"
+                    android:textStyle="bold"/>
             </LinearLayout>
 
 

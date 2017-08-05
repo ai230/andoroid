@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by yamamotoai on 2017-08-01.
@@ -26,10 +27,13 @@ public class AdditionActivity extends AppCompatActivity implements DatePickerFra
 
 //    private List<TODO> todoList = new ArrayList<>();
 
+
+
     TextView dateTextView;
     EditText titleEditText;
     EditText groupEditText;
     EditText contentEditText;
+    TextView daysDiffTextView;
 
     String dateString;
     FragmentManager fragmentManager = getFragmentManager();
@@ -44,14 +48,15 @@ public class AdditionActivity extends AppCompatActivity implements DatePickerFra
         groupEditText = (EditText) findViewById(R.id.edittext_group);
         contentEditText = (EditText) findViewById(R.id.edittext_content);
 
-        final Calendar c = Calendar.getInstance();
+        Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH)+1;
         int day = c.get(Calendar.DAY_OF_MONTH);
-        String dateString = year + "/" + month + "/" + day;
+        c.set(year,month,day);
+
+        String dateString = year + "-" + month + "-" + day;
         String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         dateTextView.setText(date);
-
         TODO todo1 = (TODO) getIntent().getSerializableExtra("TODOObjEdit");
         if(todo1 != null){
             Log.d("---todo1", todo1.getTitle());
@@ -62,16 +67,14 @@ public class AdditionActivity extends AppCompatActivity implements DatePickerFra
         }
     }
 
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        TODO todo1 = (TODO) getIntent().getSerializableExtra("TODOObjEdit");
-//        if(todo1 != null){
-//            Log.d("---", todo1.getTitle());
-////            todoList.add(todo1);
-//        }
-////        Log.d("---", String.valueOf(todoList.size()));
-//    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        TODO todo1 = (TODO) getIntent().getSerializableExtra("TODOObjEdit");
+        if (todo1 != null) {
+            Log.d("---", todo1.getTitle());
+        }
+    }
 
     public void onClickCancel(View view){
         Log.d("---", "click1");
@@ -107,4 +110,5 @@ public class AdditionActivity extends AppCompatActivity implements DatePickerFra
     public void onReturnDate(String date) {
         dateTextView.setText(date);
     }
+
 }

@@ -14,7 +14,7 @@
             android:id="@+id/textview_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Title"
+            android:text="@string/tile"
             android:textStyle="bold"
             android:layout_weight="4"
             android:textAppearance="?android:textAppearanceMedium"/>
@@ -23,7 +23,7 @@
             android:id="@+id/edittext_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Type here..."
+            android:hint="@string/hint"
             android:layout_weight="1"
             android:textAppearance="?android:textAppearanceSmall"/>
     </LinearLayout>
@@ -38,7 +38,7 @@
             android:id="@+id/textview_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Group"
+            android:text="@string/group"
             android:textStyle="bold"
             android:layout_weight="4"
             android:textAppearance="?android:textAppearanceMedium"/>
@@ -47,7 +47,7 @@
             android:id="@+id/edittext_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Type here..."
+            android:hint="@string/hint"
             android:layout_weight="1"
             android:textAppearance="?android:textAppearanceSmall"/>
     </LinearLayout>
@@ -56,7 +56,7 @@
         android:id="@+id/edittext_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Type here..."
+        android:hint="@string/hint"
         android:textAppearance="?android:textAppearanceSmall"
         android:layout_weight="1"
         android:gravity="left"/>
@@ -90,13 +90,13 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        android:layout_margin="10dp">
+        android:layout_margin="@dimen/activity_horizontal_margin">
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="cancel"
-            android:textColor="#ffffff"
+            android:textColor="@color/colorWhite"
             android:background="@drawable/addition_button"
             android:onClick="onClickCancel"/>
 
@@ -104,17 +104,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="save"
-            android:textColor="#ffffff"
+            android:textColor="@color/colorWhite"
             android:background="@drawable/addition_button"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:onClick="onClickSave"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="delete"
-            android:textColor="#ffffff"
+            android:textColor="@color/colorWhite"
             android:background="@drawable/addition_button"
             android:onClick="onClickDelete"/>
 

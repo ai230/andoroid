@@ -1,6 +1,11 @@
 package com.example.yamamotoai.midproject;
 
 import android.content.Intent;
+import android.net.Uri;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,23 +18,15 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements TODOAdapter.ListItemClickListener{
+public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener,
+        PageFragment.OnFragmentInteractionListener {
 
     private List<TODO> todoList = new ArrayList<>();
-    private RecyclerView recyclerView;
-    private TODOAdapter todoAdapter;
-
+    // tab title
+    private List<String> tabTitle = new ArrayList<>();
     @Override
     protected void onResume() {
         super.onResume();
-        TODO todo1 = (TODO)getIntent().getSerializableExtra("TODOObj");
-        if(todo1 != null){
-            Log.d("---", todo1.getTitle());
-            todoList.add(todo1);
-        }
-        todoAdapter = new TODOAdapter(todoList,this);
-        recyclerView.setAdapter(todoAdapter);
-
     }
 
     @Override
@@ -37,25 +34,44 @@ public class MainActivity extends AppCompatActivity implements TODOAdapter.ListI
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        if(todoList == null){
-//            Log.d("---","todoList = new ArrayList<>();");
-//             todoList = new ArrayList<>();
-//        }
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
-        todoAdapter = new TODOAdapter(todoList, this);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(layoutManager);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
 
-
-        Log.d("---before", String.valueOf(todoList.size()));
-//        TODO todo1 = (TODO)getIntent().getSerializableExtra("TODOObj");
-//        if(todo1 != null){
-//            Log.d("---", todo1.getTitle());
-//            todoList.add(todo1);
+//        prepareTODO();
+//        for (TODO obj: todoList) {
+//            tabTitle.add(obj.getGroup());
 //        }
-        recyclerView.setAdapter(todoAdapter);
-        Log.d("---after", String.valueOf(todoList.size()));
-        prepareTODO();
+        Log.d("---onCreate","");
+        tabTitle.add("G1");
+        tabTitle.add("G2");
+        tabTitle.add("G3");
+//        tabTitle.add("tab4");
+//        tabTitle.add("tab5");
+//        tabTitle.add("tab6");
+
+        // setting Page
+        FragmentPagerAdapter adapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
+            @Override
+            public Fragment getItem(int position) {
+                return PageFragment.newInstance(position + 1);
+            }
+
+            @Override
+            public CharSequence getPageTitle(int position) {
+                return tabTitle.get(position);
+            }
+
+            @Override
+            public int getCount() {
+                return tabTitle.size();
+            }
+        };
+
+        viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(this);
+
+        // Set ViewPager to TabLayout
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     @Override
@@ -83,31 +99,29 @@ public class MainActivity extends AppCompatActivity implements TODOAdapter.ListI
         return super.onOptionsItemSelected(item);
     }
 
-    public void prepareTODO(){
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-        TODO todo = new TODO("2017/06/10","Lorem ipsum","group","Lorem ipsum dolor sit amet, consectetur.");
-        todoList.add(todo);
-        todo = new TODO("2017/06/12","Lorem ipsum","group","Lorem ipsum dolor sit amet, consectetur.");
-        todoList.add(todo);
-        todo = new TODO("2017/06/13","Lorem ipsum","group","Lorem ipsum dolor sit amet, consectetur.");
-        todoList.add(todo);
-
-        Log.d("---", String.valueOf(todoList.size()));
     }
 
     @Override
-    public void onListItemClick(int position) {
-
-        Log.d("---","click");
-        Intent intent = new Intent(MainActivity.this, AdditionActivity.class);
-        TODO todo = todoList.get(position);
-        String date = todo.getDate();
-        String title = todo.getTitle();
-        Toast.makeText(this, "TODO: #" + position + " " + date + " " + title, Toast.LENGTH_SHORT).show();
-        intent.putExtra("TODOObjEdit", todo);
-        startActivity(intent);
+    public void onPageSelected(int position) {
+        Log.d("---onPageSelected", String.valueOf(position));
+        if(position == 0){
+            tabTitle.get(position);
+            for (TODO obj: todoList) {
+                tabTitle.add(obj.getGroup());
+            }
+        }
     }
 
+    @Override
+    public void onPageScrollStateChanged(int state) {
 
+    }
 
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
 }
