@@ -27,9 +27,8 @@ public class PageFragment extends Fragment implements TODOAdapter.ListItemClickL
     private int mParam;
     private OnFragmentInteractionListener mListener;
 
-    private List<TODO> todoList1 = new ArrayList<>();
-    private List<TODO> todoList2 = new ArrayList<>();
-    private List<TODO> todoList3 = new ArrayList<>();
+    private List<TODO> todoList = new ArrayList<>();
+    private List<TODO> todoListTemp;
 
     private RecyclerView recyclerView;
     private TODOAdapter todoAdapter;
@@ -45,38 +44,47 @@ public class PageFragment extends Fragment implements TODOAdapter.ListItemClickL
         return fragment;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam = getArguments().getInt(ARG_PARAM);
-        }
+//    @Override
+//    public void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        if (getArguments() != null) {
+//            mParam = getArguments().getInt(ARG_PARAM);
+//        }
+//
+//
+////        Log.d("---before", String.valueOf(todoList.size()));
+//        TODO todo1 = (TODO)getActivity().getIntent().getSerializableExtra("TODOObj");
+//        if(todo1 != null){
+//            Log.d("---after", todo1.getTitle());
+////            todoList.add(todo1);
+//        }
+//    }
 
-
-//        Log.d("---before", String.valueOf(todoList.size()));
-        TODO todo1 = (TODO)getActivity().getIntent().getSerializableExtra("TODOObj");
-        if(todo1 != null){
-            Log.d("---after", todo1.getTitle());
-//            todoList.add(todo1);
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        prepareTODO();
+        Log.d("---onCreateView1", String.valueOf(todoList.size()));
+        todoListTemp = new ArrayList<>();
+        organizedGroup();
+        Log.d("---onCreateView2", String.valueOf(todoListTemp.size()));
+
         // Inflate the layout for this fragment
-        int page = getArguments().getInt(ARG_PARAM, 0);
+//        int page = getArguments().getInt(ARG_PARAM, 0);
         View view = inflater.inflate(R.layout.fragment_page, container, false);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
-        todoAdapter = new TODOAdapter(todoList1, this);
+        Log.d("---todoAdapter", String.valueOf(todoListTemp.size()));
+        todoAdapter = new TODOAdapter(todoListTemp, this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
 
         recyclerView.setAdapter(todoAdapter);
-        Log.d("---prepare","todo");
-        prepareTODO();
+
+
+        Log.d("---onCreateView--","");
         return view;
     }
 
@@ -106,13 +114,13 @@ public class PageFragment extends Fragment implements TODOAdapter.ListItemClickL
     @Override
     public void onListItemClick(int position) {
         Log.d("---","click");
-//        Intent intent = new Intent(getActivity().getApplicationContext(), AdditionActivity.class);
-//        TODO todo = todoList.get(position);
-//        String date = todo.getDate();
-//        String title = todo.getTitle();
-//        Toast.makeText(getContext(), "TODO: #" + position + " " + date + " " + title, Toast.LENGTH_SHORT).show();
-//        intent.putExtra("TODOObjEdit", todo);
-//        startActivity(intent);
+        Intent intent = new Intent(getActivity().getApplicationContext(), AdditionActivity.class);
+        TODO todo = todoListTemp.get(position);
+        String date = todo.getDate();
+        String title = todo.getTitle();
+        Toast.makeText(getContext(), "TODO: #" + position + " " + date + " " + title, Toast.LENGTH_SHORT).show();
+        intent.putExtra("TODOObjEdit", todo);
+        startActivity(intent);
     }
 
     public interface OnFragmentInteractionListener {
@@ -121,16 +129,27 @@ public class PageFragment extends Fragment implements TODOAdapter.ListItemClickL
 
     public void prepareTODO(){
 
-        TODO todo = new TODO("2017-06-10","Lorem ipsum","G1","Lorem ipsum dolor sit amet, consectetur.");
-        todoList1.add(todo);
-//        todo = new TODO("2017-06-12","Lorem ipsum","G1","Lorem ipsum dolor sit amet, consectetur.");
-//        todoList1.add(todo);
-        todo = new TODO("2017-06-13","Lorem ipsum","G2","Lorem ipsum dolor sit amet, consectetur.");
-        todoList2.add(todo);
-        todo = new TODO("2017-08-13","Lorem ipsum","G3","Lorem ipsum dolor sit amet, consectetur.");
-        todoList3.add(todo);
+        TODO todo = new TODO("2017-01-10","Lorem ipsum","G1","Lorem ipsum dolor sit amet, consectetur.");
+        todoList.add(todo);
+        todo = new TODO("2017-01-11","Lorem ipsum","G1","Lorem ipsum dolor sit amet, consectetur.");
+        todoList.add(todo);
+        todo = new TODO("2017-02-12","Lorem ipsum","G2","Lorem ipsum dolor sit amet, consectetur.");
+        todoList.add(todo);
+        todo = new TODO("2017-02-13","Lorem ipsum","G2","Lorem ipsum dolor sit amet, consectetur.");
+        todoList.add(todo);
+        todo = new TODO("2017-03-14","Lorem ipsum","G3","Lorem ipsum dolor sit amet, consectetur.");
+        todoList.add(todo);
 
         Log.d("---", "prepared");
     }
 
+    public void organizedGroup(){
+
+        for(TODO todo: todoList){
+            if(todo.getGroup() == MainActivity.selectedTabName){
+                todoListTemp.add(todo);
+            }
+        }
+//        if(todoListTemp.size())
+    }
 }

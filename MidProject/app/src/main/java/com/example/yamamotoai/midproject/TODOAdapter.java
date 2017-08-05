@@ -74,6 +74,7 @@ public class TODOAdapter extends RecyclerView.Adapter<TODOAdapter.MyViewHolder> 
 
         TODO t = todo_List.get(position);
         holder.dateTextView.setText(t.getDate());
+        holder.groupTextView.setText(t.getGroup());
         holder.titleTextView.setText(t.getTitle());
         holder.contentTextView.setText(t.getContent());
 

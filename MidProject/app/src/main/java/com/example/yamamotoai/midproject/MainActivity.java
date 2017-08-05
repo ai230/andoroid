@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,9 +22,14 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener,
         PageFragment.OnFragmentInteractionListener {
 
+    public static String selectedTabName;
+
     private List<TODO> todoList = new ArrayList<>();
     // tab title
     private List<String> tabTitle = new ArrayList<>();
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+    FragmentStatePagerAdapter adapter;
     @Override
     protected void onResume() {
         super.onResume();
@@ -34,23 +40,19 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        viewPager = (ViewPager) findViewById(R.id.pager);
 
-//        prepareTODO();
-//        for (TODO obj: todoList) {
-//            tabTitle.add(obj.getGroup());
-//        }
-        Log.d("---onCreate","");
         tabTitle.add("G1");
         tabTitle.add("G2");
         tabTitle.add("G3");
-//        tabTitle.add("tab4");
-//        tabTitle.add("tab5");
-//        tabTitle.add("tab6");
+        tabTitle.add("G4");
+        tabTitle.add("G5");
+        tabTitle.add("G6");
 
+        selectedTabName = tabTitle.get(0);
         // setting Page
-        FragmentPagerAdapter adapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
+        adapter = new FragmentStatePagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
                 return PageFragment.newInstance(position + 1);
@@ -101,27 +103,31 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
     }
 
     @Override
     public void onPageSelected(int position) {
-        Log.d("---onPageSelected", String.valueOf(position));
-        if(position == 0){
-            tabTitle.get(position);
-            for (TODO obj: todoList) {
-                tabTitle.add(obj.getGroup());
+        String tabName = tabTitle.get(position);
+        selectedTabName = tabName;
+        tabLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                Log.d("---","run");
+                viewPager.setAdapter(adapter);
+                viewPager.addOnPageChangeListener(MainActivity.this);
+                tabLayout.setupWithViewPager(viewPager);
+                getCurrentFocus();
             }
-        }
+        });
     }
 
     @Override
     public void onPageScrollStateChanged(int state) {
-
     }
 
     @Override
     public void onFragmentInteraction(Uri uri) {
 
     }
+
 }
