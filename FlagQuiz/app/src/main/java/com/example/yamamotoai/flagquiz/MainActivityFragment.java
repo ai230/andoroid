@@ -106,7 +106,7 @@ public class MainActivityFragment extends Fragment {
         }
     }
 
-    public void SCROLL_STATE_TOUCH_SCROLLstartQuiz(){
+    public void startQuiz(){
         int i=0;
         //Use AssetManager to get image files in this regions
         AssetManager assets = getActivity().getAssets();

@@ -16,4 +16,11 @@
     <!--android:entries="@array/listArray"-->
     <!--android:entryValues="@array/listArray"/>-->
 
+    <!--<EditTextPreference-->
+        <!--android:title="Adding a Group"-->
+        <!--android:summary="Enter a groupe name you want to add"-->
+        <!--android:key="pref_group"-->
+        <!--android:defaultValue=" "-->
+        <!--android:hint="@string/hint"/>-->
+
 </PreferenceScreen>

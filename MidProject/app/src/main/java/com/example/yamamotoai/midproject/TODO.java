@@ -10,26 +10,21 @@ import java.util.List;
 
 public class TODO implements Serializable {
 
+    int id;
     String date, title, group,content;
-//    int days;
-//    List<TODO> todoList = new ArrayList<>();
 
-    public TODO(String date, String title, String group, String content) {
+
+    public TODO(int id, String date, String title, String group, String content) {
+        this.id = id;
         this.date = date;
         this.title = title;
         this.group = group;
         this.content = content;
     }
 
-//    public List<TODO> getTodoList(List<TODO> todoList){
-//        this.todoList = todoList;
-////        todoList = new ArrayList<>();
-//        return todoList;
-//    }
-//
-//    public void addTODO(TODO todo){
-//        todoList.add(todo);
-//    }
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public void setDate(String date) {
         this.date = date;
@@ -45,6 +40,10 @@ public class TODO implements Serializable {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getDate() {

@@ -22,7 +22,7 @@ public class TODOAdapter extends RecyclerView.Adapter<TODOAdapter.MyViewHolder> 
 
     private List<TODO> todo_List;
     Context context;
-
+    private final int dayColorChange = 4;
     final private ListItemClickListener onClickListener;
     public  interface ListItemClickListener {
         void onListItemClick(int position);
@@ -80,7 +80,7 @@ public class TODOAdapter extends RecyclerView.Adapter<TODOAdapter.MyViewHolder> 
 
         int daysDiff = caluculateDayDiff(t.getDate());
         holder.daysTextView.setText(String.valueOf(daysDiff));
-        if(daysDiff < 4){
+        if(daysDiff < dayColorChange){
             holder.daysTextView.setBackgroundResource(R.drawable.day_background1);
         }
     }

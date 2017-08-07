@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,8 +16,25 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.content.Context.MODE_APPEND;
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by yamamotoai on 2017-08-03.
@@ -27,11 +46,12 @@ public class PageFragment extends Fragment implements TODOAdapter.ListItemClickL
     private int mParam;
     private OnFragmentInteractionListener mListener;
 
-    private List<TODO> todoList = new ArrayList<>();
+
     private List<TODO> todoListTemp;
 
     private RecyclerView recyclerView;
     private TODOAdapter todoAdapter;
+    public static int todoListSize;
 
     public PageFragment() {
     }
@@ -65,8 +85,20 @@ public class PageFragment extends Fragment implements TODOAdapter.ListItemClickL
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        prepareTODO();
-        Log.d("---onCreateView1", String.valueOf(todoList.size()));
+
+        Log.d("---PageFragment","input data");
+//        try {
+//            FileInput(MainActivity.file);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+//        TODO newTodo = (TODO)getActivity().getIntent().getSerializableExtra("TODOObj");
+//        if(newTodo != null){
+//            Log.d("---after", newTodo.getTitle());
+//            MainActivity.todoList.add(newTodo);
+//        }
+        Log.d("---onCreateView1", String.valueOf(MainActivity.todoList.size()));
         todoListTemp = new ArrayList<>();
         organizedGroup();
         Log.d("---onCreateView2", String.valueOf(todoListTemp.size()));
@@ -85,6 +117,8 @@ public class PageFragment extends Fragment implements TODOAdapter.ListItemClickL
 
 
         Log.d("---onCreateView--","");
+
+        todoListSize = MainActivity.todoList.size();
         return view;
     }
 
@@ -127,29 +161,54 @@ public class PageFragment extends Fragment implements TODOAdapter.ListItemClickL
         void onFragmentInteraction(Uri uri);
     }
 
-    public void prepareTODO(){
-
-        TODO todo = new TODO("2017-01-10","Lorem ipsum","G1","Lorem ipsum dolor sit amet, consectetur.");
-        todoList.add(todo);
-        todo = new TODO("2017-01-11","Lorem ipsum","G1","Lorem ipsum dolor sit amet, consectetur.");
-        todoList.add(todo);
-        todo = new TODO("2017-02-12","Lorem ipsum","G2","Lorem ipsum dolor sit amet, consectetur.");
-        todoList.add(todo);
-        todo = new TODO("2017-02-13","Lorem ipsum","G2","Lorem ipsum dolor sit amet, consectetur.");
-        todoList.add(todo);
-        todo = new TODO("2017-03-14","Lorem ipsum","G3","Lorem ipsum dolor sit amet, consectetur.");
-        todoList.add(todo);
-
-        Log.d("---", "prepared");
-    }
 
     public void organizedGroup(){
-
-        for(TODO todo: todoList){
-            if(todo.getGroup() == MainActivity.selectedTabName){
+        Log.d("---", "organized");
+        for(TODO todo: MainActivity.todoList){
+            Log.d("---","todoTemp1 " + todo.getGroup());
+            Log.d("---","selectedTab " + MainActivity.selectedTabName);
+            if(todo.getGroup().matches(MainActivity.selectedTabName)){
+                Log.d("---","ok");
                 todoListTemp.add(todo);
             }
         }
-//        if(todoListTemp.size())
     }
+
+
+//    public void FileInput(File file) throws IOException {
+////        List<String> data = new ArrayList<>();
+//        BufferedReader bufferedReader = null;
+//        FileInputStream fileInputStream;
+//        InputStreamReader inputStreamReader;
+//        try {
+//            fileInputStream = new FileInputStream(file);
+//            inputStreamReader = new InputStreamReader(fileInputStream);
+//            bufferedReader = new BufferedReader(inputStreamReader);
+//
+//            String line = "";
+//            while ((line = bufferedReader.readLine()) != null) {
+//                String[] tokens = line.split(",");
+//                int id = Integer.parseInt(tokens[0]);
+//                String date = tokens[1];
+//                String title = tokens[2];
+//                String group = tokens[3];
+//                String content = tokens[4];
+//                TODO todo = new TODO(id, date, title, group, content);
+//                todoList.add(todo);
+//                Log.d("---line",line);
+//            }
+//
+//        } catch (IOException ioe) {
+//            ioe.printStackTrace();
+//        } finally {
+//            try {
+//                if (bufferedReader != null) {
+//                    bufferedReader.close();
+//                }
+//
+//            } catch (IOException ioe) {
+//                System.out.println("Error in closing the BufferedReader");
+//            }
+//        }
+//    }
 }

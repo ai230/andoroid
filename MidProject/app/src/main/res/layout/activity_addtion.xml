@@ -43,13 +43,23 @@
             android:layout_weight="4"
             android:textAppearance="?android:textAppearanceMedium"/>
 
-        <EditText
-            android:id="@+id/edittext_group"
+        <Spinner
+            android:id="@+id/spiner_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/hint"
             android:layout_weight="1"
-            android:textAppearance="?android:textAppearanceSmall"/>
+            android:textAppearance="?android:textAppearanceSmall">
+
+        </Spinner>
+
+        <EditText
+        android:id="@+id/edittext_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint"
+        android:layout_weight="1"
+        android:textAppearance="?android:textAppearanceSmall"/>
+
     </LinearLayout>
 
     <EditText
@@ -66,6 +76,14 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="right">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Deadine"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:layout_gravity="center"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"/>
 
         <TextView
             android:id="@+id/textview_date"
