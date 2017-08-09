@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
     private static File dir;
     public static File file;
-    public static File fileForTabName;
     private String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/sample";
 
     public static String selectedTabName;
@@ -56,24 +55,19 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.d("---","onCreate");
+        Log.d("---Main","onCreate");
 
         dir = new File (path);
         dir.mkdir();
 
         file = new File(path + "/tododata.txt");
-        fileForTabName = new File(path + "/tabdata.txt");
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         viewPager = (ViewPager) findViewById(R.id.pager);
 
+        //Everytime reset and get data from the file
         tabTitle.clear();
         todoList.clear();
-        try {
-            FileInputTab(fileForTabName);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         try {
             FileInput(file);
@@ -81,13 +75,14 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
             e.printStackTrace();
         }
 
+        //When you have data from the file, selected tab => first tab and get only the group of data
         if(tabTitle.size() > 0)
             selectedTabName = tabTitle.get(0);
-        // setting Page
+        // setting Pager
         adapter = new FragmentStatePagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
-                return PageFragment.newInstance(position + 1);
+                return PageFragment.newInstance(position);
             }
 
             @Override
@@ -107,8 +102,6 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         // Set ViewPager to TabLayout
         tabLayout.setupWithViewPager(viewPager);
 
-        //Listnener that when you changed the preferences and will reset quiz
-//        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(preferenceChangeListener);
 
     }
 
@@ -128,10 +121,10 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
                 startActivity(intent1);
                 return true;
 
-            case R.id.action_settings:
-                Intent intent2 = new Intent(MainActivity.this, SettingsActivity.class);
-                startActivity(intent2);
-                return true;
+//            case R.id.action_settings:
+//                Intent intent2 = new Intent(MainActivity.this, SettingsActivity.class);
+//                startActivity(intent2);
+//                return true;
 
         }
         return super.onOptionsItemSelected(item);
@@ -145,22 +138,16 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     public void onPageSelected(final int position) {
         String tabName = tabTitle.get(position);
         selectedTabName = tabName;
+        Log.d("---tabselected",selectedTabName + position);
+
+        //TODO)
         tabLayout.post(new Runnable() {
             @Override
             public void run() {
-//                tabLayout.setScrollPosition(position,0f,true);
-//                Log.d("---","run5");
-//                viewPager.setCurrentItem(position);
-                Log.d("---","run1");
-                viewPager.setAdapter(adapter);
-                Log.d("---","run2");
-                viewPager.addOnPageChangeListener(MainActivity.this);
-                Log.d("---","run3");
-                tabLayout.setupWithViewPager(viewPager);
-                Log.d("---","run4");
 
-//                getCurrentFocus();
-
+//                viewPager.setAdapter(adapter);
+//                viewPager.addOnPageChangeListener(this);
+//                tabLayout.setupWithViewPager(viewPager);
             }
         });
     }
@@ -174,41 +161,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
     }
 
-
-    public void FileInputTab(File file) throws IOException {
-        List<String> data = new ArrayList<>();
-        BufferedReader bufferedReader = null;
-        FileInputStream fileInputStream;
-        InputStreamReader inputStreamReader;
-
-        try {
-            fileInputStream = new FileInputStream(file);
-            inputStreamReader = new InputStreamReader(fileInputStream);
-            bufferedReader = new BufferedReader(inputStreamReader);
-
-            String line = "";
-            while ((line = bufferedReader.readLine()) != null) {
-                if(!tabTitle.contains(line))
-                    tabTitle.add(line);
-                Log.d("---line",line);
-            }
-
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        } finally {
-            try {
-                if (bufferedReader != null) {
-                    bufferedReader.close();
-                }
-
-            } catch (IOException ioe) {
-                System.out.println("Error in closing the BufferedReader");
-            }
-        }
-    }
-
     public void FileInput(File file) throws IOException {
-//        List<String> data = new ArrayList<>();
         BufferedReader bufferedReader = null;
         FileInputStream fileInputStream;
         InputStreamReader inputStreamReader;
@@ -227,6 +180,9 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
                 String content = tokens[4];
                 TODO todo = new TODO(id, date, title, group, content);
                 todoList.add(todo);
+
+                if(!tabTitle.contains(group)) tabTitle.add(group);
+
                 Log.d("---line",line);
             }
 

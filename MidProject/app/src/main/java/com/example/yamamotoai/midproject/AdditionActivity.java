@@ -52,6 +52,7 @@ public class AdditionActivity extends AppCompatActivity implements DatePickerFra
 
     int tabSize;
     TODO todoEdit;
+    Boolean isEditting = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,13 +65,14 @@ public class AdditionActivity extends AppCompatActivity implements DatePickerFra
         editTextNewGroup = (EditText) findViewById(R.id.edittext_group);
         tabSize = MainActivity.tabTitle.size();
 
-        //Spinner
+        //Spinner for group
         groupSpinner = (Spinner) findViewById(R.id.spiner_group);
         groupSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(tabSize-1 == position){
+                    //when "NEW GROUP" is selected show editText
                     editTextNewGroup.setVisibility(View.VISIBLE);
                 }
             }
@@ -94,30 +96,21 @@ public class AdditionActivity extends AppCompatActivity implements DatePickerFra
         String dateString = year + "-" + month + "-" + day;
         String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         dateTextView.setText(date);
+
+        //For editting data
         todoEdit = (TODO) getIntent().getSerializableExtra("TODOObjEdit");
         if(todoEdit != null){
-            Log.d("---todo1", todoEdit.getTitle());
+            isEditting = true;
             dateTextView.setText(todoEdit.getDate());
             titleEditText.setText(todoEdit.getTitle());
             contentEditText.setText(todoEdit.getContent());
         }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        TODO todo1 = (TODO) getIntent().getSerializableExtra("TODOObjEdit");
-        if (todo1 != null) {
-            Log.d("---", todo1.getTitle());
-        }
-    }
 
     public void onClickCancel(View view){
-        Log.d("---", "click1");
-        Intent intent1 = new Intent(this, MainActivity.class);
-        AdditionActivityClose();
-        startActivity(intent1);
-
+        Intent intentCancel = new Intent(this, MainActivity.class);
+        startActivity(intentCancel);
     }
 
     public void onClickSave(View view){
@@ -129,28 +122,51 @@ public class AdditionActivity extends AppCompatActivity implements DatePickerFra
         if (content.matches("")) content = "Not set";
         date = dateTextView.getText().toString();
 
-
+        //Show alert if title is empty
         if (title.matches("")){
             AlertDialogFragment alertDialogFragment = new AlertDialogFragment();
             alertDialogFragment.show(fragmentManager,"Alert flagment");
+            //Show alert if the tabtitle that is created is already exist
         } else if (MainActivity.tabTitle.contains(editTextNewGroup.getText().toString().toUpperCase())){
-            Log.d("---group",group);
             AlertDialogFragment2 alertDialogFragment = new AlertDialogFragment2();
             alertDialogFragment.show(fragmentManager,"Alert flagment");
         } else{
-            String outPutData = PageFragment.todoListSize + "," + date + "," + title + "," + group + "," + content;
-            try {
-                FileOutputAppend(MainActivity.file, outPutData);
-                FileOutputAppend(MainActivity.fileForTabName,group);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            //If it is editting
+            if(isEditting == true){
 
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.putExtra("new_group",group.toString());
-            AdditionActivityClose();
-            startActivity(intent);
-            Toast.makeText(getApplicationContext(),"SAVED",Toast.LENGTH_SHORT).show();
+                todoEdit = new TODO(todoEdit.getId(), date, title, group, content);
+                MainActivity.todoList.set(todoEdit.getId(),todoEdit);
+                //File data will be deleted and recreated with the arraylist
+                MainActivity.file.delete();
+                for(int i = 0; i < MainActivity.todoList.size(); i++){
+                    TODO todo = MainActivity.todoList.get(i);
+                    String date = todo.getDate();
+                    String title = todo.getTitle();
+                    String group = todo.group;
+                    String content = todo.getContent();
+                    String outPutData = i + "," + date + "," + title + "," + group + "," + content;
+                    try {
+                        FileOutputAppend(MainActivity.file,outPutData);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                Toast.makeText(getApplicationContext(),"Updated",Toast.LENGTH_SHORT).show();
+                //New data
+            }else{
+                String outPutData = MainActivity.todoList.size() + "," + date + "," + title + "," + group + "," + content;
+                try {
+                    FileOutputAppend(MainActivity.file, outPutData);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+                Toast.makeText(getApplicationContext(),"SAVED",Toast.LENGTH_SHORT).show();
+            }
+            isEditting = false;
+            Intent intentSave = new Intent(this, MainActivity.class);
+            startActivity(intentSave);
         }
 
     }
@@ -158,13 +174,13 @@ public class AdditionActivity extends AppCompatActivity implements DatePickerFra
 
     public void onClickDelete(View view){
         Log.d("---", "delete clicked");
-        Intent intent1 = new Intent(this, MainActivity.class);
+        Intent intentDelete = new Intent(this, MainActivity.class);
 
-        Log.d("---size", String.valueOf(MainActivity.todoList.size()));
+        //Remove from arraylist
         MainActivity.todoList.remove(todoEdit.getId());
-        Log.d("---", String.valueOf(MainActivity.todoList.size()));
+        //File data will be deleted and recreated with the arraylist
         MainActivity.file.delete();
-            for(int i=0; i<MainActivity.todoList.size(); i++){
+            for(int i = 0; i < MainActivity.todoList.size(); i++){
                 TODO todo = MainActivity.todoList.get(i);
                 String date = todo.getDate();
                 String title = todo.getTitle();
@@ -178,8 +194,7 @@ public class AdditionActivity extends AppCompatActivity implements DatePickerFra
                 }
             }
             Toast.makeText(getApplicationContext(),"Deleted",Toast.LENGTH_SHORT).show();
-        AdditionActivityClose();
-        startActivity(intent1);
+        startActivity(intentDelete);
     }
 
     public void showDatePickerDialog(View v) {
@@ -208,8 +223,4 @@ public class AdditionActivity extends AppCompatActivity implements DatePickerFra
         }
     }
 
-    public void AdditionActivityClose(){
-        MainActivity.tabTitle.clear();
-
-    }
 }

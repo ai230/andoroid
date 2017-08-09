@@ -36,16 +36,16 @@
 
         <TextView
             android:id="@+id/textview_group"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/group"
             android:textStyle="bold"
-            android:layout_weight="4"
-            android:textAppearance="?android:textAppearanceMedium"/>
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:textAppearance="?android:textAppearanceMedium" />
 
         <Spinner
             android:id="@+id/spiner_group"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAppearance="?android:textAppearanceSmall">
@@ -54,7 +54,7 @@
 
         <EditText
         android:id="@+id/edittext_group"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/hint"
         android:layout_weight="1"
