@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffccee"
+    android:padding="24dp">
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#fff"
+        android:padding="16dp"
+        android:layout_marginBottom="8dp"
+        android:ems="10"
+        android:id="@+id/urlselectionText"
+        android:focusable="false"
+        android:inputType="textUri"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/downloadImage"
+        android:textColor="#fff"
+        android:onClick="downloadImage"
+        android:text="Download Image"/>
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/downloadProgress"
+        android:indeterminate="false"
+        android:visibility="gone"
+        android:max="100"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+    <TextView
+        android:id="@+id/textviewprogress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="...%..."
+        android:visibility="gone"/>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ddd"
+        android:id="@+id/chooseImageList"
+        android:entries="@array/imageNames"/>
+
+</LinearLayout>

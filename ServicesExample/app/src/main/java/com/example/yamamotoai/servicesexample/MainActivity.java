@@ -57,7 +57,7 @@ long seconds;
         editTextSeconds = (EditText) findViewById(R.id.editText_seconds);
 
         startBtn.setOnClickListener(this);
-        startBtn.setOnClickListener(this);
+        stopBtn.setOnClickListener(this);
 //        nextBtn.setOnClickListener(this);
         intentBtn.setOnClickListener(this);
 
@@ -72,12 +72,12 @@ long seconds;
 
         switch (view.getId()) {
             case R.id.button_start:
-                Intent i1 = new Intent(this, MyServices.class);
-                startService(i1);
+                Intent i = new Intent(this, MyServices.class);
+                startService(i);
                 break;
             case R.id.button_stop:
-                Intent i2 = new Intent(this, MyServices.class);
-                startService(i2);
+                i = new Intent(this, MyServices.class);
+                stopService(i);
                 break;
 //            case R.id.button_next:
 //                Intent i3 = new Intent(this, MyServices.class);

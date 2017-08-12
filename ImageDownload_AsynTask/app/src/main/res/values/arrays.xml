@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="imageNames">
+        <item>image 1</item>
+        <item>image 2</item>
+        <item>image 3</item>
+        <item>image 4</item>
+        <item>image 5</item>
+    </string-array>
+
+    <string-array name="imageuris">
+        <item>http://www.crossshoresolutions.com/blog/wp-content/uploads/2014/06/Android_1.5_Cupcake.jpg</item>
+        <item>http://the-gadgeteer.com/wp-content/uploads/2009/10/Android-1.6-Donut.jpg</item>
+        <item>http://93b00a24bd188d49d428-5353a8a2802c90717395ac989c1a694a.r74.cf1.rackcdn.com/wp-content/uploads/sites/3/8710.jpg</item>
+        <item>http://4.bp.blogspot.com/-0c7jERACXCQ/UJMX5rogk7I/AAAAAAAAATM/9OAZj1yOhjs/s1600/Android-Gingerbread.png</item>
+    </string-array>
+</resources>

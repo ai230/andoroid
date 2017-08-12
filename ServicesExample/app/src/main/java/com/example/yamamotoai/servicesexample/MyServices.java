@@ -26,7 +26,6 @@ public class MyServices extends Service{
     @Override
     public void onCreate() {
         super.onCreate();
-//        Context c = getApplicationContext();
         myPlayer = MediaPlayer.create(this,R.raw.music1);
         Toast.makeText(this,"onCreated", Toast.LENGTH_SHORT).show();
     }
@@ -36,19 +35,14 @@ public class MyServices extends Service{
 
         Toast.makeText(this,"Service Started", Toast.LENGTH_SHORT).show();
         myPlayer.start();
-        Log.d("---start", String.valueOf(myPlayer.isPlaying()));
-        if(myPlayer.isPlaying()){
-            Log.d("---isPlaying", String.valueOf(myPlayer.isPlaying()));
-        }
 //        stopSelf();
-//        return super.onStartCommand(intent, flags, startId);
-        return START_STICKY;
+        return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Toast.makeText(this, "Service Stopped", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Service Stopped", Toast.LENGTH_SHORT).show();
         myPlayer.stop();
     }
 }
