@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">MusicPlayer</string>
+    <string name="action_settings">Settings</string>
+    <string name="stopped">MUSIC HAS STOPPED</string>
+    <string name="reset">MUSIC HAS RESET</string>
+    <string name="paused">MUSIC HAS PAUSED</string>
+    <string name="isPlaying">MUSIC IS PLAYING</string>
+</resources>
