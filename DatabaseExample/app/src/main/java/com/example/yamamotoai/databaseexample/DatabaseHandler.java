@@ -5,8 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.widget.Toast;
-
 import java.util.LinkedList;
 import java.util.List;
 
@@ -91,9 +89,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return books;
     }
 
-    public Book getSelectedBook(int position){
+    public Book getSelectedBook(int bookId){
         Book book = new Book();
-        String query = "Select * From " + TABLE_NAME + " WHERE " + KEY_ID + " = " + (position+1);
+        String query = "Select * From " + TABLE_NAME + " WHERE " + KEY_ID + " = " + bookId;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query,null);
         if(cursor.getCount() > 0) {
@@ -103,5 +101,28 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             book.setAuthor(cursor.getString(2));
         }
         return book;
+    }
+
+    public int updateBook(Book book){
+
+        //TODO)1.Open database with writeble mode
+        SQLiteDatabase db = this.getWritableDatabase();
+        //TODO)2.Create Contentvalues (key & value pairs)
+        ContentValues value = new ContentValues();
+        value.put("title",book.getTitle());
+        value.put("author",book.getAuthor());
+
+        //TODO)3.updating a row using update() //last value is simgle value but we need to pass String[]
+        int result = db.update(TABLE_NAME, value, KEY_ID + " = ? ", new String[] {String.valueOf(book.getId())});
+        //TODO)4.Close db
+        db.close();
+        return result;
+    }
+
+    public int deleteBook(Book book){
+        SQLiteDatabase db = this.getWritableDatabase();
+        int result = db.delete(TABLE_NAME, KEY_ID + " = ? ", new String[] {String.valueOf(book.getId())});
+        db.close();
+        return result;
     }
 }

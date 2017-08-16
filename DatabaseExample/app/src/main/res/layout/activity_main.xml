@@ -17,7 +17,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="30dp"
+            android:layout_margin="10dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -36,9 +36,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1" />
-
             </LinearLayout>
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -56,22 +54,25 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1" />
-
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:gravity="center">
 
                 <Button
-                    android:layout_width="wrap_content"
+                    android:id="@+id/btn_add"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:layout_margin="5dp"
                     android:onClick="addBookBtnClicked"
                     android:text="ADD" />
 
                 <Button
+                    android:id="@+id/btn_update"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
@@ -79,16 +80,41 @@
                     android:text="UPDATELIST" />
 
                 <Button
-                    android:layout_width="wrap_content"
+                    android:id="@+id/btn_delete"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:layout_margin="5dp"
                     android:onClick="deleteBtnClicked"
                     android:text="DELETE" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+                <Button
+                    android:id="@+id/btn_sortByTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_margin="5dp"
+                    android:onClick="sortByTitleBtnClicked"
+                    android:text="SORT BY TITLE" />
+
+                <Button
+                    android:id="@+id/btn_sortByAuthor"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_margin="5dp"
+                    android:onClick="sortByAuthorBtnClicked"
+                    android:text="SORT BY AUTHOR" />
 
             </LinearLayout>
 
         </LinearLayout>
-
 
         <ListView
             android:id="@+id/list_book"
