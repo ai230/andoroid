@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
         dir = new File (path);
         dir.mkdir();
-
         file = new File(path + "/tododata.txt");
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -78,6 +77,11 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         //When you have data from the file, selected tab => first tab and get only the group of data
         if(tabTitle.size() > 0)
             selectedTabName = tabTitle.get(0);
+
+        tabLayout.addTab(tabLayout.newTab().setText("Tab 1"));
+        tabLayout.addTab(tabLayout.newTab().setText("Tab 2"));
+        tabLayout.addTab(tabLayout.newTab().setText("Tab 3"));
+
         // setting Pager
         adapter = new FragmentStatePagerAdapter(getSupportFragmentManager()) {
             @Override
@@ -97,7 +101,25 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         };
 
         viewPager.setAdapter(adapter);
-        viewPager.addOnPageChangeListener(this);
+//        viewPager.addOnPageChangeListener(this);
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+                Log.d("---tabselected2",selectedTabName + position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
         // Set ViewPager to TabLayout
         tabLayout.setupWithViewPager(viewPager);
@@ -140,10 +162,13 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         selectedTabName = tabName;
         Log.d("---tabselected",selectedTabName + position);
 
+
         //TODO)
         tabLayout.post(new Runnable() {
             @Override
             public void run() {
+                PageFragment p = new PageFragment();
+//                p.organizedGroup();
 
 //                viewPager.setAdapter(adapter);
 //                viewPager.addOnPageChangeListener(this);

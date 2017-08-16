@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity{
 
 //        recyclerView = (RecyclerView) findViewById(R.id.recycleview);
 //        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        TODO todo1 = new TODO( date, String title, String group, String content);
+        TODO todo1 = new TODO( String date, String title, String group, String content);
         todoListAdapter = new TodoListAdapter(this, todoList);
 
         Vector<View> pages = new Vector<View>();

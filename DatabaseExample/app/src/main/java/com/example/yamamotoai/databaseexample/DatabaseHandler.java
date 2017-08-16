@@ -2,15 +2,19 @@ package com.example.yamamotoai.databaseexample;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
- * Created by yamamotoai on 2017-08-14.
+ * Created by yamamotoai on 2017-08-15.
  */
 
-public class DatabaseBandler extends SQLiteOpenHelper{
+public class DatabaseHandler extends SQLiteOpenHelper {
 
     //TODO)1.create a database name
     public static String DATABASE_NAME = "Bookdb";
@@ -18,7 +22,7 @@ public class DatabaseBandler extends SQLiteOpenHelper{
     public static int DATABASE_VERSION = 1;
 
     //TODO)3.create a constractor
-    public DatabaseBandler(Context context){
+    public DatabaseHandler(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -38,7 +42,7 @@ public class DatabaseBandler extends SQLiteOpenHelper{
     @Override
     public void onCreate(SQLiteDatabase db) {
         //TODO)7.create a tablebook
-            db.execSQL(CREATE_TABLE_BOOKS);
+        db.execSQL(CREATE_TABLE_BOOKS);
     }
 
     @Override
@@ -62,5 +66,42 @@ public class DatabaseBandler extends SQLiteOpenHelper{
         //close the database connection
         sqLiteDatabase.close();
 
+    }
+
+    //TODO)9.creat a method that is getting all the data from database
+    public List<Book> getAllBooks(){
+        List<Book> books = new LinkedList<>();//in order
+        //TODO)10.create a select query
+        String query = "Select * From " + TABLE_NAME;
+        //TODO)11.get instance of database in READABLE data
+        SQLiteDatabase db = this.getReadableDatabase();
+        //TODO)12.get curser object for result of query
+        Cursor cursor = db.rawQuery(query,null);
+        //TODO)13.go over result and build_book object and add it to the list
+        Book book = null;
+        if(cursor.moveToFirst()){
+            do{
+                book = new Book();
+                book.setId(Integer.parseInt(cursor.getString(0)));//firest colnm is ID
+                book.setTitle(cursor.getString(1));
+                book.setAuthor(cursor.getString(2));
+                books.add(book);
+            }while(cursor.moveToNext());
+        }
+        return books;
+    }
+
+    public Book getSelectedBook(int position){
+        Book book = new Book();
+        String query = "Select * From " + TABLE_NAME + " WHERE " + KEY_ID + " = " + (position+1);
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query,null);
+        if(cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            book.setId(Integer.parseInt(cursor.getString(0)));//firest colnm is ID
+            book.setTitle(cursor.getString(1));
+            book.setAuthor(cursor.getString(2));
+        }
+        return book;
     }
 }

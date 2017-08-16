@@ -107,12 +107,17 @@ public class PageFragment extends Fragment implements TODOAdapter.ListItemClickL
 
 
     public void organizedGroup(){
+
         Log.d("---", "organized");
         for(TODO todo: MainActivity.todoList){
-            Log.d("---","todoTemp1 " + todo.getGroup());
-            Log.d("---","selectedTab " + MainActivity.selectedTabName);
+
+//            Log.d("---","todoTemp1 " + todo.getGroup());
+//            Log.d("---","selectedTab " + MainActivity.selectedTabName);
+
             if(todo.getGroup().matches(MainActivity.selectedTabName)){
                 Log.d("---","ok");
+                Log.d("---","todoTemp1 " + todo.getGroup());
+                Log.d("---","selectedTab " + MainActivity.selectedTabName);
                 todoListTemp.add(todo);
             }
         }
