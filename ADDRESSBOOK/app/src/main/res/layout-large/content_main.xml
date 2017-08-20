@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:baselineAligned="false"
+    android:divider="?android:listDivider"
+    android:padding="@dimen/fab_margin"
+    android:showDividers="middle"
+    android:weightSum="3"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <fragment
+        android:id="@+id/contactsFragment"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_weight="1"
+        tools:layout="@layout/fragment_contacts"/>
+
+    <fragment
+        android:id="@+id/rightPaneContainer"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_weight="2" />
+</LinearLayout>
+
+    <!--divider:This property specifies a drawable resource
+     that’s used to separate items in the LinearLayout.
+     In this case, we use the predefined Android drawable theme
+      resource ?android:listDivider.
+      The ?android: indicates that the LinearLayout should use
+       the list divider defined in the current theme.-->
+
+    <!--showDividers:This property is used with the divider
+    property to specify where the dividers appear—in this case,
+     middle indicates that the dividers should appear only
+     between the LinearLayout’s elements.
+     You can also display a divider before the first item
+     in the layout (beginning) and after the last item (end),
+     and you can combine these values using |.-->
+
+    <!--weightSum:This helps allocate the horizontal space
+     between the ContactsFragment and FrameLayout.
+     Setting weightSum to 3,
+     then setting the ContactsFragment’s and FrameLayout’s
+     layout_weights to 1 and 2,
+     respectively, indicates that the ContactsFragment
+     should occupy one-third of the LinearLayout’s
+     width and the FrameLayout should occupy the remaining
+      two-thirds.-->

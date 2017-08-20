@@ -1,17 +1,26 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.yamamotoai.movielist.MainActivity">
+    tools:context="com.example.yamamotoai.todolist.MainActivity">
+
+    <item
+        android:id="@+id/action_delete"
+        android:orderInCategory="100"
+        android:title="delete"
+        android:icon="@drawable/ic_delete"
+        app:showAsAction="always">
+    </item>
+    <item
+        android:id="@+id/action_search"
+        android:orderInCategory="100"
+        android:title="delete"
+        android:icon="@drawable/ic_search"
+        app:showAsAction="always">
+
+    </item>
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
-        android:title="setting"
+        android:title="@string/action_settings"
         app:showAsAction="never" />
-
-    <item
-        android:id="@+id/add"
-        android:orderInCategory="100"
-        android:title="add"
-        android:icon="@drawable/ic_add"
-        app:showAsAction="always" />
 </menu>

@@ -107,7 +107,6 @@ public class PageFragment extends Fragment implements TODOAdapter.ListItemClickL
 
 
     public void organizedGroup(){
-
         Log.d("---", "organized");
         for(TODO todo: MainActivity.todoList){
 

@@ -1,52 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/drawerlayout"
     tools:context="com.example.yamamotoai.todolist.MainActivity">
 
-    <!--<TextView-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:text="Hello World!"-->
-    <!--app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--app:layout_constraintLeft_toLeftOf="parent"-->
-    <!--app:layout_constraintRight_toRightOf="parent"-->
-    <!--app:layout_constraintTop_toTopOf="parent" />-->
+    <!--<android.support.design.widget.AppBarLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:theme="@style/AppTheme.AppBarOverlay">-->
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        <!--<android.support.v7.widget.Toolbar-->
+            <!--android:id="@+id/toolbar"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="?attr/actionBarSize"-->
+            <!--android:background="?attr/colorPrimary"-->
+            <!--app:popupTheme="@style/AppTheme.PopupOverlay" />-->
 
-        <!--<include-->
-        <!--android:id="@+id/app_bar"-->
-        <!--layout="@layout/app_bar"/>-->
+    <!--</android.support.design.widget.AppBarLayout>-->
 
-        <com.example.yamamotoai.todolist.SlidingTabLayout
-            android:id="@+id/tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+    <include layout="@layout/content_main" />
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/pager"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@drawable/ic_add" />
 
-    </LinearLayout>
-
-    <!--<fragment-->
-        <!--android:id="@+id/fragment_navigation_drawer"-->
-        <!--android:name="com.example.yamamotoai.tablayoutexample.FirstTab"-->
-        <!--android:layout_width="280dp"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_gravity="start">-->
-        <!--&lt;!&ndash;app:layout="@layout/fragment_navigation_drawer"&ndash;&gt;-->
-        <!--&lt;!&ndash;tools:layout="@layout/fragment_navigation_drawer"&ndash;&gt;-->
-
-    <!--</fragment>-->
-</android.support.v4.widget.DrawerLayout>
+</android.support.design.widget.CoordinatorLayout>

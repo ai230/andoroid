@@ -1,28 +1,34 @@
 package com.example.yamamotoai.todolist;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
- * Created by yamamotoai on 2017-07-30.
+ * Created by yamamotoai on 2017-08-16.
  */
 
 public class TODO  implements Serializable {
 
+    int id;
     String date, title, group,content;
-    List<TODO> todoList;
+
+    boolean isSelected;
+    public TODO(){};
 
     public TODO(String date, String title, String group, String content) {
+//        this.id = id;
         this.date = date;
         this.title = title;
         this.group = group;
         this.content = content;
+        this.isSelected = false;
     }
 
-    public List<TODO> getTodoList(List<TODO> todoList){
-        todoList = new ArrayList<>();
-        return todoList;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 
     public void setDate(String date) {
@@ -41,6 +47,10 @@ public class TODO  implements Serializable {
         this.content = content;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public String getDate() {
         return date;
     }
@@ -57,5 +67,7 @@ public class TODO  implements Serializable {
         return content;
     }
 
-
+    public boolean isSelected() {
+        return isSelected;
+    }
 }

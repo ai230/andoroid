@@ -13,7 +13,6 @@ public class TODO implements Serializable {
     int id;
     String date, title, group,content;
 
-
     public TODO(int id, String date, String title, String group, String content) {
         this.id = id;
         this.date = date;
@@ -41,6 +40,7 @@ public class TODO implements Serializable {
     public void setContent(String content) {
         this.content = content;
     }
+
 
     public int getId() {
         return id;

@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">TODOLIST</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_delete">Delete</string>
+    <string name="app_name">TODO LIST</string>
+    <string name="string1">Lorem ipsum dolor sit amet.</string>
+    <string name="string2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sollicitudin nec nunc sed suscipit. Sed elit libero, rhoncus ut varius quis, faucibus mollis nulla. </string>
+    <string name="tile">Title</string>
+    <string name="group">Group</string>
+    <string name="hint">Type here...</string>
 </resources>

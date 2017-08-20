@@ -1,135 +1,76 @@
 package com.example.yamamotoai.todolist;
 
-import android.content.Context;
 import android.content.Intent;
-import android.preference.Preference;
-import android.preference.PreferenceActivity;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.AttributeSet;
 import android.util.Log;
-import android.view.LayoutInflater;
+import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
 
-    private Toolbar toolbar;
-    private ViewPager mPager;
-    private SlidingTabLayout mtabs;
+    ListView listView_main;
+    MainActivityAdapter adapter;
+    public static  List<TODO> todoList;
+    private List<String> groupList = new ArrayList<String>();
 
-//    private DrawerLayout mDrawer;
-    Context context;
-
-    List<TODO> todoList = new ArrayList<>();
-    private ListView listView;
-//    private RecyclerView recyclerView;
-    private TodoListAdapter todoListAdapter;
+    DatabaseHandler db;
+    boolean isDeleteBtnClicked = false;
+    FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-//        toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
-//        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-//        NavigationDrawerFragment drawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
-//
-//        drawerFragment.setUp(R.id.fragment_navigation_drawer.(DrawerLayout)findViewById(R.id.drawerlayout).toolbar);
-
-        context = this;
-
-//        recyclerView = (RecyclerView) findViewById(R.id.recycleview);
-//        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        TODO todo1 = new TODO( String date, String title, String group, String content);
-        todoListAdapter = new TodoListAdapter(this, todoList);
-
-        Vector<View> pages = new Vector<View>();
-        listView = (ListView) findViewById(R.id.listview);
-        ListView listview1 = new ListView(context);
-        ListView listview2 = new ListView(context);
-        ListView listview3 = new ListView(context);
-
-//        pages.add(listView);
-        pages.add(listview1);
-        pages.add(listview2);
-        pages.add(listview3);
-
-        CustomPagerAdapter adapter = new CustomPagerAdapter(context,pages);
-
-
-        mPager = (ViewPager) findViewById(R.id.pager);
-//        mPager.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager()));
-        mPager.setAdapter(adapter);
-        mtabs = (SlidingTabLayout) findViewById(R.id.tabs);
-        mtabs.setViewPager(mPager);
-
-
-        listView.setAdapter((ListAdapter) todoListAdapter);
-        listview1.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1,new String[]{"A1","B1","C1","D1"}));
-        listview2.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1,new String[]{"A2","B2","C2","D2"}));
-        listview3.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1,new String[]{"A3","B3","C3","D3"}));
-        TODO todo1 = (TODO) getIntent().getSerializableExtra("MyClass");
-        if(todo1 != null){
-            Log.d("---", todo1.getTitle());
-            todoList.add(todo1);
-        }
-        Log.d("---", String.valueOf(todoList.size()));
-    }
-
-
-    public static class MyFragment extends Fragment {
-        private TextView textView;
-
-        public static MyFragment getInstance(int position) {
-            MyFragment myFragment = new MyFragment();
-            Bundle args = new Bundle();
-            args.putInt("position", position);
-            myFragment.setArguments(args);
-            return myFragment;
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            View layout = inflater.inflate(R.layout.tab_item, container, false);
-            textView = (TextView) layout.findViewById(R.id.textview_list_row1);
-            Bundle bundle = getArguments();
-            if (bundle != null) {
-                if(bundle.getInt("position") == 0){
-                    textView.setText("The page number is 0");
-                }else if(bundle.getInt("position") == 1){
-                    textView.setText("The page number is 1");
-                }else{
-                    textView.setText("The page number is else");
-                }
-
+        fab = (FloatingActionButton) findViewById(R.id.fab_main);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, AdditionActivity.class);
+                startActivity(intent);
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
             }
-            return layout;
+        });
+
+        db = new DatabaseHandler(this);
+        //Always getting new data
+        todoList = new ArrayList<>();
+        todoList = db.readDatabase(todoList);
+        for(TODO item : todoList){
+            if(!groupList.contains(item.getGroup().toUpperCase()))
+                groupList.add(item.getGroup().toUpperCase());
         }
+
+        listView_main = (ListView) findViewById(R.id.listview_main);
+        adapter = new MainActivityAdapter(this,groupList);
+        listView_main.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                                 @Override
+                                                 public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                                                     Log.d("---","clicked");
+                                                     Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+                                                     intent.putExtra("selectedGroup",groupList.get(position));
+                                                     intent.putExtra("selectedGroupPosition",position);
+                                                     startActivity(intent);
+                                                     //Toast.makeText(this, "clicked",Toast.LENGTH_SHORT).show();
+                                                 }
+                                             });
+
+        listView_main.setAdapter(adapter);
     }
 
     @Override
@@ -141,19 +82,48 @@ public class MainActivity extends AppCompatActivity{
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // The action bar home/up action should open or close the drawer.
-        switch (item.getItemId()) {
-            case R.id.add:
-                Intent intent1 = new Intent(this, AdditionActivity.class);
-                startActivity(intent1);
-                return true;
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
 
+        switch (id){
             case R.id.action_settings:
-                Intent intent2 = new Intent(this, PreferencesActivity.class);
-                startActivity(intent2);
-                return true;
+                break;
 
+            case R.id.action_search:
+                break;
         }
+
         return super.onOptionsItemSelected(item);
     }
+
+//    public void setDeleteBtn(){
+//        fab.setImageResource(R.drawable.ic_delete);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                //TODO) set delete method
+//                Toast.makeText(MainActivity.this, "clicked delete",Toast.LENGTH_SHORT).show();
+//                String[] groups = {};
+//                for(int i = 0; i > todoList.size(); i++){
+//                    TODO todo = todoList.get(i);
+//                    if(todo.isSelected == true)
+//                        groups[i] = todo.getGroup();
+//                }
+//                db.deleteInMain(groups);
+//            }
+//        });
+//    }
+//
+//    public void setAddBtn(){
+//        fab.setImageResource(R.drawable.ic_add);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(MainActivity.this, AdditionActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+//    }
 }
