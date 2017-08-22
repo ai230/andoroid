@@ -20,7 +20,7 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/editText"
+                    android:id="@+id/editText1"
                     android:hint="@string/hint_name_required"
                     android:imeOptions="actionNext"
                     android:inputType="textCapWords|textPersonName"/>

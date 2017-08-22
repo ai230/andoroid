@@ -19,6 +19,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:authorities="com.example.yamamotoai.addressbook.data"
+            android:name=".data.AddressBookContetProvider"
+            android:enabled="true"/>
+
     </application>
 
 </manifest>
