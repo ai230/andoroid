@@ -50,16 +50,11 @@ public class MainActivityAdapter extends BaseAdapter{
 
     @Override
     public View getView(int position, View convertView, ViewGroup viewGroup) {
-        TODO todo = list.get(position);
-        View view = convertView;
         final Holder holder = new Holder();
         LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
         View rowView = inflater.inflate(R.layout.content_list_row, null);
-
         holder.imageView = (ImageView) rowView.findViewById(R.id.imageview_group_row);
         holder.textView = (TextView) rowView.findViewById(R.id.textview_group_row);
-
         holder.textView.setText(list.get(position));
         return rowView;
     }
