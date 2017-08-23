@@ -23,8 +23,8 @@ public class AddressBookContetProvider extends ContentProvider {
 
     //2. URI Matcher that helps Contentprovider to determine the operation to perform
     //We have two URIs
-        //1) that gives you all rows of contact
-        //2) that gives you only one row of contact based on ID
+    //1) that gives you all rows of contact
+    //2) that gives you only one row of contact based on ID
 
     private static final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
@@ -40,7 +40,7 @@ public class AddressBookContetProvider extends ContentProvider {
 
         //URI for contact table with specific #id value
         uriMatcher.addURI(DatabaseDescription.AUTHORITY,
-                DatabaseDescription.Contact.TABLE_NAME + " /#", ONE_CONTACT);
+                DatabaseDescription.Contact.TABLE_NAME + "/#", ONE_CONTACT);
     }
 
     @Override
@@ -73,7 +73,10 @@ public class AddressBookContetProvider extends ContentProvider {
                         getContext().getString(R.string.invalid_delete_uri) + uri
                 );
         }
-        return null;
+
+        Cursor cursor = queryBuilder.query(dbHelper.getReadableDatabase(), projection, selection, selectionArgs,null, null, sortOrder);
+        cursor.setNotificationUri(getContext().getContentResolver(),uri);
+        return cursor;
     }
 
     @Nullable
@@ -97,13 +100,13 @@ public class AddressBookContetProvider extends ContentProvider {
         switch (uriMatcher.match(uri))
         {
             case CONTACTS:
-            //add the new data to the end of table
-            //CONTACTS give you full table
-            long rowID = dbHelper.getWritableDatabase().insert(
-                    DatabaseDescription.Contact.TABLE_NAME,
-                    null,//*nullColumnsHack
-                    values
-            );
+                //add the new data to the end of table
+                //CONTACTS give you full table
+                long rowID = dbHelper.getWritableDatabase().insert(
+                        DatabaseDescription.Contact.TABLE_NAME,
+                        null,//*nullColumnsHack
+                        values
+                );
                 //*nullColumnsHack: SQLite doesn't support inserting empty row in table,
                 //but it accept null value
                 if(rowID > 0){

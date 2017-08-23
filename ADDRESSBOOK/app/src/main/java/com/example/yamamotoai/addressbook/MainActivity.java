@@ -13,8 +13,9 @@ import android.view.MenuItem;
 
 import com.example.yamamotoai.addressbook.data.DatabaseDescription;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ContactsFragment.ContactFragmentInterface, AddEditFragment.AddEditFragmentInterface{
 
+    public static  final String CONTACT_URI = "contacturi";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,25 +59,30 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
 
     }
+
+
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.fragment_details_menu, menu);
-        return true;
+    public void onAddContact() {
+        displayAddEditFragment(R.id.fragmentContainer, DatabaseDescription.Contact.CONTENT_URI);
+    }
+
+    //interface ContactsFragment
+    @Override
+    public void onContactSelected(Uri uri) {
+        DetailFragment detailFragment = new DetailFragment();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragmentContainer, detailFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+        //create a bundle obj that will pass selected row uri to detailFragment
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(CONTACT_URI, uri);
+        detailFragment.setArguments(bundle);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-
-        return super.onOptionsItemSelected(item);
+    public void onAddEditCompleted(Uri uri) {
+        //remove the fragment(AddEditFragment)
+        getSupportFragmentManager().popBackStack();
     }
 }

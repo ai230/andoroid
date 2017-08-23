@@ -1,5 +1,7 @@
 package com.example.yamamotoai.addressbook;
 
+import android.content.Context;
+import android.net.Uri;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -10,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +22,27 @@ import com.example.yamamotoai.addressbook.data.DatabaseDescription;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class ContactsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class ContactsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, ContactsAdapter.ContactsAdapterInterface{
 
 
     ContactsAdapter adapter;
     private int contact_loader =0;
+
+    //declaration
+    ContactFragmentInterface contactFragmentInterface;
+
+    //ContactsAdapterInterface
+    @Override
+    public void onItemClick(Uri uri) {
+        contactFragmentInterface.onContactSelected(uri);
+    }
+
+    public interface ContactFragmentInterface
+    {
+        void onAddContact();
+        void onContactSelected(Uri uri);
+
+    }
 
     @Nullable
     @Override
@@ -31,7 +50,12 @@ public class ContactsFragment extends Fragment implements LoaderManager.LoaderCa
         super.onCreateView(inflater, container, savedInstanceState);
         setHasOptionsMenu(true);
         View view = inflater.inflate(R.layout.fragment_contacts, container, false);
-        adapter = new ContactsAdapter();
+        adapter = new ContactsAdapter(new ContactsAdapter.ContactsAdapterInterface() {
+            @Override
+            public void onItemClick(Uri uri) {
+                contactFragmentInterface.onContactSelected(uri);
+            }
+        });
         LinearLayoutManager manager = new LinearLayoutManager(getActivity().getBaseContext());
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(manager);
@@ -44,11 +68,24 @@ public class ContactsFragment extends Fragment implements LoaderManager.LoaderCa
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                contactFragmentInterface.onAddContact();
             }
         });
 
         return view;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        //initialization
+        contactFragmentInterface = (ContactFragmentInterface) context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        contactFragmentInterface = null;
     }
 
     //create a loader object and start loading the data into the cursor
@@ -76,6 +113,13 @@ public class ContactsFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        if(data.moveToFirst()){
+            do {
+                int name = data.getColumnIndex(DatabaseDescription.Contact.COLUMN_NAME);
+                String namedata = data.getString(name);
+                Log.d("data name ", namedata);
+            }while (data.moveToNext());
+        }
         adapter.notifiChange(data);
     }
 

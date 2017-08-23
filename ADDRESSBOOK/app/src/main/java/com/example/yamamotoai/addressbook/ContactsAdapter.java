@@ -3,6 +3,7 @@ package com.example.yamamotoai.addressbook;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,19 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
 
     private Cursor cursor = null;
 
+    //create interface to handle
+
+    ContactsAdapterInterface contactsAdapterInterface;
+    public interface ContactsAdapterInterface
+    {
+        public void onItemClick(Uri uri);
+    }
+
+    //constracter
+    public ContactsAdapter (ContactsAdapterInterface clicklistener){
+        this.contactsAdapterInterface = clicklistener;
+    }
+
     public void notifiChange(Cursor cursor){
         this.cursor = cursor;
         notifyDataSetChanged();
@@ -42,7 +56,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show();
+                    //Adapter is attached to Fragment so interface should be implemented in the fragment
+                    contactsAdapterInterface.onItemClick(DatabaseDescription.Contact.buildContactUri(rowID));
                 }
             });
         }

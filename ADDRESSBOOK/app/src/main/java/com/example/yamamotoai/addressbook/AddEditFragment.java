@@ -1,6 +1,7 @@
 package com.example.yamamotoai.addressbook;
 
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.app.LoaderManager;
 import android.content.ContentValues;
@@ -26,7 +27,7 @@ import static android.R.attr.data;
  * Created by yamamotoai on 2017-08-16.
  */
 //This is Fragment that is attached an activity...
-    //Context --> getContext(), getBaseCopntext(), getActivity(), this, classname.this
+//Context --> getContext(), getBaseCopntext(), getActivity(), this, classname.this
 
 //use LoaderManager.LoaderCallback<> interface
 //for loadering
@@ -47,12 +48,17 @@ public class AddEditFragment extends Fragment implements LoaderManager.LoaderCal
     private FloatingActionButton saveContactFab;
     //Create a view for fragment
 
+    AddEditFragmentInterface addEditFragmentInterface;
+    public interface AddEditFragmentInterface
+    {
+        public void onAddEditCompleted(Uri uri);
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-         //Inflate the GUI and get the reference for EditText
+        //Inflate the GUI and get the reference for EditText
         View view = inflater.inflate(R.layout.fragment_addedit, container, false);
 
         nameTextInput = (TextInputLayout) view.findViewById(R.id.nameTextInputLayout);
@@ -69,12 +75,26 @@ public class AddEditFragment extends Fragment implements LoaderManager.LoaderCal
         return view;
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        addEditFragmentInterface = (AddEditFragmentInterface)context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        addEditFragmentInterface = null;
+    }
+
     private View.OnClickListener saveDataListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             saveContact();//save info into database
+            addEditFragmentInterface.onAddEditCompleted(DatabaseDescription.Contact.CONTENT_URI);
         }
     };
+
     private void saveContact(){
         ContentValues values = new ContentValues();
         //key:column name value:from textInput
