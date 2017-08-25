@@ -51,7 +51,7 @@ public class AddEditFragment extends Fragment implements LoaderManager.LoaderCal
     //check whether insert or update
     private boolean addingNewContact = true;
 
-    AddEditFragmentInterface addEditFragmentInterface;
+    AddEditFragmentInterface  addEditFragmentInterface;
     public interface AddEditFragmentInterface
     {
         public void onAddEditCompleted(Uri uri);
