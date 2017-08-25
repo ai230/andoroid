@@ -1,76 +1,33 @@
 package com.example.yamamotoai.todolist;
 
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
+
+import com.example.yamamotoai.todolist.data.DatabaseHandler;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
-
-    ListView listView_main;
-    MainActivityAdapter adapter;
-    public static  List<TODO> todoList;
-    private List<String> groupList = new ArrayList<String>();
-
-    DatabaseHandler db;
-    boolean isDeleteBtnClicked = false;
-    FloatingActionButton fab;
+public class MainActivity extends AppCompatActivity implements GroupListFragment.GroupListFragmentInterface{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
 
-        fab = (FloatingActionButton) findViewById(R.id.fab_main);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, AdditionActivity.class);
-                startActivity(intent);
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-            }
-        });
-
-        db = new DatabaseHandler(this);
-        //Always getting new data
-        todoList = new ArrayList<>();
-        todoList = db.readDatabase(todoList);
-        for(TODO item : todoList){
-            if(!groupList.contains(item.getGroup().toUpperCase()))
-                groupList.add(item.getGroup().toUpperCase());
-        }
-
-        listView_main = (ListView) findViewById(R.id.listview_main);
-        adapter = new MainActivityAdapter(this,groupList);
-        listView_main.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                                 @Override
-                                                 public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                                                     Log.d("---","clicked");
-                                                     Intent intent = new Intent(MainActivity.this, SecondActivity.class);
-                                                     intent.putExtra("selectedGroup",groupList.get(position));
-                                                     intent.putExtra("selectedGroupPosition",position);
-                                                     startActivity(intent);
-                                                     //Toast.makeText(this, "clicked",Toast.LENGTH_SHORT).show();
-                                                 }
-                                             });
-
-        listView_main.setAdapter(adapter);
+        GroupListFragment groupListFragment = new GroupListFragment();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragmentContainer, groupListFragment);
+        transaction.commit();
     }
 
     @Override
@@ -93,9 +50,26 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.action_search:
                 break;
+
+            case R.id.action_delete:
+                break;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onTodoListInGroup(int position, String groupName) {
+        ListInGroupFragment secondFragment = new ListInGroupFragment();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragmentContainer, secondFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+
+        Bundle bundle = new Bundle();
+        bundle.putInt("position", position);
+        bundle.putString("selectedGroup", groupName);
+        secondFragment.setArguments(bundle);
     }
 
 //    public void setDeleteBtn(){
@@ -104,16 +78,18 @@ public class MainActivity extends AppCompatActivity {
 //            @Override
 //            public void onClick(View view) {
 //                //TODO) set delete method
-//                Toast.makeText(MainActivity.this, "clicked delete",Toast.LENGTH_SHORT).show();
-//                String[] groups = {};
-//                for(int i = 0; i > todoList.size(); i++){
-//                    TODO todo = todoList.get(i);
-//                    if(todo.isSelected == true)
-//                        groups[i] = todo.getGroup();
+//                List<String> arrayTemp = new ArrayList<String>();
+//                for(TODO item: todoListInGroup){
+//                    if(item.isSelected)
+//                        arrayTemp.add(String.valueOf(item.getId()));
 //                }
-//                db.deleteInMain(groups);
+//                String[] arr = new String[arrayTemp.size()];
+//                arr = arrayTemp.toArray(arr);
+//                db.deleteFromDatabase(arr);
+//                Toast.makeText(SecondActivity.this, "Data delete",Toast.LENGTH_SHORT).show();
 //            }
 //        });
+//
 //    }
 //
 //    public void setAddBtn(){
@@ -121,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
-//                Intent intent = new Intent(MainActivity.this, AdditionActivity.class);
+//                Intent intent = new Intent(SecondActivity.this, AdditionActivity.class);
 //                startActivity(intent);
 //            }
 //        });

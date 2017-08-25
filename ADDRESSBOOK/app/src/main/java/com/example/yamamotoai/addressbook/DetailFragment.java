@@ -1,5 +1,10 @@
 package com.example.yamamotoai.addressbook;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -27,6 +32,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     private static final int CONTACT_LOADER= 0;
     private Uri contactUri;
+    private static Uri deleteUri;
     TextView nameTextView;
     TextView phoneTextView;
     TextView emailTextView;
@@ -35,6 +41,40 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     TextView stateTextView;
     TextView zipTextView;
 
+    //object for interface
+    DetailFragmentInterface detailFragmentInterface;
+    //2methods for edit and delete
+    public interface DetailFragmentInterface{
+        void onEditContact(Uri uri);
+        void onContactDeleted(Uri uri);
+    }
+
+    public static class DialogDeleteFragment extends DialogFragment {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            super.onCreateDialog(savedInstanceState);
+            return new AlertDialog.Builder(getActivity())
+                    .setTitle(R.string.confirm_message)
+                    .setPositiveButton(R.string.confirm_delete, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            getActivity().getContentResolver().delete(
+                                    deleteUri,
+                                    null,
+                                    null
+                            );
+                        }
+                    })
+                    .setNegativeButton(R.string.confirm_cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            //do nothing
+                        }
+                    })
+                    .create();
+        }
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -55,6 +95,20 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         contactUri = arg.getParcelable(MainActivity.CONTACT_URI);
 
         return view;
+    }
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        //initializing
+        detailFragmentInterface = (DetailFragmentInterface) context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        detailFragmentInterface = null;
     }
 
     @Override
@@ -89,7 +143,6 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             cityTextView.setText(data.getString(cityIndex));
             stateTextView.setText(data.getString(stateIndex));
             zipTextView.setText(data.getString(zipIndex));
-
         }
     }
 
@@ -120,8 +173,13 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
         switch (id){
             case R.id.action_edit:
+                detailFragmentInterface.onEditContact(contactUri);
                 break;
             case R.id.action_delete:
+                deleteUri = contactUri;
+                DialogDeleteFragment dialogFragment = new DialogDeleteFragment();
+                dialogFragment.show(getActivity().getFragmentManager(),"dialog");
+                detailFragmentInterface.onContactDeleted(DatabaseDescription.Contact.CONTENT_URI);
                 break;
 
         }
@@ -129,4 +187,12 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         return super.onOptionsItemSelected(item);
     }
 
+//    public void onContactDelete(Uri contactUri){
+//        getActivity().getContentResolver().delete(
+//                contactUri,
+//                null,
+//                null
+//        );
+//        AddEditFragment.AddEditFragmentInterface.onAddEditCompleted(DatabaseDescription.Contact.CONTENT_URI);
+//    }
 }

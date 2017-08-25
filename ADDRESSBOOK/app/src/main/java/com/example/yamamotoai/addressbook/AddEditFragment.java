@@ -3,16 +3,17 @@ package com.example.yamamotoai.addressbook;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
-import android.app.LoaderManager;
 import android.content.ContentValues;
-import android.content.CursorLoader;
-import android.content.Loader;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +47,9 @@ public class AddEditFragment extends Fragment implements LoaderManager.LoaderCal
     private TextInputLayout stateTextInput;
     private TextInputLayout zipTextInput;
     private FloatingActionButton saveContactFab;
-    //Create a view for fragment
+
+    //check whether insert or update
+    private boolean addingNewContact = true;
 
     AddEditFragmentInterface addEditFragmentInterface;
     public interface AddEditFragmentInterface
@@ -54,6 +57,7 @@ public class AddEditFragment extends Fragment implements LoaderManager.LoaderCal
         public void onAddEditCompleted(Uri uri);
     }
 
+    //Create a view for fragment
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -72,6 +76,19 @@ public class AddEditFragment extends Fragment implements LoaderManager.LoaderCal
         saveContactFab = (FloatingActionButton) view.findViewById(R.id.saveFloatingActionButton);
         saveContactFab.setOnClickListener(saveDataListener);
 
+        Bundle arg = getArguments();
+        if(arg!=null){
+            //if edditing contacturi will get uri
+            //if new it will be null
+            addingNewContact = false;
+            contactUri = arg.getParcelable(MainActivity.CONTACT_URI);
+        }
+
+        //if edditing, get data from database
+        if(contactUri != null){
+            getLoaderManager().initLoader(CONTACT_LOADER, null, this);
+
+        }
         return view;
     }
 
@@ -95,9 +112,10 @@ public class AddEditFragment extends Fragment implements LoaderManager.LoaderCal
         }
     };
 
-    private void saveContact(){
+    private void saveContact() {
         ContentValues values = new ContentValues();
         //key:column name value:from textInput
+        Log.d("",nameTextInput.getEditText().getText().toString());
         values.put(DatabaseDescription.Contact.COLUMN_NAME, nameTextInput.getEditText().getText().toString());
         values.put(DatabaseDescription.Contact.COLUMN_PHONE, phoneTextInput.getEditText().getText().toString());
         values.put(DatabaseDescription.Contact.COLUMN_EMAIL, emailTextInput.getEditText().getText().toString());
@@ -106,15 +124,24 @@ public class AddEditFragment extends Fragment implements LoaderManager.LoaderCal
         values.put(DatabaseDescription.Contact.COLUMN_STATE, stateTextInput.getEditText().getText().toString());
         values.put(DatabaseDescription.Contact.COLUMN_ZIP, zipTextInput.getEditText().getText().toString());
 
-        //this Uri is used to call contentResolver insert the data into address content
-        Uri newContactUri = getActivity()
-                .getContentResolver()
-                .insert(DatabaseDescription.Contact.CONTENT_URI,values);
+        if (addingNewContact) {
+            //this Uri is used to call contentResolver insert the data into address content
+            Uri newContactUri = getActivity()
+                    .getContentResolver()
+                    .insert(DatabaseDescription.Contact.CONTENT_URI, values);
 
-        Toast.makeText(getActivity(), "DATA INSERTED SUCCESSFULLY", Toast.LENGTH_SHORT).show();
-        //change the toast to snackbar
-        //snackbar is ntification feedback to the user
-        //and you add actions to snackbar like undo, cancel, ok
+            Toast.makeText(getActivity(), "DATA INSERTED SUCCESSFULLY", Toast.LENGTH_SHORT).show();
+            //change the toast to snackbar
+            //snackbar is ntification feedback to the user
+            //and you add actions to snackbar like undo, cancel, ok
+        } else {
+             int updateRows = getActivity().getContentResolver().update(contactUri, values, null, null);
+            if (updateRows > 0) {
+                Toast.makeText(getContext(), R.string.contact_updated, Toast.LENGTH_SHORT).show();
+                addEditFragmentInterface.onAddEditCompleted(contactUri);
+            } else
+                Toast.makeText(getContext(), R.string.contact_not_updated, Toast.LENGTH_SHORT).show();
+        }
     }
 
     //1.this one will create a Loader start Loader the data from Content provider
@@ -162,5 +189,6 @@ public class AddEditFragment extends Fragment implements LoaderManager.LoaderCal
     public void onLoaderReset(Loader loader) {
 
     }
+
 
 }

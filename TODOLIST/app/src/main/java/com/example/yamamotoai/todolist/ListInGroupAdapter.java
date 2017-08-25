@@ -17,14 +17,14 @@ import java.util.concurrent.TimeUnit;
  * Created by yamamotoai on 2017-08-16.
  */
 
-public class SecondActivityAdapter extends BaseAdapter{
+public class ListInGroupAdapter extends BaseAdapter{
 
     private List<TODO> todoListInGroup;
     private List<TODO> todoList;
     private Context context;
     boolean isEnabledDelete;
 
-    public SecondActivityAdapter(Context context, List<TODO> list, boolean isEnabledDelete){
+    public ListInGroupAdapter(Context context, List<TODO> list, boolean isEnabledDelete){
         this.context = context;
         this.todoListInGroup = list;
         this.isEnabledDelete = isEnabledDelete;
@@ -60,7 +60,7 @@ public class SecondActivityAdapter extends BaseAdapter{
         View view =  convertView;
         final Holder holder = new Holder();
         LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.list_row, null);
+        View rowView = inflater.inflate(R.layout.fragment_todolist_row, null);
         holder.checkBox = (CheckBox) rowView.findViewById(R.id.checkbox_second);
         holder.idTextview = (TextView) rowView.findViewById(R.id.textview_id);
         holder.dateTextview = (TextView) rowView.findViewById(R.id.textview_date);

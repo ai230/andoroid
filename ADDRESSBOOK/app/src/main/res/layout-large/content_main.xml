@@ -13,13 +13,14 @@
 
     <fragment
         android:id="@+id/contactsFragment"
+        android:name="com.example.yamamotoai.addressbook.ContactsFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginEnd="@dimen/fab_margin"
         android:layout_weight="1"
         tools:layout="@layout/fragment_contacts"/>
 
-    <fragment
+    <FrameLayout
         android:id="@+id/rightPaneContainer"
         android:layout_width="0dp"
         android:layout_height="match_parent"

@@ -1,4 +1,4 @@
-package com.example.yamamotoai.todolist;
+package com.example.yamamotoai.todolist.alert;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

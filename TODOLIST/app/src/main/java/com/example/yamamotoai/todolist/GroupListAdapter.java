@@ -1,30 +1,25 @@
 package com.example.yamamotoai.todolist;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by yamamotoai on 2017-08-16.
  */
 
-public class MainActivityAdapter extends BaseAdapter{
+public class GroupListAdapter extends BaseAdapter{
 
     Context context;
     List<String> list;
 
-    public MainActivityAdapter(Context context, List<String> list){
+    public GroupListAdapter(Context context, List<String> list){
         this.context = context;
         this.list = list;
     }
@@ -52,7 +47,7 @@ public class MainActivityAdapter extends BaseAdapter{
     public View getView(int position, View convertView, ViewGroup viewGroup) {
         final Holder holder = new Holder();
         LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.content_list_row, null);
+        View rowView = inflater.inflate(R.layout.fragment_grouplist_row, null);
         holder.imageView = (ImageView) rowView.findViewById(R.id.imageview_group_row);
         holder.textView = (TextView) rowView.findViewById(R.id.textview_group_row);
         holder.textView.setText(list.get(position));

@@ -41,7 +41,6 @@ public class ContactsFragment extends Fragment implements LoaderManager.LoaderCa
     {
         void onAddContact();
         void onContactSelected(Uri uri);
-
     }
 
     @Nullable
