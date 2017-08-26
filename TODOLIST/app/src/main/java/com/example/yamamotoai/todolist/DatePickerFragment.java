@@ -3,6 +3,7 @@ package com.example.yamamotoai.todolist;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.widget.DatePicker;
 import java.util.Calendar;
@@ -12,6 +13,8 @@ import java.util.Calendar;
  */
 
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+
+    DatePickerFragmentInterface d;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -31,11 +34,12 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
         month++;
         String dateString = year + "-" + month + "-" + day;
-        DatePickerFragmentInterface d = (DatePickerFragmentInterface) getActivity();
+
+        d = (DatePickerFragmentInterface) getTargetFragment();
         d.onReturnDate(dateString);
     }
 
     public interface DatePickerFragmentInterface {
-        public void onReturnDate(String date);
+        void onReturnDate(String date);
     }
 }

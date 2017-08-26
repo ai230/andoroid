@@ -2,6 +2,7 @@ package com.example.yamamotoai.todolist;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -36,10 +37,32 @@ public class ListInGroupFragment extends Fragment {
     DatabaseHandler db;
     boolean isDeleteBtnClicked = false;
     int selectedGroupPosition;
-    FloatingActionButton fab;
+    FloatingActionButton fab_add;
+    FloatingActionButton fab_back;
 
     String selectedGroupName;
     Bundle bundle;
+
+    private ListGroupInFragmentInterface listGroupInFragmentInterface;
+    public interface ListGroupInFragmentInterface
+    {
+        void onDisplayAddingPage();
+        void onDisplayAddingPageForEditing(String SelectedTodoId, String selectedGroupName);
+        void onBackToGroupList();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        listGroupInFragmentInterface = (ListGroupInFragmentInterface)context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        listGroupInFragmentInterface = null;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -52,25 +75,33 @@ public class ListInGroupFragment extends Fragment {
             selectedGroupPosition = bundle.getInt("position");
             selectedGroupName = bundle.getString("selectedGroup");
         }
+        //set title
+        ((MainActivity)getActivity()).setActionbarTitle(selectedGroupName);
+
+        //read new data from database
         db = new DatabaseHandler(getActivity());
         todoList = db.readDatabase(todoList);
 
-//        MainActivity.todoList = new ArrayList<>();
-//        MainActivity.todoList = db.readDatabase(MainActivity.todoList);
         //create only this group of todolist
         organizedGroup(selectedGroupName);
 
         //setting app title to selectedGroup name
 //        getSupportActionBar().setTitle(selectedGroupName);
 
-        fab = (FloatingActionButton) view.findViewById(R.id.fab_second);
-        fab.setOnClickListener(new View.OnClickListener() {
+        fab_add = (FloatingActionButton) view.findViewById(R.id.fab_todolist);
+        fab_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("---","clicked");
-//                Intent intent = new Intent(getActivity().getBaseContext().SecondFragment.class, AdditionActivity.class);
-//                intent.putExtra("selectedGroupPosition",selectedGroupPosition);
-//                startActivity(intent);
+
+                listGroupInFragmentInterface.onDisplayAddingPage();
+            }
+        });
+
+        fab_back = (FloatingActionButton) view.findViewById(R.id.fab_back);
+        fab_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listGroupInFragmentInterface.onBackToGroupList();
             }
         });
 
@@ -84,21 +115,8 @@ public class ListInGroupFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Log.d("---","clicked");
 
-                AddEditFragment addFragment = new AddEditFragment();
-                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.fragmentContainer, addFragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
-                bundle.putInt("TODOid", todoList.get(position).getId());
-                addFragment.setArguments(bundle);
-
-//                Intent intent = new Intent(getActivity().SecondFragment.class, AdditionActivity.class);
-//                TODO todo = todoListInGroup.get(position);
-//                intent.putExtra("TODOObjEdit", todo);
-//                intent.putExtra("selectedGroupPosition", selectedGroupPosition);
-//                startActivity(intent);
+                listGroupInFragmentInterface.onDisplayAddingPageForEditing(String.valueOf(todoListInGroup.get(position).getId()), selectedGroupName);
             }
         });
 
@@ -115,8 +133,8 @@ public class ListInGroupFragment extends Fragment {
     }
 
     public void setDeleteBtn(){
-        fab.setImageResource(R.drawable.ic_delete);
-        fab.setOnClickListener(new View.OnClickListener() {
+        fab_add.setImageResource(R.drawable.ic_delete);
+        fab_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //TODO) set delete method
@@ -135,8 +153,8 @@ public class ListInGroupFragment extends Fragment {
     }
 
     public void setAddBtn(){
-        fab.setImageResource(R.drawable.ic_add);
-        fab.setOnClickListener(new View.OnClickListener() {
+        fab_add.setImageResource(R.drawable.ic_add);
+        fab_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d("---","clicked");

@@ -31,12 +31,13 @@ public class GroupListFragment extends Fragment {
 
     DatabaseHandler db;
     boolean isDeleteBtnClicked = false;
-    FloatingActionButton fab;
+    FloatingActionButton fab_add;
 
     GroupListFragmentInterface groupListFragmentInterface;
 
     public interface GroupListFragmentInterface {
-        public void onTodoListInGroup(int position, String groupName);
+        void onTodoListInGroup(int position, String groupName);
+        void onDisplayAddingPage();
     }
 
     @Override
@@ -69,15 +70,19 @@ public class GroupListFragment extends Fragment {
                 Log.d("---", "clicked");
                 groupListFragmentInterface.onTodoListInGroup(position, groupList.get(position));
 
-//  Intent intent = new Intent(MainActivity.this, SecondActivity.class);
-//                intent.putExtra("selectedGroup",groupList.get(position));
-//                intent.putExtra("selectedGroupPosition",position);
-//                startActivity(intent);
                 Toast.makeText(getActivity(), "position = " + position, Toast.LENGTH_SHORT).show();
             }
         });
-
         listView_main.setAdapter(adapter);
+
+        fab_add = (FloatingActionButton) view.findViewById(R.id.fab_grouplist);
+        fab_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("---","clicked");
+                groupListFragmentInterface.onDisplayAddingPage();
+            }
+        });
 
         return view;
     }
