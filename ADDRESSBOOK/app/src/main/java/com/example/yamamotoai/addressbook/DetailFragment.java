@@ -13,7 +13,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -120,7 +119,6 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                 null,
                 null,
                 null);
-
         return cursorLoader;
     }
 
@@ -181,18 +179,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                 dialogFragment.show(getActivity().getFragmentManager(),"dialog");
                 detailFragmentInterface.onContactDeleted(DatabaseDescription.Contact.CONTENT_URI);
                 break;
-
         }
-
         return super.onOptionsItemSelected(item);
     }
-
-//    public void onContactDelete(Uri contactUri){
-//        getActivity().getContentResolver().delete(
-//                contactUri,
-//                null,
-//                null
-//        );
-//        AddEditFragment.AddEditFragmentInterface.onAddEditCompleted(DatabaseDescription.Contact.CONTENT_URI);
-//    }
 }

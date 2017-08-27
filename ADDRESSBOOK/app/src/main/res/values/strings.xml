@@ -20,8 +20,10 @@
     <string name="label_zip">Zip:</string>
     <string name="confirm_title">Are you sure?</string>
     <string name="confirm_message">This will permanently delete the contact</string>
+    <string name="confirm_snackbar_deleted">DELETED</string>
     <string name="confirm_cancel">cancel</string>
     <string name="confirm_delete">delete</string>
+    <string name="confirm_ok">OK</string>
     <string name="contact_added">Contact added successfully</string>
     <string name="contact_not_added">Contact was not added due to an error</string>
     <string name="contact_updated">Contact updated</string>

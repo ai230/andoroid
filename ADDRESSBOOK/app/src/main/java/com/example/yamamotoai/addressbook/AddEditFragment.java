@@ -18,11 +18,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import com.example.yamamotoai.addressbook.data.DatabaseDescription;
 
-import static android.R.attr.colorButtonNormal;
-import static android.R.attr.data;
 
 /**
  * Created by yamamotoai on 2017-08-16.
@@ -54,7 +51,7 @@ public class AddEditFragment extends Fragment implements LoaderManager.LoaderCal
     AddEditFragmentInterface  addEditFragmentInterface;
     public interface AddEditFragmentInterface
     {
-        public void onAddEditCompleted(Uri uri);
+        public void onAddEditCompleted(Uri uri, int message);
     }
 
     //Create a view for fragment
@@ -108,7 +105,6 @@ public class AddEditFragment extends Fragment implements LoaderManager.LoaderCal
         @Override
         public void onClick(View view) {
             saveContact();//save info into database
-            addEditFragmentInterface.onAddEditCompleted(DatabaseDescription.Contact.CONTENT_URI);
         }
     };
 
@@ -129,16 +125,12 @@ public class AddEditFragment extends Fragment implements LoaderManager.LoaderCal
             Uri newContactUri = getActivity()
                     .getContentResolver()
                     .insert(DatabaseDescription.Contact.CONTENT_URI, values);
+            addEditFragmentInterface.onAddEditCompleted(contactUri, R.string.contact_added);
 
-            Toast.makeText(getActivity(), "DATA INSERTED SUCCESSFULLY", Toast.LENGTH_SHORT).show();
-            //change the toast to snackbar
-            //snackbar is ntification feedback to the user
-            //and you add actions to snackbar like undo, cancel, ok
         } else {
              int updateRows = getActivity().getContentResolver().update(contactUri, values, null, null);
             if (updateRows > 0) {
-                Toast.makeText(getContext(), R.string.contact_updated, Toast.LENGTH_SHORT).show();
-                addEditFragmentInterface.onAddEditCompleted(contactUri);
+                addEditFragmentInterface.onAddEditCompleted(contactUri, R.string.contact_updated);
             } else
                 Toast.makeText(getContext(), R.string.contact_not_updated, Toast.LENGTH_SHORT).show();
         }
