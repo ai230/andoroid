@@ -11,10 +11,11 @@ import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 public class MainActivity extends AppCompatActivity
         implements GroupListFragment.GroupListFragmentInterface,
-        AddEditFragment.AddEditFragmentInterface, ListInGroupFragment.ListGroupInFragmentInterface{
+        AddEditFragment.AddEditFragmentInterface, ListInGroupFragment.ListGroupInFragmentInterface, SearchResultFragment.SearchResultInterface{
 
     private String selectedId;
     private String selectedGroupName;
@@ -84,6 +85,17 @@ public class MainActivity extends AppCompatActivity
         addEditFragment.setArguments(arg);
     }
 
+    public void onDisPlaySearchResult(String newText){
+        SearchResultFragment searchResults = new SearchResultFragment();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragmentContainer, searchResults);
+        transaction.addToBackStack(null);
+        transaction.commit();
+
+        Bundle arg = new Bundle();
+        arg.putString("newText", newText);
+        searchResults.setArguments(arg);
+    }
     //Method for GroupListFragmentInterface
     @Override
     public void onDisplayTodoListPage(int position, String groupName) {
@@ -121,14 +133,13 @@ public class MainActivity extends AppCompatActivity
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Log.d("","");
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
                 Log.d("",newText);
-
+                onDisPlaySearchResult(newText);
                 return false;
             }
         });
@@ -164,8 +175,10 @@ public class MainActivity extends AppCompatActivity
                 break;
 
             case R.id.action_search:
-                Intent intent = new Intent(MainActivity.this, SearchResultsActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(MainActivity.this, SearchResultsActivity.class);
+//                startActivity(intent);
+
+//                onDisPlaySearchResult();
                 break;
 
 
@@ -241,5 +254,35 @@ public class MainActivity extends AppCompatActivity
 
     public void setActionbarTitle(String title){
         getSupportActionBar().setTitle(title);
+    }
+
+    //SearchResulrInterface
+    @Override
+    public void onDisplayAddingPageInSearch() {
+        selectedId = null;
+        onDisplayAddEditFragment();
+    }
+
+    @Override
+    public void onDisplayAddingPageForEditingInSearch(String id, String selectedGroup) {
+        selectedId = id;
+        selectedGroupName = selectedGroup;
+        onDisPlayTodoListInGroup(selectedGroupName);
+        onDisplayAddEditFragment();
+    }
+
+    @Override
+    public void onBackToGroupListInSearch() {
+        onDisplayGroupList();
+        if(screensize_large){
+            ListInGroupFragment listInGroupFragment = new ListInGroupFragment();
+            Bundle arg = new Bundle();
+            arg.putString("selectedGroup", selectedGroupName);
+            listInGroupFragment.setArguments(arg);
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.rightPaneContainer, listInGroupFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
     }
 }

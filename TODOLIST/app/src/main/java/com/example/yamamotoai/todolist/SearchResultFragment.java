@@ -1,15 +1,11 @@
 package com.example.yamamotoai.todolist;
 
 import android.app.Fragment;
-import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
-import android.util.Log;
+import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -21,10 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by yamamotoai on 2017-08-26.
+ * Created by yamamotoai on 2017-08-30.
  */
 
-public class SearchResultsActivity extends Fragment {
+public class SearchResultFragment extends Fragment {
 
 
     ListView listView;
@@ -32,7 +28,30 @@ public class SearchResultsActivity extends Fragment {
     private List<TODO> todo_List_temp = new ArrayList<TODO>();
     private List<TODO> todo_List = new ArrayList<TODO>();
 
+    FloatingActionButton fab_add;
+    FloatingActionButton fab_back;
+
     DatabaseHandler db;
+
+    private String newText;
+    private SearchResultInterface searchResultInterface;
+    public interface SearchResultInterface{
+        void onDisplayAddingPageInSearch();
+        void onDisplayAddingPageForEditingInSearch(String SelectedTodoId, String selectedGroupName);
+        void onBackToGroupListInSearch();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        searchResultInterface = (SearchResultInterface) context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        searchResultInterface = null;
+    }
 
     @Nullable
     @Override
@@ -44,40 +63,34 @@ public class SearchResultsActivity extends Fragment {
         //read new data from database
         db = new DatabaseHandler(getActivity());
         todo_List = db.readDatabase(todo_List);
-        return view;
+        Bundle bundle = getArguments();
+        if(bundle != null)
+            newText = bundle.getString("newText");
 
+        if(!newText.equals(""))
+            createList(view, newText);
+//        searchResultInterface.searchResultData(newText);
+
+        fab_add = (FloatingActionButton) view.findViewById(R.id.fab_todolist);
+        fab_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                searchResultInterface.onDisplayAddingPageInSearch();
+            }
+        });
+
+        fab_back = (FloatingActionButton) view.findViewById(R.id.fab_back);
+        fab_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchResultInterface.onBackToGroupListInSearch();
+            }
+        });
+
+        return view;
     }
-//
-//
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getActivity().getMenuInflater().inflate(R.menu.menu_main, menu);
-//
-//        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-//        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-//        searchView.setSearchableInfo(
-//                searchManager.getSearchableInfo(getComponentName()));
-////        searchView.setIconifiedByDefault(false);
-//
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                Log.d("","");
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                Log.d("",newText);
-//
-//                if(!newText.matches(""))
-//                    createList(newText);
-//                return false;
-//            }
-//        });
-//        return true;
-//    }
+
 
     public void createList(View view, String newText){
 
@@ -97,7 +110,8 @@ public class SearchResultsActivity extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-//                listGroupInFragmentInterface.onDisplayAddingPageForEditing(String.valueOf(todoListInGroup.get(position).getId()), selectedGroupName);
+                TODO todo_temp = todo_List_temp.get(position);
+                searchResultInterface.onDisplayAddingPageForEditingInSearch(String.valueOf(todo_temp.getId()), todo_temp.getGroup());
             }
         });
     }
