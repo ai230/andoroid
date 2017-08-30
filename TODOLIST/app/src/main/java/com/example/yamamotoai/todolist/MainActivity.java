@@ -1,28 +1,22 @@
 package com.example.yamamotoai.todolist;
 
 import android.app.FragmentTransaction;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.AdapterView;
-import android.widget.ListView;
-
-import com.example.yamamotoai.todolist.data.DatabaseHandler;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements GroupListFragment.GroupListFragmentInterface,
         AddEditFragment.AddEditFragmentInterface, ListInGroupFragment.ListGroupInFragmentInterface{
 
-    private String selectedId; //only when it's editing
+    private String selectedId;
     private String selectedGroupName;
 
     public boolean screensize_large = true;
@@ -30,7 +24,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.content_main);
 
         int screensize = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
         if(screensize != Configuration.SCREENLAYOUT_SIZE_XLARGE)
@@ -40,6 +34,12 @@ public class MainActivity extends AppCompatActivity
         }else {
             onDisplayGroupList();
         }
+
+//        Intent intent = getIntent();
+//        if(Intent.ACTION_SEARCH.equals(intent.getAction())){
+//            String query = intent.getStringExtra(SearchManager.QUERY);
+////            doMySearch(query);
+//        }
     }
 
     public void onDisplayGroupList(){
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity
 
     //Method for GroupListFragmentInterface
     @Override
-    public void onTodoListInGroup(int position, String groupName) {
+    public void onDisplayTodoListPage(int position, String groupName) {
         ListInGroupFragment listInGroupFragment = new ListInGroupFragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
@@ -111,12 +111,32 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(getComponentName()));
+//        searchView.setIconifiedByDefault(false);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Log.d("","");
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Log.d("",newText);
+
+                return false;
+            }
+        });
         return true;
     }
 
     @Override
     public void onClosePage(String selectedGroup) {
-
         //largesize left frouplist right listInGroulist
         onDisplayGroupList();
         ListInGroupFragment listInGroupFragment = new ListInGroupFragment();
@@ -144,10 +164,11 @@ public class MainActivity extends AppCompatActivity
                 break;
 
             case R.id.action_search:
+                Intent intent = new Intent(MainActivity.this, SearchResultsActivity.class);
+                startActivity(intent);
                 break;
 
-            case R.id.action_delete:
-                break;
+
         }
 
         return super.onOptionsItemSelected(item);

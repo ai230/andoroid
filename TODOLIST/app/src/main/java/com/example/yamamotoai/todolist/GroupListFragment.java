@@ -36,7 +36,7 @@ public class GroupListFragment extends Fragment {
     GroupListFragmentInterface groupListFragmentInterface;
 
     public interface GroupListFragmentInterface {
-        void onTodoListInGroup(int position, String groupName);
+        void onDisplayTodoListPage(int position, String groupName);
         void onDisplayAddingPage();
     }
 
@@ -68,7 +68,7 @@ public class GroupListFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Log.d("---", "clicked");
-                groupListFragmentInterface.onTodoListInGroup(position, groupList.get(position));
+                groupListFragmentInterface.onDisplayTodoListPage(position, groupList.get(position));
 
                 Toast.makeText(getActivity(), "position = " + position, Toast.LENGTH_SHORT).show();
             }

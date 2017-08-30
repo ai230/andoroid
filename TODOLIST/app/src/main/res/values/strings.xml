@@ -8,4 +8,8 @@
     <string name="group">Group</string>
     <string name="newgroup">NEW GROUP</string>
     <string name="hint">Type here...</string>
+
+    <string name="menu_delete">DELETE</string>
+    <string name="menu_search">SEARCH</string>
+    <string name="search_hint">SEARCH_HINT</string>
 </resources>
