@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">NavigationDrawerExample</string>
+    <string name="drawer_open">R.string.drawer_open</string>
+    <string name="drawer_close">R.string.drawer_open</string>
+</resources>
