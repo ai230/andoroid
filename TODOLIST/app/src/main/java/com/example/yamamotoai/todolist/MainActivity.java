@@ -3,7 +3,6 @@ package com.example.yamamotoai.todolist;
 import android.app.FragmentTransaction;
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,7 +10,6 @@ import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 public class MainActivity extends AppCompatActivity
         implements GroupListFragment.GroupListFragmentInterface,
@@ -36,11 +34,6 @@ public class MainActivity extends AppCompatActivity
             onDisplayGroupList();
         }
 
-//        Intent intent = getIntent();
-//        if(Intent.ACTION_SEARCH.equals(intent.getAction())){
-//            String query = intent.getStringExtra(SearchManager.QUERY);
-////            doMySearch(query);
-//        }
     }
 
     public void onDisplayGroupList(){
@@ -126,10 +119,7 @@ public class MainActivity extends AppCompatActivity
 
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        searchView.setSearchableInfo(
-                searchManager.getSearchableInfo(getComponentName()));
-//        searchView.setIconifiedByDefault(false);
-
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -138,11 +128,17 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                Log.d("",newText);
-                onDisPlaySearchResult(newText);
+                //If at least one letter in SearchView, it moves to SearchResultFragment
+                //Otherwise stay GroupListFragment
+                if(newText.matches("")){
+                    onDisplayGroupList();
+                }else{
+                    onDisPlaySearchResult(newText);
+                }
                 return false;
             }
         });
+
         return true;
     }
 
@@ -175,10 +171,6 @@ public class MainActivity extends AppCompatActivity
                 break;
 
             case R.id.action_search:
-//                Intent intent = new Intent(MainActivity.this, SearchResultsActivity.class);
-//                startActivity(intent);
-
-//                onDisPlaySearchResult();
                 break;
 
 
@@ -285,4 +277,5 @@ public class MainActivity extends AppCompatActivity
             transaction.commit();
         }
     }
+
 }
