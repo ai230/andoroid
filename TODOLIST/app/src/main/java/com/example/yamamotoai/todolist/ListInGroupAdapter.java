@@ -94,7 +94,7 @@ public class ListInGroupAdapter extends BaseAdapter{
         return rowView;
     }
 
-    public int caluculateDayDiff(String date){
+    public static int caluculateDayDiff(String date){
         String expression = date;
         String[] tokens = expression.split("-");
         int year = Integer.parseInt(tokens[0]);

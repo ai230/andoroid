@@ -1,8 +1,11 @@
 package com.example.yamamotoai.todolist;
 
+import android.app.AlarmManager;
 import android.app.FragmentTransaction;
+import android.app.PendingIntent;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +13,9 @@ import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity
         implements GroupListFragment.GroupListFragmentInterface,
@@ -18,7 +24,8 @@ public class MainActivity extends AppCompatActivity
     private String selectedId;
     private String selectedGroupName;
 
-    public boolean screensize_large = true;
+    public boolean screensize_large = false;
+    private int viewId = R.id.fragmentContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,23 +33,20 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.content_main);
 
         int screensize = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
-        if(screensize != Configuration.SCREENLAYOUT_SIZE_XLARGE)
-            screensize_large = false;
-        if(screensize_large) {
-            onDisplayGroupList();
-        }else {
-            onDisplayGroupList();
+        if(screensize == Configuration.SCREENLAYOUT_SIZE_XLARGE){
+            viewId = R.id.leftPaneContainer;
+            screensize_large = true;
         }
+
+        onDisplayGroupList();
 
     }
 
     public void onDisplayGroupList(){
         GroupListFragment groupListFragment = new GroupListFragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        if(screensize_large)
-            transaction.replace(R.id.leftPaneContainer, groupListFragment);
-        else
-            transaction.replace(R.id.fragmentContainer, groupListFragment);
+
+        transaction.replace(viewId, groupListFragment);
         transaction.commit();
     }
 
@@ -52,13 +56,11 @@ public class MainActivity extends AppCompatActivity
         arg.putString("selectedGroup", selectedGroup);
         listInGroupFragment.setArguments(arg);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        if(screensize_large)
-            if(selectedId == null)
-                transaction.replace(R.id.rightPaneContainer, listInGroupFragment);
-            else
-                transaction.replace(R.id.leftPaneContainer, listInGroupFragment);
-        else
-            transaction.replace(R.id.fragmentContainer, listInGroupFragment);
+
+        if(selectedId == null)
+            viewId = R.id.rightPaneContainer;
+
+        transaction.replace(viewId, listInGroupFragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }
@@ -66,10 +68,7 @@ public class MainActivity extends AppCompatActivity
     public void onDisplayAddEditFragment(){
         AddEditFragment addEditFragment = new AddEditFragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        if(screensize_large)
-            transaction.replace(R.id.rightPaneContainer, addEditFragment);
-        else
-            transaction.replace(R.id.fragmentContainer, addEditFragment);
+        transaction.replace(viewId, addEditFragment);
         transaction.addToBackStack(null);
         transaction.commit();
         Bundle arg = new Bundle();
@@ -81,7 +80,7 @@ public class MainActivity extends AppCompatActivity
     public void onDisPlaySearchResult(String newText){
         SearchResultFragment searchResults = new SearchResultFragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragmentContainer, searchResults);
+        transaction.replace(viewId, searchResults);
         transaction.addToBackStack(null);
         transaction.commit();
 
@@ -95,13 +94,10 @@ public class MainActivity extends AppCompatActivity
         ListInGroupFragment listInGroupFragment = new ListInGroupFragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
-        if(screensize_large)
-            if(selectedId == null)
-                transaction.replace(R.id.rightPaneContainer, listInGroupFragment);
-            else
-                transaction.replace(R.id.leftPaneContainer, listInGroupFragment);
-        else
-            transaction.replace(R.id.fragmentContainer, listInGroupFragment);
+        if(screensize_large == true && selectedId == null)
+            viewId = R.id.rightPaneContainer;
+
+        transaction.replace(viewId, listInGroupFragment);
 
         transaction.addToBackStack(null);
         transaction.commit();
@@ -145,16 +141,15 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onClosePage(String selectedGroup) {
         //largesize left frouplist right listInGroulist
-        onDisplayGroupList();
+//        onDisplayGroupList();
+
         ListInGroupFragment listInGroupFragment = new ListInGroupFragment();
         Bundle arg = new Bundle();
-        arg.putString("selectedGroup", selectedGroupName);
+        arg.putString("selectedGroup", selectedGroup);
         listInGroupFragment.setArguments(arg);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        if(screensize_large)
-            transaction.replace(R.id.rightPaneContainer, listInGroupFragment);
-        else
-            transaction.replace(R.id.fragmentContainer, listInGroupFragment);
+
+        transaction.replace(viewId, listInGroupFragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }
@@ -205,7 +200,7 @@ public class MainActivity extends AppCompatActivity
             arg.putString("selectedGroup", selectedGroupName);
             listInGroupFragment.setArguments(arg);
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.replace(R.id.rightPaneContainer, listInGroupFragment);
+            transaction.replace(viewId, listInGroupFragment);
             transaction.addToBackStack(null);
             transaction.commit();
         }
@@ -277,5 +272,8 @@ public class MainActivity extends AppCompatActivity
             transaction.commit();
         }
     }
+
+
+
 
 }

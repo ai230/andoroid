@@ -1,8 +1,10 @@
 package com.example.yamamotoai.todolist;
 
+import android.app.AlarmManager;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -36,6 +38,7 @@ import java.util.List;
 
 public class AddEditFragment extends Fragment implements View.OnClickListener, DatePickerFragment.DatePickerFragmentInterface {
 
+    private final int NOTIFICATION_DAYS_BEFORE = 1;
     DatabaseHandler dbHandler;
 
     TextView dateTextView;
@@ -236,13 +239,19 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
                         todoEdit.setContent(content);
                         dbHandler.updateDatabase(todoEdit);
 
+                        //setNotofication
+                        setNotification(ListInGroupAdapter.caluculateDayDiff(date), date, title);
+
                         Toast.makeText(getActivity(),"Updated",Toast.LENGTH_SHORT).show();
                         //New data
                     }else{
                         TODO todo = new TODO(date, title, group, content);
                         dbHandler.writeDatabase(todo);
+                        //setNotofication
+                        setNotification(ListInGroupAdapter.caluculateDayDiff(date), date, title);
                         Toast.makeText(getActivity(),"SAVED",Toast.LENGTH_SHORT).show();
                     }
+
                     //close move to list
                     addEditFragmentInterface.onClosePage(group);
                 }
@@ -262,4 +271,23 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
                 break;
         }
     }
+
+    public void setNotification(int days, String todoDate, String todoTitle) {
+
+        int sec = (days - 1) * 86400;
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.SECOND, sec);
+        Long alertTime = calendar.getTimeInMillis();
+        Intent alarmIntent = new Intent(getActivity(), AlarmReceiver.class);
+        alarmIntent.putExtra("todoDate", todoDate);
+        alarmIntent.putExtra("todoTitle", todoTitle);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                getActivity(), 1, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        //for the schedule
+        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, alertTime, pendingIntent);
+        
+    }
+
 }
