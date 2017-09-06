@@ -19,7 +19,10 @@ import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity
         implements GroupListFragment.GroupListFragmentInterface,
-        AddEditFragment.AddEditFragmentInterface, ListInGroupFragment.ListGroupInFragmentInterface, SearchResultFragment.SearchResultInterface{
+        AddEditFragment.AddEditFragmentInterface,
+        ListInGroupFragment.ListGroupInFragmentInterface,
+        SearchResultFragment.SearchResultInterface
+        , AllTodolistFragment.AllTodolistFragmentInterface{
 
     private String selectedId;
     private String selectedGroupName;
@@ -27,6 +30,7 @@ public class MainActivity extends AppCompatActivity
     public boolean screensize_large = false;
     private int viewId = R.id.fragmentContainer;
 
+    private int selectedIconId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +42,7 @@ public class MainActivity extends AppCompatActivity
             screensize_large = true;
         }
 
+
         onDisplayGroupList();
 
     }
@@ -46,7 +51,11 @@ public class MainActivity extends AppCompatActivity
         GroupListFragment groupListFragment = new GroupListFragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
+        Bundle arg = new Bundle();
+        arg.putString("selectedIconId", String.valueOf(selectedIconId));
+        groupListFragment.setArguments(arg);
         transaction.replace(viewId, groupListFragment);
+        transaction.addToBackStack(null);
         transaction.commit();
     }
 
@@ -88,6 +97,15 @@ public class MainActivity extends AppCompatActivity
         arg.putString("newText", newText);
         searchResults.setArguments(arg);
     }
+
+    public void onDisplayAllTodolist(){
+        AllTodolistFragment allTodolistFragment = new AllTodolistFragment();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(viewId, allTodolistFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
     //Method for GroupListFragmentInterface
     @Override
     public void onDisplayTodoListPage(int position, String groupName) {
@@ -127,7 +145,7 @@ public class MainActivity extends AppCompatActivity
                 //If at least one letter in SearchView, it moves to SearchResultFragment
                 //Otherwise stay GroupListFragment
                 if(newText.matches("")){
-                    onDisplayGroupList();
+                    onDisplayAllTodolist();
                 }else{
                     onDisPlaySearchResult(newText);
                 }
@@ -136,22 +154,6 @@ public class MainActivity extends AppCompatActivity
         });
 
         return true;
-    }
-
-    @Override
-    public void onClosePage(String selectedGroup) {
-        //largesize left frouplist right listInGroulist
-//        onDisplayGroupList();
-
-        ListInGroupFragment listInGroupFragment = new ListInGroupFragment();
-        Bundle arg = new Bundle();
-        arg.putString("selectedGroup", selectedGroup);
-        listInGroupFragment.setArguments(arg);
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-
-        transaction.replace(viewId, listInGroupFragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
     }
 
     @Override
@@ -164,14 +166,26 @@ public class MainActivity extends AppCompatActivity
         switch (id){
             case R.id.action_settings:
                 break;
-
             case R.id.action_search:
                 break;
-
-
         }
-
         return super.onOptionsItemSelected(item);
+    }
+
+    //Method for AddEditFragment , when you pressed save button or delete button
+    @Override
+    public void onClosePage(String selectedGroup) {
+
+        getSupportFragmentManager().popBackStack();
+        ListInGroupFragment listInGroupFragment = new ListInGroupFragment();
+        Bundle arg = new Bundle();
+        arg.putString("selectedGroup", selectedGroup);
+        listInGroupFragment.setArguments(arg);
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+        transaction.replace(viewId, listInGroupFragment);
+//        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     //Method for ListGroupInFragmentInterface
@@ -181,12 +195,12 @@ public class MainActivity extends AppCompatActivity
         onDisplayAddEditFragment();
     }
 
+
     //Method for ListGroupInFragmentInterface
     @Override
     public void onDisplayAddingPageForEditing(String id, String selectedGroup) {
         selectedId = id;
         selectedGroupName = selectedGroup;
-        onDisPlayTodoListInGroup(selectedGroupName);
         onDisplayAddEditFragment();
     }
 
@@ -268,12 +282,10 @@ public class MainActivity extends AppCompatActivity
             listInGroupFragment.setArguments(arg);
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.rightPaneContainer, listInGroupFragment);
-            transaction.addToBackStack(null);
+//            transaction.addToBackStack(null);
             transaction.commit();
         }
     }
-
-
 
 
 }

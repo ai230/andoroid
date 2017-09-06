@@ -5,6 +5,7 @@
     <!--<color name="colorAccent">#FF4081</color>-->
 
     <color name="colorWhite">#FFFFFF</color>
+    <color name="colorGray">#9b9a9a</color>
     <color name="colorAccent">#ea6868</color>
     <color name="colorMain">#37BC9B</color>
     <color name="colorMainBar">#48CFBD</color>

@@ -47,7 +47,7 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
     EditText editTextNewGroup;
     ImageButton calenderImgBtn;
     Spinner groupSpinner;
-    FragmentManager fragmentManager = getFragmentManager();
+    FragmentManager fragmentManager;
 
     Button cancelBtn;
     Button saveBtn;
@@ -57,6 +57,7 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
     String group;
     String content;
     String date;
+    int iconId;
 
     Boolean isEditing = false;
     int selectedGroupPosition;
@@ -87,8 +88,10 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        setHasOptionsMenu(false);
         View view = inflater.inflate(R.layout.fragment_add, container, false);
 
+        fragmentManager = getFragmentManager();
         Bundle arg = getArguments();
         if(arg != null){
             //if new data id & selectedGroup = null
@@ -120,8 +123,8 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
         editTextNewGroup = (EditText) view.findViewById(R.id.edittext_group);
         calenderImgBtn = (ImageButton) view.findViewById(R.id.datePickerButton);
         calenderImgBtn.setOnClickListener(this);
-        cancelBtn = (Button) view.findViewById(R.id.cancelBtn);
-        cancelBtn.setOnClickListener(this);
+//        cancelBtn = (Button) view.findViewById(R.id.cancelBtn);
+//        cancelBtn.setOnClickListener(this);
         saveBtn = (Button) view.findViewById(R.id.saveBtn);
         saveBtn.setOnClickListener(this);
         deleteBtn = (Button) view.findViewById(R.id.deleteBtn);
@@ -201,13 +204,13 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
                 newDateFragment.show(getFragmentManager(), "datePicker");
                 break;
 
-            case R.id.cancelBtn:
-                group = groupSpinner.getSelectedItem().toString();
-                //if new group is entered the group name is getting from edittext
-                if (group == group_list.get(group_list.size() -1))
-                    group = editTextNewGroup.getText().toString().toUpperCase();
-                addEditFragmentInterface.onClosePage(group);
-                break;
+//            case R.id.cancelBtn:
+//                group = groupSpinner.getSelectedItem().toString();
+//                //if new group is entered the group name is getting from edittext
+//                if (group == group_list.get(group_list.size() -1))
+//                    group = editTextNewGroup.getText().toString().toUpperCase();
+//                addEditFragmentInterface.onClosePage(group);
+//                break;
 
             case R.id.saveBtn:
                 dbHandler = new DatabaseHandler(getActivity());
@@ -239,18 +242,19 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
                         todoEdit.setContent(content);
                         dbHandler.updateDatabase(todoEdit);
 
-                        //setNotofication
-                        setNotification(ListInGroupAdapter.caluculateDayDiff(date), date, title);
+                        //setNotification
+                        setNotification(ListInGroupAdapter.caluculateDayDiff(date), TODOid, date, title);
 
                         Toast.makeText(getActivity(),"Updated",Toast.LENGTH_SHORT).show();
                         //New data
                     }else{
                         TODO todo = new TODO(date, title, group, content);
                         dbHandler.writeDatabase(todo);
-                        //setNotofication
-                        setNotification(ListInGroupAdapter.caluculateDayDiff(date), date, title);
+                        //setNotification
+                        setNotification(ListInGroupAdapter.caluculateDayDiff(date),TODOid, date, title);
                         Toast.makeText(getActivity(),"SAVED",Toast.LENGTH_SHORT).show();
                     }
+
 
                     //close move to list
                     addEditFragmentInterface.onClosePage(group);
@@ -272,22 +276,23 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
         }
     }
 
-    public void setNotification(int days, String todoDate, String todoTitle) {
+    public void setNotification(int days, int reqCode, String todoDate, String todoTitle) {
 
         int sec = (days - 1) * 86400;
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.SECOND, sec);
         Long alertTime = calendar.getTimeInMillis();
-        Intent alarmIntent = new Intent(getActivity(), AlarmReceiver.class);
+        Intent alarmIntent = new Intent(getActivity(), NotificationReceiver.class);
+        alarmIntent.putExtra("reqCode", String.valueOf(reqCode));
         alarmIntent.putExtra("todoDate", todoDate);
         alarmIntent.putExtra("todoTitle", todoTitle);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                getActivity(), 1, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                getActivity(), reqCode, alarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         //for the schedule
         AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP, alertTime, pendingIntent);
-        
+
     }
 
 }

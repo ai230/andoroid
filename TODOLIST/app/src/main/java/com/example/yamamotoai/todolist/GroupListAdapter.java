@@ -1,10 +1,13 @@
 package com.example.yamamotoai.todolist;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,6 +21,7 @@ public class GroupListAdapter extends BaseAdapter{
 
     Context context;
     List<String> list;
+
 
     public GroupListAdapter(Context context, List<String> list){
         this.context = context;
@@ -44,11 +48,12 @@ public class GroupListAdapter extends BaseAdapter{
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup viewGroup) {
+    public View getView(final int position, View convertView, ViewGroup viewGroup) {
         final Holder holder = new Holder();
         LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.fragment_grouplist_row, null);
-        holder.imageView = (ImageView) rowView.findViewById(R.id.imageview_group_row);
+//        holder.imageView = (ImageView) rowView.findViewById(R.id.imageview_group_row);
+
         holder.textView = (TextView) rowView.findViewById(R.id.textview_group_row);
         holder.textView.setText(list.get(position));
         return rowView;

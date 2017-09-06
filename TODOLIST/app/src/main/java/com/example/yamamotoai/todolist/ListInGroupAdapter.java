@@ -62,11 +62,11 @@ public class ListInGroupAdapter extends BaseAdapter{
         LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.fragment_todolist_row, null);
         holder.checkBox = (CheckBox) rowView.findViewById(R.id.checkbox_second);
-        holder.idTextview = (TextView) rowView.findViewById(R.id.textview_id);
+//        holder.idTextview = (TextView) rowView.findViewById(R.id.textview_id);
         holder.dateTextview = (TextView) rowView.findViewById(R.id.textview_date);
         holder.daysTextview = (TextView) rowView.findViewById(R.id.textview_days);
         holder.titleTextview = (TextView) rowView.findViewById(R.id.textview_title);
-        holder.groupTextview = (TextView) rowView.findViewById(R.id.textview_group);
+//        holder.groupTextview = (TextView) rowView.findViewById(R.id.textview_group);
         holder.contentTextview = (TextView) rowView.findViewById(R.id.textview_content);
 
         if(isEnabledDelete == false)
@@ -84,11 +84,11 @@ public class ListInGroupAdapter extends BaseAdapter{
 
         int days = caluculateDayDiff(todo.getDate());
 
-        holder.idTextview.setText(String.valueOf(todo.getId()));
+//        holder.idTextview.setText(String.valueOf(todo.getId()));
         holder.dateTextview.setText(todo.getDate());
         holder.daysTextview.setText(String.valueOf(days));
         holder.titleTextview.setText(todo.getTitle());
-        holder.groupTextview.setText(todo.getGroup());
+//        holder.groupTextview.setText(todo.getGroup());
         holder.contentTextview.setText(todo.getContent());
 
         return rowView;

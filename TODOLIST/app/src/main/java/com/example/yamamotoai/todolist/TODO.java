@@ -9,19 +9,19 @@ import java.io.Serializable;
 public class TODO  implements Serializable {
 
     int id;
-    String date, title, group,content;
+    String date, title, group, content;
 
     boolean isSelected;
     public TODO(){};
 
     public TODO(String date, String title, String group, String content) {
-//        this.id = id;
         this.date = date;
         this.title = title;
         this.group = group;
         this.content = content;
         this.isSelected = false;
     }
+
 
     public void setId(int id) {
         this.id = id;
@@ -46,6 +46,7 @@ public class TODO  implements Serializable {
     public void setContent(String content) {
         this.content = content;
     }
+
 
     public int getId() {
         return id;

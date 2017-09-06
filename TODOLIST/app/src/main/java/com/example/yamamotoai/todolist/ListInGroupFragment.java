@@ -80,6 +80,7 @@ public class ListInGroupFragment extends Fragment {
 
         //read new data from database
         db = new DatabaseHandler(getActivity());
+        todoList = new ArrayList<>();
         todoList = db.readDatabase(todoList);
 
         //create only this group of todolist
@@ -97,13 +98,13 @@ public class ListInGroupFragment extends Fragment {
             }
         });
 
-        fab_back = (FloatingActionButton) view.findViewById(R.id.fab_back);
-        fab_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listGroupInFragmentInterface.onBackToGroupList();
-            }
-        });
+//        fab_back = (FloatingActionButton) view.findViewById(R.id.fab_back);
+//        fab_back.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                listGroupInFragmentInterface.onBackToGroupList();
+//            }
+//        });
 
         //initialize listview
         listView = (ListView)view.findViewById(R.id.listview_second);

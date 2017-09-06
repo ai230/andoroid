@@ -6,12 +6,14 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
+import com.example.yamamotoai.todolist.R;
+
 /**
  * Created by yamamotoai on 2017-08-07.
  */
 
 public class AlertDialogFragment2 extends DialogFragment{
-
+//when you pressed save button and the new group you entered is exist, it is called
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
@@ -24,6 +26,7 @@ public class AlertDialogFragment2 extends DialogFragment{
 
                     }
                 })
+                .setIcon(R.drawable.launcher_icon)
                 .create();
         return alertDialog;
     }

@@ -21,7 +21,9 @@
                 android:resource="@xml/searchable"/>
         </activity>
 
-        <receiver android:name=".AlarmReceiver"/>
+        <receiver android:name=".NotificationReceiver"/>
+
+
     </application>
 
 </manifest>

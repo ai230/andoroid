@@ -63,7 +63,7 @@
             android:layout_height="match_parent"
             android:gravity="top"
             android:id="@+id/editText3"
-            android:hint="Detail"
+            android:hint="Note"
             android:imeOptions="actionNext"
             android:inputType="textCapWords"/>
     </android.support.design.widget.TextInputLayout>
@@ -74,29 +74,43 @@
         android:orientation="horizontal"
         android:gravity="right">
 
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Deadine"
-            android:textAppearance="?android:textAppearanceMedium"
-            android:layout_gravity="center"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"/>
+            android:orientation="vertical"
+            android:layout_marginRight="@dimen/activity_horizontal_margin">
 
-        <TextView
-            android:id="@+id/textview_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="2017/7/10"
-            android:textAppearance="?android:textAppearanceMedium"
-            android:layout_gravity="center"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Due date"
+                android:layout_gravity="left"
+                android:textAppearance="?android:textAppearanceSmall"
+                android:textColor="@color/colorGray"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"/>
 
-        <ImageButton
-            android:id="@+id/datePickerButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_date"
-            android:backgroundTint="@color/colorWhite"
-            android:onClick="showDatePickerDialog"/>
+            <TextView
+                android:id="@+id/textview_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2017/7/10"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:layout_gravity="left"
+                android:textColor="@color/colorGray"/>
+
+        </LinearLayout>
+
+
+            <ImageButton
+                android:id="@+id/datePickerButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_date"
+                android:backgroundTint="@color/colorAccent"
+                android:padding="7dp"
+                android:layout_gravity="center"
+                android:background="@drawable/day_background"
+                android:onClick="showDatePickerDialog"/>
 
     </LinearLayout>
 
@@ -107,15 +121,15 @@
         android:gravity="center"
         android:layout_margin="@dimen/activity_horizontal_margin">
 
-        <Button
-            android:id="@+id/cancelBtn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="cancel"
-            android:textColor="@color/colorWhite"
-            android:background="@drawable/addition_button"
-            android:onClick="onClickCancel"/>
+        <!--<Button-->
+            <!--android:id="@+id/cancelBtn"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:text="cancel"-->
+            <!--android:textColor="@color/colorWhite"-->
+            <!--android:background="@drawable/addition_button"-->
+            <!--android:onClick="onClickCancel"/>-->
 
         <Button
             android:id="@+id/saveBtn"

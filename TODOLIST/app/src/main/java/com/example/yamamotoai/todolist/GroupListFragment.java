@@ -2,6 +2,8 @@ package com.example.yamamotoai.todolist;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -33,8 +35,9 @@ public class GroupListFragment extends Fragment {
     boolean isDeleteBtnClicked = false;
     FloatingActionButton fab_add;
 
-    GroupListFragmentInterface groupListFragmentInterface;
+    private int selectedIconId;
 
+    GroupListFragmentInterface groupListFragmentInterface;
     public interface GroupListFragmentInterface {
         void onDisplayTodoListPage(int position, String groupName);
         void onDisplayAddingPage();
@@ -46,6 +49,12 @@ public class GroupListFragment extends Fragment {
         groupListFragmentInterface = (GroupListFragmentInterface) context;
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        groupListFragmentInterface = null;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -53,13 +62,21 @@ public class GroupListFragment extends Fragment {
 //        LayoutInflater inflater =
         View view = inflater.inflate(R.layout.fragment_grouplist, container, false);
 
+        //set title
+        ((MainActivity)getActivity()).setActionbarTitle(getResources().getString(R.string.app_name));
+
+        Bundle arg = getArguments();
+        if(arg != null){
+            selectedIconId = Integer.parseInt(arg.getString("selectedIconId"));
+        }
         db = new DatabaseHandler(getActivity());
         //Always getting new data
         todoList = new ArrayList<>();
         todoList = db.readDatabase(todoList);
         for (TODO item : todoList) {
-            if (!groupList.contains(item.getGroup().toUpperCase()))
+            if (!groupList.contains(item.getGroup().toUpperCase())) {
                 groupList.add(item.getGroup().toUpperCase());
+            }
         }
 
         listView_main = (ListView) view.findViewById(R.id.listview_main);
@@ -86,4 +103,14 @@ public class GroupListFragment extends Fragment {
 
         return view;
     }
+
+
+//    private Integer[] mIconIds = {
+//            R.drawable.icon_0, R.drawable.icon_1,
+//            R.drawable.icon_2, R.drawable.icon_3,
+//            R.drawable.icon_4, R.drawable.icon_5,
+//            R.drawable.icon_6, R.drawable.icon_7,
+//            R.drawable.icon_8, R.drawable.icon_9
+//    };
+
 }
