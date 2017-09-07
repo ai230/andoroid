@@ -113,4 +113,24 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         db.delete(TABLE_NAME, KEY_ID + " = ? ", ids);
         db.close();
     }
+
+
+//    public int getId(){
+//        SQLiteDatabase db = this.getReadableDatabase();
+//        String query = "Select * From " + TABLE_NAME + " where " + KEY_TITLE + " = ";
+//        Cursor cursor = db.rawQuery(query, null);
+//        TODO todo = null;
+//        if(cursor.moveToFirst()){
+//            do{
+//                todo = new TODO();
+//                todo.setId(Integer.parseInt(cursor.getString(0)));
+//                todo.setDate(cursor.getString(1));
+//                todo.setTitle(cursor.getString(2));
+//                todo.setGroup(cursor.getString(3));
+//                todo.setContent(cursor.getString(4));
+//                list.add(todo);
+//            }while (cursor.moveToNext());
+//        }
+//        return list;
+//    }
 }

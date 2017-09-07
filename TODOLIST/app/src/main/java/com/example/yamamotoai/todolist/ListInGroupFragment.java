@@ -46,7 +46,7 @@ public class ListInGroupFragment extends Fragment {
     private ListGroupInFragmentInterface listGroupInFragmentInterface;
     public interface ListGroupInFragmentInterface
     {
-        void onDisplayAddingPage();
+        void onDisplayAddingPage(int position, String selectedGroup);
         void onDisplayAddingPageForEditing(String SelectedTodoId, String selectedGroupName);
         void onBackToGroupList();
     }
@@ -72,7 +72,7 @@ public class ListInGroupFragment extends Fragment {
         bundle = this.getArguments();
         if(bundle != null) {
             //getting selectedGroup position and name from MainActivity
-            selectedGroupPosition = bundle.getInt("position");
+//            selectedGroupPosition = bundle.getInt("position");
             selectedGroupName = bundle.getString("selectedGroup");
         }
         //set title
@@ -94,7 +94,7 @@ public class ListInGroupFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                listGroupInFragmentInterface.onDisplayAddingPage();
+                listGroupInFragmentInterface.onDisplayAddingPage(selectedGroupPosition, selectedGroupName);
             }
         });
 

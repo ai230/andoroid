@@ -24,9 +24,9 @@ public class MainActivity extends AppCompatActivity
         SearchResultFragment.SearchResultInterface
         , AllTodolistFragment.AllTodolistFragmentInterface{
 
-    private String selectedId;
+    private String selectedTodoId;
     private String selectedGroupName;
-
+    private int selectedGroupPosition;
     public boolean screensize_large = false;
     private int viewId = R.id.fragmentContainer;
 
@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity
             viewId = R.id.leftPaneContainer;
             screensize_large = true;
         }
-
 
         onDisplayGroupList();
 
@@ -60,18 +59,22 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void onDisPlayTodoListInGroup(String selectedGroup){
+
         ListInGroupFragment listInGroupFragment = new ListInGroupFragment();
-        Bundle arg = new Bundle();
-        arg.putString("selectedGroup", selectedGroup);
-        listInGroupFragment.setArguments(arg);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
-        if(selectedId == null)
+        if(screensize_large == true && selectedTodoId == null)
             viewId = R.id.rightPaneContainer;
 
         transaction.replace(viewId, listInGroupFragment);
+
         transaction.addToBackStack(null);
         transaction.commit();
+
+        Bundle bundle = new Bundle();
+        bundle.putString("selectedGroup", selectedGroup);
+        listInGroupFragment.setArguments(bundle);
+
     }
 
     public void onDisplayAddEditFragment(){
@@ -81,8 +84,9 @@ public class MainActivity extends AppCompatActivity
         transaction.addToBackStack(null);
         transaction.commit();
         Bundle arg = new Bundle();
-        arg.putString("TODOid",selectedId);
+        arg.putString("TODOid",selectedTodoId);
         arg.putString("selectedGroupName",selectedGroupName);
+        arg.putInt("selectedGroupPosition", selectedGroupPosition);
         addEditFragment.setArguments(arg);
     }
 
@@ -108,23 +112,12 @@ public class MainActivity extends AppCompatActivity
 
     //Method for GroupListFragmentInterface
     @Override
-    public void onDisplayTodoListPage(int position, String groupName) {
-        ListInGroupFragment listInGroupFragment = new ListInGroupFragment();
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+    public void onDisplayTodoListPage(int position, String selectedGroup) {
+        selectedGroupPosition = position;
+        onDisPlayTodoListInGroup(selectedGroup);
 
-        if(screensize_large == true && selectedId == null)
-            viewId = R.id.rightPaneContainer;
-
-        transaction.replace(viewId, listInGroupFragment);
-
-        transaction.addToBackStack(null);
-        transaction.commit();
-
-        Bundle bundle = new Bundle();
-        bundle.putInt("position", position);
-        bundle.putString("selectedGroup", groupName);
-        listInGroupFragment.setArguments(bundle);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -188,18 +181,27 @@ public class MainActivity extends AppCompatActivity
         transaction.commit();
     }
 
-    //Method for ListGroupInFragmentInterface
+
+    //Method for GroupListFragmentInterface
     @Override
     public void onDisplayAddingPage() {
-        selectedId = null;
+        selectedTodoId = null;
         onDisplayAddEditFragment();
     }
 
+    //Method for ListGroupInFragmentInterface
+    @Override
+    public void onDisplayAddingPage(int position, String selectedGroup) {
+        selectedTodoId = null;
+        if(selectedGroup != null)
+            selectedGroupName = selectedGroup;
+        onDisplayAddEditFragment();
+    }
 
     //Method for ListGroupInFragmentInterface
     @Override
     public void onDisplayAddingPageForEditing(String id, String selectedGroup) {
-        selectedId = id;
+        selectedTodoId = id;
         selectedGroupName = selectedGroup;
         onDisplayAddEditFragment();
     }
@@ -260,13 +262,13 @@ public class MainActivity extends AppCompatActivity
     //SearchResulrInterface
     @Override
     public void onDisplayAddingPageInSearch() {
-        selectedId = null;
+        selectedTodoId = null;
         onDisplayAddEditFragment();
     }
 
     @Override
     public void onDisplayAddingPageForEditingInSearch(String id, String selectedGroup) {
-        selectedId = id;
+        selectedTodoId = id;
         selectedGroupName = selectedGroup;
         onDisPlayTodoListInGroup(selectedGroupName);
         onDisplayAddEditFragment();
@@ -282,7 +284,6 @@ public class MainActivity extends AppCompatActivity
             listInGroupFragment.setArguments(arg);
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.rightPaneContainer, listInGroupFragment);
-//            transaction.addToBackStack(null);
             transaction.commit();
         }
     }

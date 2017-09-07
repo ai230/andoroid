@@ -153,6 +153,28 @@
             android:background="@drawable/addition_button"
             android:onClick="onClickDelete"/>
 
+        <!--<ImageButton-->
+            <!--android:id="@+id/saveBtn"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:src="@drawable/ic_save"-->
+            <!--android:textColor="@color/colorWhite"-->
+            <!--android:background="@drawable/addition_button"-->
+            <!--android:layout_marginLeft="@dimen/activity_horizontal_margin"-->
+            <!--android:layout_marginRight="@dimen/activity_horizontal_margin"-->
+            <!--android:padding="10dp"-->
+            <!--android:onClick="onClickSave"/>-->
+
+        <!--<ImageButton-->
+            <!--android:id="@+id/deleteBtn"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:src="@drawable/ic_delete"-->
+            <!--android:textColor="@color/colorWhite"-->
+            <!--android:background="@drawable/addition_button"-->
+            <!--android:padding="10dp"-->
+            <!--android:onClick="onClickDelete"/>-->
+
     </LinearLayout>
 
 </LinearLayout>

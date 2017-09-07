@@ -4,10 +4,12 @@ import android.app.AlarmManager;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.service.notification.StatusBarNotification;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.view.LayoutInflater;
@@ -66,6 +68,9 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
     private List<TODO> todoList = new ArrayList<TODO>();
     int TODOid = 0;
     String selectedGroupName;
+
+    NotificationManager notificationManager;
+
     AddEditFragmentInterface addEditFragmentInterface;
     public interface AddEditFragmentInterface
     {
@@ -94,10 +99,12 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
         fragmentManager = getFragmentManager();
         Bundle arg = getArguments();
         if(arg != null){
+            selectedGroupName = arg.getString("selectedGroupName");
+            //This is for setting default value of groupSpinner;
+            selectedGroupPosition = arg.getInt("selectedGroupPosition");
             //if new data id & selectedGroup = null
             if(arg.getString("TODOid") != null){
                 TODOid = Integer.parseInt(arg.getString("TODOid"));
-                selectedGroupName = arg.getString("selectedGroupName");
                 isEditing = true;
             }
 
@@ -164,7 +171,7 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
         int day = c.get(Calendar.DAY_OF_MONTH);
         c.set(year, month, day);
 
-        String dateString = year + "-" + month + "-" + day;
+//        String dateString = year + "-" + month + "-" + day;
         String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         dateTextView.setText(date);
 
@@ -249,12 +256,11 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
                         //New data
                     }else{
                         TODO todo = new TODO(date, title, group, content);
-                        dbHandler.writeDatabase(todo);
+                        TODOid = (int) dbHandler.writeDatabase(todo);
                         //setNotification
                         setNotification(ListInGroupAdapter.caluculateDayDiff(date),TODOid, date, title);
                         Toast.makeText(getActivity(),"SAVED",Toast.LENGTH_SHORT).show();
                     }
-
 
                     //close move to list
                     addEditFragmentInterface.onClosePage(group);
@@ -269,6 +275,7 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
                 //close move to list
                 addEditFragmentInterface.onClosePage(selectedGroupName);
                 Toast.makeText(getActivity(),"DELETED",Toast.LENGTH_SHORT).show();
+                cancelNotification(TODOid);
                 break;
 
             default:
@@ -294,5 +301,11 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
         alarmManager.set(AlarmManager.RTC_WAKEUP, alertTime, pendingIntent);
 
     }
+
+    public void cancelNotification(int reqCode){
+        notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancel(reqCode);
+    }
+
 
 }

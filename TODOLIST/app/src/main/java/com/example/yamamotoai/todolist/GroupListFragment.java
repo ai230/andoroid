@@ -40,7 +40,7 @@ public class GroupListFragment extends Fragment {
     GroupListFragmentInterface groupListFragmentInterface;
     public interface GroupListFragmentInterface {
         void onDisplayTodoListPage(int position, String groupName);
-        void onDisplayAddingPage();
+        void onDisplayAddingPage(); // group = null
     }
 
     @Override

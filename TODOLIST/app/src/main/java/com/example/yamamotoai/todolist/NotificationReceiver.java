@@ -17,6 +17,8 @@ import android.support.v4.app.NotificationCompat;
 //When you add or update todolist notification is set before 1 day.
 public class NotificationReceiver extends BroadcastReceiver {
 
+    PendingIntent pendingIntent;
+
     @Override
     public void onReceive(Context context, Intent intent) {
 
@@ -31,14 +33,16 @@ public class NotificationReceiver extends BroadcastReceiver {
 
     public void createNotification(Context context, String msgTitle, String msgText, int reqCode){
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(context,
+        pendingIntent = PendingIntent.getActivity(context,
                 reqCode, new Intent(context, MainActivity.class), 0);
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.ic_list)
                 .setLargeIcon(getBitmapIcon(context, R.drawable.launcher_icon))
                 .setContentTitle(msgTitle)
-                .setContentText(msgText);
+                .setContentText(msgText)
+                .addAction(DoneThisTodo(context))
+                .addAction(ignoreReminderAction(context));
 
         mBuilder.setContentIntent(pendingIntent);
         //How the person is notify
@@ -53,6 +57,20 @@ public class NotificationReceiver extends BroadcastReceiver {
         mNotificationManager.notify(reqCode, mBuilder.build());
 
 
+    }
+
+    private NotificationCompat.Action DoneThisTodo(Context context){
+
+        NotificationCompat.Action action = new NotificationCompat.Action(R.drawable.launcher_icon,"Delete the Todo", pendingIntent);
+
+        return action;
+    }
+
+    private NotificationCompat.Action ignoreReminderAction(Context context){
+
+        NotificationCompat.Action action = new NotificationCompat.Action(R.drawable.launcher_icon,"See the Todo", pendingIntent);
+
+        return action;
     }
 
     public static Bitmap getBitmapIcon(Context context, int icon){
