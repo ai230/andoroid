@@ -84,7 +84,6 @@ public class GroupListFragment extends Fragment {
         listView_main.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Log.d("---", "clicked");
                 groupListFragmentInterface.onDisplayTodoListPage(position, groupList.get(position));
 
                 Toast.makeText(getActivity(), "position = " + position, Toast.LENGTH_SHORT).show();
@@ -96,21 +95,11 @@ public class GroupListFragment extends Fragment {
         fab_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("---","clicked");
                 groupListFragmentInterface.onDisplayAddingPage();
             }
         });
 
         return view;
     }
-
-
-//    private Integer[] mIconIds = {
-//            R.drawable.icon_0, R.drawable.icon_1,
-//            R.drawable.icon_2, R.drawable.icon_3,
-//            R.drawable.icon_4, R.drawable.icon_5,
-//            R.drawable.icon_6, R.drawable.icon_7,
-//            R.drawable.icon_8, R.drawable.icon_9
-//    };
 
 }

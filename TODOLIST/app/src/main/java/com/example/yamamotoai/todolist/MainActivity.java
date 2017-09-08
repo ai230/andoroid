@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,11 +37,16 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_main);
 
+//        Display display = getWindowManager().getDefaultDisplay();
+//        int orientation = Configuration.ORIENTATION_UNDEFINED;
+//        if(display.getSize(); == )
+
         int screensize = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
         if(screensize == Configuration.SCREENLAYOUT_SIZE_XLARGE){
             viewId = R.id.leftPaneContainer;
             screensize_large = true;
         }
+
 
         onDisplayGroupList();
 
@@ -284,7 +290,14 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_settings:
                 break;
             case R.id.action_search:
+
                 break;
+//            case R.id.action_add:
+//                Log.d("","");
+//                break;
+//            case R.id.action_delete:
+//                Log.d("","");
+//                break;
         }
         return super.onOptionsItemSelected(item);
     }

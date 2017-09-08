@@ -1,4 +1,4 @@
-package com.example.yamamotoai.todolist;
+package com.example.yamamotoai.todolist.Notification;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -10,6 +10,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
 
+import com.example.yamamotoai.todolist.MainActivity;
+import com.example.yamamotoai.todolist.R;
+
 /**
  * Created by yamamotoai on 2017-09-02.
  */
@@ -17,7 +20,9 @@ import android.support.v4.app.NotificationCompat;
 //When you add or update todolist notification is set before 1 day.
 public class NotificationReceiver extends BroadcastReceiver {
 
-    PendingIntent pendingIntent;
+    private static final int ACTION_REQUEST_CODE1 = 14;
+    private static final int ACTION_REQUEST_CODE2 = 15;
+
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -33,7 +38,8 @@ public class NotificationReceiver extends BroadcastReceiver {
 
     public void createNotification(Context context, String msgTitle, String msgText, int reqCode){
 
-        pendingIntent = PendingIntent.getActivity(context,
+        //create pendingIntent for Notification
+        PendingIntent pendingIntent = PendingIntent.getActivity(context,
                 reqCode, new Intent(context, MainActivity.class), 0);
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
@@ -60,14 +66,40 @@ public class NotificationReceiver extends BroadcastReceiver {
 
     private NotificationCompat.Action DoneThisTodo(Context context){
 
-        NotificationCompat.Action action = new NotificationCompat.Action(R.drawable.ic_delete_black,"DONE THIS", pendingIntent);
+        Intent intent1 = new Intent(context, HandleActionIntent.class);
+        intent1.setAction(HandleAction.ACTION_DONE);
+
+        //create pendingIntent for Action
+        PendingIntent pendingIntent = PendingIntent.getService(
+                context,
+                ACTION_REQUEST_CODE1,
+                intent1,
+                PendingIntent.FLAG_CANCEL_CURRENT);
+
+        NotificationCompat.Action action = new NotificationCompat.Action(
+                R.drawable.ic_delete_black,
+                "DONE THIS",
+                pendingIntent);
 
         return action;
     }
 
     private NotificationCompat.Action ignoreReminderAction(Context context){
 
-        NotificationCompat.Action action = new NotificationCompat.Action(R.drawable.ic_event_note,"CHANGE DATE", pendingIntent);
+        Intent intent2 = new Intent(context, HandleActionIntent.class);
+        intent2.setAction(HandleAction.ACTION_CHANGE);
+
+        //create pendingIntent for Action
+        PendingIntent pendingIntent = PendingIntent.getService(
+                context,
+                ACTION_REQUEST_CODE2,
+                intent2,
+                PendingIntent.FLAG_CANCEL_CURRENT);
+
+        NotificationCompat.Action action = new NotificationCompat.Action(
+                R.drawable.ic_event_note,
+                "CHANGE DATE",
+                pendingIntent);
 
         return action;
     }

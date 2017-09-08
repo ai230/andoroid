@@ -22,7 +22,7 @@
                 android:resource="@xml/searchable"/>
         </activity>
 
-        <receiver android:name=".NotificationReceiver"/>
+        <receiver android:name=".Notification.NotificationReceiver"/>
 
 
     </application>

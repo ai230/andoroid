@@ -9,10 +9,13 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.service.notification.StatusBarNotification;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -24,6 +27,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.yamamotoai.todolist.Notification.NotificationReceiver;
 import com.example.yamamotoai.todolist.alert.AlertDialogFragment;
 import com.example.yamamotoai.todolist.alert.AlertDialogFragment2;
 import com.example.yamamotoai.todolist.data.DatabaseHandler;
@@ -47,18 +51,14 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
     TextInputLayout titleEditText;
     TextInputLayout contentEditText;
     EditText editTextNewGroup;
-    ImageButton calenderImgBtn;
+    ImageButton calendarImgBtn;
     Spinner groupSpinner;
     FragmentManager fragmentManager;
 
-    Button cancelBtn;
-    Button saveBtn;
-    Button deleteBtn;
+//    Button cancelBtn;
+//    Button saveBtn, deleteBtn;
 
-    String title;
-    String group;
-    String content;
-    String date;
+    String title, group, content, date;
     int iconId;
 
     Boolean isEditing = false;
@@ -92,9 +92,10 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        setHasOptionsMenu(false);
+//        super.onCreateView(inflater, container, savedInstanceState);
+
         View view = inflater.inflate(R.layout.fragment_add, container, false);
+        setHasOptionsMenu(true);
 
         fragmentManager = getFragmentManager();
         Bundle arg = getArguments();
@@ -128,14 +129,14 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
         titleEditText = (TextInputLayout) view.findViewById(R.id.edittext_title);
         contentEditText = (TextInputLayout) view.findViewById(R.id.edittext_content);
         editTextNewGroup = (EditText) view.findViewById(R.id.edittext_group);
-        calenderImgBtn = (ImageButton) view.findViewById(R.id.datePickerButton);
-        calenderImgBtn.setOnClickListener(this);
+        calendarImgBtn = (ImageButton) view.findViewById(R.id.datePickerButton);
+        calendarImgBtn.setOnClickListener(this);
 //        cancelBtn = (Button) view.findViewById(R.id.cancelBtn);
 //        cancelBtn.setOnClickListener(this);
-        saveBtn = (Button) view.findViewById(R.id.saveBtn);
-        saveBtn.setOnClickListener(this);
-        deleteBtn = (Button) view.findViewById(R.id.deleteBtn);
-        deleteBtn.setOnClickListener(this);
+//        saveBtn = (Button) view.findViewById(R.id.saveBtn);
+//        saveBtn.setOnClickListener(this);
+//        deleteBtn = (Button) view.findViewById(R.id.deleteBtn);
+//        deleteBtn.setOnClickListener(this);
 
 
         //Spinner for group
@@ -211,21 +212,120 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
                 newDateFragment.show(getFragmentManager(), "datePicker");
                 break;
 
-//            case R.id.cancelBtn:
-//                group = groupSpinner.getSelectedItem().toString();
-//                //if new group is entered the group name is getting from edittext
-//                if (group == group_list.get(group_list.size() -1))
-//                    group = editTextNewGroup.getText().toString().toUpperCase();
-//                addEditFragmentInterface.onClosePage(group);
+////            case R.id.cancelBtn:
+////                group = groupSpinner.getSelectedItem().toString();
+////                //if new group is entered the group name is getting from edittext
+////                if (group == group_list.get(group_list.size() -1))
+////                    group = editTextNewGroup.getText().toString().toUpperCase();
+////                addEditFragmentInterface.onClosePage(group);
+////                break;
+//
+//            case R.id.saveBtn:
+////                dbHandler = new DatabaseHandler(getActivity());
+////                title = titleEditText.getEditText().getText().toString();
+////                group = groupSpinner.getSelectedItem().toString();
+////                //if new group is entered the group name is getting from edittext
+////                if (group == group_list.get(group_list.size() -1))
+////                group = editTextNewGroup.getText().toString().toUpperCase();
+////                content = contentEditText.getEditText().getText().toString();
+//////                if (content.matches("")) content = "Not set";
+////                date = dateTextView.getText().toString();
+////
+////                //Show alert if title is empty
+////                if (title.matches("")){
+////                    AlertDialogFragment alertDialogFragment = new AlertDialogFragment();
+////                    alertDialogFragment.show(fragmentManager,"Alert flagment");
+////                    //Show alert if the tabtitle that is created is already exist
+////                } else if (group_list.contains(editTextNewGroup.getText().toString().toUpperCase())){
+////                    AlertDialogFragment2 alertDialogFragment = new AlertDialogFragment2();
+////                    alertDialogFragment.show(fragmentManager,"Alert flagment");
+////                } else{
+////                    //If it is editting
+////                    if(isEditing == true){
+////                        TODO todoEdit = new TODO();
+////                        todoEdit.setId(TODOid);
+////                        todoEdit.setDate(date);
+////                        todoEdit.setTitle(title);
+////                        todoEdit.setGroup(group);
+////                        todoEdit.setContent(content);
+////                        dbHandler.updateDatabase(todoEdit);
+////
+////                        //setNotification
+////                        setNotification(ListInGroupAdapter.caluculateDayDiff(date), TODOid, date, title);
+////
+////                        Toast.makeText(getActivity(),"Updated",Toast.LENGTH_SHORT).show();
+////                        //New data
+////                    }else{
+////                        TODO todo = new TODO(date, title, group, content);
+////                        TODOid = (int) dbHandler.writeDatabase(todo);
+////                        //setNotification
+////                        setNotification(ListInGroupAdapter.caluculateDayDiff(date),TODOid, date, title);
+////                        Toast.makeText(getActivity(),"SAVED",Toast.LENGTH_SHORT).show();
+////                    }
+////
+////                    //close move to list
+////                    addEditFragmentInterface.onClosePage(group);
+////                }
+//                break;
+//
+//            case R.id.deleteBtn:
+////                String[] ids = new String[1];
+////                ids[0] = String.valueOf(TODOid);
+////                dbHandler = new DatabaseHandler(getActivity());
+////                dbHandler.deleteFromDatabase(ids);
+////                //close move to list
+////                addEditFragmentInterface.onClosePage(selectedGroupName);
+////                Toast.makeText(getActivity(),"DELETED",Toast.LENGTH_SHORT).show();
+////                cancelNotification(TODOid);
 //                break;
 
-            case R.id.saveBtn:
+            default:
+                break;
+        }
+    }
+
+    public void setNotification(int days, int reqCode, String todoDate, String todoTitle) {
+
+        int sec = (days - 1) * 86400;
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.SECOND, sec);
+        Long alertTime = calendar.getTimeInMillis();
+        Intent alarmIntent = new Intent(getActivity(), NotificationReceiver.class);
+        alarmIntent.putExtra("reqCode", String.valueOf(reqCode));
+        alarmIntent.putExtra("todoDate", todoDate);
+        alarmIntent.putExtra("todoTitle", todoTitle);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                getActivity(), reqCode, alarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        //for the schedule
+        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, alertTime, pendingIntent);
+
+    }
+
+    public void cancelNotification(int reqCode){
+        notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancel(reqCode);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+        inflater.inflate(R.menu.menu_add_edit, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id){
+            case R.id.action_save:
                 dbHandler = new DatabaseHandler(getActivity());
                 title = titleEditText.getEditText().getText().toString();
                 group = groupSpinner.getSelectedItem().toString();
                 //if new group is entered the group name is getting from edittext
                 if (group == group_list.get(group_list.size() -1))
-                group = editTextNewGroup.getText().toString().toUpperCase();
+                    group = editTextNewGroup.getText().toString().toUpperCase();
                 content = contentEditText.getEditText().getText().toString();
 //                if (content.matches("")) content = "Not set";
                 date = dateTextView.getText().toString();
@@ -266,8 +366,7 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
                     addEditFragmentInterface.onClosePage(group);
                 }
                 break;
-
-            case R.id.deleteBtn:
+            case R.id.action_delete:
                 String[] ids = new String[1];
                 ids[0] = String.valueOf(TODOid);
                 dbHandler = new DatabaseHandler(getActivity());
@@ -277,35 +376,8 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
                 Toast.makeText(getActivity(),"DELETED",Toast.LENGTH_SHORT).show();
                 cancelNotification(TODOid);
                 break;
-
-            default:
-                break;
         }
-    }
-
-    public void setNotification(int days, int reqCode, String todoDate, String todoTitle) {
-
-        int sec = (days - 1) * 86400;
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.SECOND, sec);
-        Long alertTime = calendar.getTimeInMillis();
-        Intent alarmIntent = new Intent(getActivity(), NotificationReceiver.class);
-        alarmIntent.putExtra("reqCode", String.valueOf(reqCode));
-        alarmIntent.putExtra("todoDate", todoDate);
-        alarmIntent.putExtra("todoTitle", todoTitle);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                getActivity(), reqCode, alarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-
-        //for the schedule
-        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, alertTime, pendingIntent);
+        return super.onOptionsItemSelected(item);
 
     }
-
-    public void cancelNotification(int reqCode){
-        notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancel(reqCode);
-    }
-
-
 }
