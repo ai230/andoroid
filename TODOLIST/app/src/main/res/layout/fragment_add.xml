@@ -48,7 +48,8 @@
         android:layout_height="wrap_content"
         android:hint="@string/hint"
         android:layout_weight="1"
-        android:textAppearance="?android:textAppearanceSmall"/>
+            android:imeOptions="actionNext"
+        android:textAppearance="?android:textAppearanceSmall" />
 
     </LinearLayout>
 
@@ -65,7 +66,7 @@
             android:id="@+id/editText3"
             android:hint="Note"
             android:imeOptions="actionNext"
-            android:inputType="textCapWords"/>
+            android:inputType="textMultiLine"/>
     </android.support.design.widget.TextInputLayout>
 
     <LinearLayout

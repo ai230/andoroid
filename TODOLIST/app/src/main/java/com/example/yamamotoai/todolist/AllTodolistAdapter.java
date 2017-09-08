@@ -1,7 +1,6 @@
 package com.example.yamamotoai.todolist;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,20 +8,21 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by yamamotoai on 2017-09-05.
+ * Created by yamamotoai on 2017-09-07.
  */
 
-public class AllTodolistAdapter extends BaseAdapter {
+public class AllTodolistAdapter extends BaseAdapter{
 
-    List<TODO> list;
+    List<TODO> list = new ArrayList<>();
     Context context;
 
-    public AllTodolistAdapter(Context context, List<TODO> list){
-        this.context = context;
+    public AllTodolistAdapter(Context context, List<TODO> list) {
         this.list = list;
+        this.context = context;
     }
 
     public class Holder{
@@ -51,32 +51,18 @@ public class AllTodolistAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup viewGroup) {
-        final TODO todo = list.get(position);
-//        View view =  convertView;
+    public View getView(int position, View covertView, ViewGroup viewGroup) {
+        TODO todo = list.get(position);
         Holder holder = new Holder();
-        LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.fragment_todolist_row, null);
-        holder.checkBox = (CheckBox) view.findViewById(R.id.checkbox_second);
-        holder.idTextview = (TextView) view.findViewById(R.id.textview_id);
-        holder.dateTextview = (TextView) view.findViewById(R.id.textview_date);
-        holder.daysTextview = (TextView) view.findViewById(R.id.textview_days);
-        holder.titleTextview = (TextView) view.findViewById(R.id.textview_title);
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.fragment_all_todolist_row, null);
+        holder.checkBox = (CheckBox) view.findViewById(R.id.checkbox1);
+//        holder.idTextview = (TextView) view.findViewById(R.id.textview_id1);
+        holder.dateTextview = (TextView) view.findViewById(R.id.textview_date1);
+        holder.daysTextview = (TextView) view.findViewById(R.id.textview_days1);
+        holder.titleTextview = (TextView) view.findViewById(R.id.textview_title1);
         holder.groupTextview = (TextView) view.findViewById(R.id.textview_group1);
-        holder.contentTextview = (TextView) view.findViewById(R.id.textview_content);
-
-//        if(isEnabledDelete == false)
-//            holder.checkBox.setVisibility(View.GONE);
-//        else
-//            holder.checkBox.setVisibility(View.VISIBLE);
-
-//        holder.checkBox.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Log.d("---","set checkbox");
-//                todo.setSelected(holder.checkBox.isChecked());
-//            }
-//        });
+        holder.contentTextview = (TextView) view.findViewById(R.id.textview_content1);
 
         int days = ListInGroupAdapter.caluculateDayDiff(todo.getDate());
 
@@ -84,9 +70,8 @@ public class AllTodolistAdapter extends BaseAdapter {
         holder.dateTextview.setText(todo.getDate());
         holder.daysTextview.setText(String.valueOf(days));
         holder.titleTextview.setText(todo.getTitle());
-//        holder.groupTextview.setText(todo.getGroup());
+        holder.groupTextview.setText(todo.getGroup());
         holder.contentTextview.setText(todo.getContent());
-
         return view;
     }
 }

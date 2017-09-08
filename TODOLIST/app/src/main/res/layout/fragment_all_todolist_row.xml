@@ -12,7 +12,7 @@
         android:orientation="horizontal">
 
         <CheckBox
-            android:id="@+id/checkbox_second"
+            android:id="@+id/checkbox1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -30,14 +30,14 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/textview_id"
+                    android:id="@+id/textview_id1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/activity_vertical_margin"
                     android:text="-" />
 
                 <TextView
-                    android:id="@+id/textview_date"
+                    android:id="@+id/textview_date1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="2017/07/01"
@@ -45,7 +45,7 @@
                     android:textAppearance="?android:textAppearanceSmall"/>
 
                 <TextView
-                    android:id="@+id/textview_days"
+                    android:id="@+id/textview_days1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/day_background"
@@ -66,7 +66,7 @@
 
 
             <TextView
-                android:id="@+id/textview_title"
+                android:id="@+id/textview_title1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/string1"
@@ -74,7 +74,7 @@
                 android:textAppearance="?android:textAppearanceMedium"/>
 
             <TextView
-                android:id="@+id/textview_content"
+                android:id="@+id/textview_content1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/string2"

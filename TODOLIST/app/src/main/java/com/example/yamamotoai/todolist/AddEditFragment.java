@@ -227,7 +227,7 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
                 if (group == group_list.get(group_list.size() -1))
                 group = editTextNewGroup.getText().toString().toUpperCase();
                 content = contentEditText.getEditText().getText().toString();
-                if (content.matches("")) content = "Not set";
+//                if (content.matches("")) content = "Not set";
                 date = dateTextView.getText().toString();
 
                 //Show alert if title is empty

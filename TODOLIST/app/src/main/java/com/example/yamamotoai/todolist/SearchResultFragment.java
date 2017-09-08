@@ -22,14 +22,12 @@ import java.util.List;
 
 public class SearchResultFragment extends Fragment {
 
-
     ListView listView;
     ListInGroupAdapter adapter;
     private List<TODO> todo_List_temp = new ArrayList<TODO>();
     private List<TODO> todo_List = new ArrayList<TODO>();
 
     FloatingActionButton fab_add;
-    FloatingActionButton fab_back;
 
     DatabaseHandler db;
 
@@ -58,7 +56,6 @@ public class SearchResultFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-//        setHasOptionsMenu(true);
         View view = inflater.inflate(R.layout.fragment_todolist, container, false);
         //read new data from database
         db = new DatabaseHandler(getActivity());
@@ -75,16 +72,7 @@ public class SearchResultFragment extends Fragment {
         fab_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 searchResultInterface.onDisplayAddingPageInSearch();
-            }
-        });
-
-        fab_back = (FloatingActionButton) view.findViewById(R.id.fab_back);
-        fab_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                searchResultInterface.onBackToGroupListInSearch();
             }
         });
 
@@ -96,7 +84,8 @@ public class SearchResultFragment extends Fragment {
 
         todo_List_temp = new ArrayList<>();
         for(TODO item: todo_List){
-            if(item.getTitle().contains(newText)){
+            if(item.getTitle().toLowerCase().contains(newText.toLowerCase())
+                    || item.getContent().toLowerCase().contains(newText.toLowerCase())){
                 todo_List_temp.add(item);
             }
         }
@@ -115,20 +104,5 @@ public class SearchResultFragment extends Fragment {
             }
         });
     }
-    //    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-////        setContentView(R.layout.searchable);
-////        handleIntent(getIntent());
-//    }
-//
-//    public void handleIntent(Intent intent){
-//
-//        if(Intent.ACTION_SEARCH.equals(intent.getAction())){
-//            String query = intent.getStringExtra(SearchManager.QUERY);
-//            //use the query to search the data
-//        }
-//
-//    }
 
 }

@@ -41,8 +41,8 @@ public class NotificationReceiver extends BroadcastReceiver {
                 .setLargeIcon(getBitmapIcon(context, R.drawable.launcher_icon))
                 .setContentTitle(msgTitle)
                 .setContentText(msgText)
-                .addAction(DoneThisTodo(context))
-                .addAction(ignoreReminderAction(context));
+                .addAction(ignoreReminderAction(context))
+                .addAction(DoneThisTodo(context));
 
         mBuilder.setContentIntent(pendingIntent);
         //How the person is notify
@@ -56,19 +56,18 @@ public class NotificationReceiver extends BroadcastReceiver {
         //notification is set one by one as different id(reqCode)
         mNotificationManager.notify(reqCode, mBuilder.build());
 
-
     }
 
     private NotificationCompat.Action DoneThisTodo(Context context){
 
-        NotificationCompat.Action action = new NotificationCompat.Action(R.drawable.launcher_icon,"Delete the Todo", pendingIntent);
+        NotificationCompat.Action action = new NotificationCompat.Action(R.drawable.ic_delete_black,"DONE THIS", pendingIntent);
 
         return action;
     }
 
     private NotificationCompat.Action ignoreReminderAction(Context context){
 
-        NotificationCompat.Action action = new NotificationCompat.Action(R.drawable.launcher_icon,"See the Todo", pendingIntent);
+        NotificationCompat.Action action = new NotificationCompat.Action(R.drawable.ic_event_note,"CHANGE DATE", pendingIntent);
 
         return action;
     }

@@ -46,6 +46,10 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    public void setActionbarTitle(String title){
+        getSupportActionBar().setTitle(title);
+    }
+
     public void onDisplayGroupList(){
         GroupListFragment groupListFragment = new GroupListFragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
@@ -94,7 +98,7 @@ public class MainActivity extends AppCompatActivity
         SearchResultFragment searchResults = new SearchResultFragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(viewId, searchResults);
-        transaction.addToBackStack(null);
+//        transaction.addToBackStack(null);
         transaction.commit();
 
         Bundle arg = new Bundle();
@@ -118,52 +122,6 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                //If at least one letter in SearchView, it moves to SearchResultFragment
-                //Otherwise stay GroupListFragment
-                if(newText.matches("")){
-                    onDisplayAllTodolist();
-                }else{
-                    onDisPlaySearchResult(newText);
-                }
-                return false;
-            }
-        });
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        switch (id){
-            case R.id.action_settings:
-                break;
-            case R.id.action_search:
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     //Method for AddEditFragment , when you pressed save button or delete button
     @Override
@@ -217,7 +175,7 @@ public class MainActivity extends AppCompatActivity
             listInGroupFragment.setArguments(arg);
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(viewId, listInGroupFragment);
-            transaction.addToBackStack(null);
+//            transaction.addToBackStack(null);
             transaction.commit();
         }
 
@@ -255,10 +213,6 @@ public class MainActivity extends AppCompatActivity
 //        });
 //    }
 
-    public void setActionbarTitle(String title){
-        getSupportActionBar().setTitle(title);
-    }
-
     //SearchResulrInterface
     @Override
     public void onDisplayAddingPageInSearch() {
@@ -286,6 +240,53 @@ public class MainActivity extends AppCompatActivity
             transaction.replace(R.id.rightPaneContainer, listInGroupFragment);
             transaction.commit();
         }
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                //If at least one letter in SearchView, it moves to SearchResultFragment
+                //Otherwise stay GroupListFragment
+                if(newText.matches("")){
+                    onDisplayAllTodolist();
+                }else{
+                    onDisPlaySearchResult(newText);
+                }
+                return false;
+            }
+        });
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        switch (id){
+            case R.id.action_settings:
+                break;
+            case R.id.action_search:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 
