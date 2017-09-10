@@ -24,10 +24,11 @@ public class NotificationReceiver extends BroadcastReceiver {
     private static final int ACTION_REQUEST_CODE2 = 15;
 
 
+    int reqCode;
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        int reqCode = Integer.parseInt(intent.getStringExtra("reqCode"));
+        reqCode = Integer.parseInt(intent.getStringExtra("reqCode"));
         String todoTitle = intent.getStringExtra("todoTitle");
         String todoDate = intent.getStringExtra("todoDate");
         String msgText = todoDate + " " + todoTitle;
@@ -47,7 +48,6 @@ public class NotificationReceiver extends BroadcastReceiver {
                 .setLargeIcon(getBitmapIcon(context, R.drawable.launcher_icon))
                 .setContentTitle(msgTitle)
                 .setContentText(msgText)
-                .addAction(ignoreReminderAction(context))
                 .addAction(DoneThisTodo(context));
 
         mBuilder.setContentIntent(pendingIntent);
@@ -68,6 +68,7 @@ public class NotificationReceiver extends BroadcastReceiver {
 
         Intent intent1 = new Intent(context, HandleActionIntent.class);
         intent1.setAction(HandleAction.ACTION_DONE);
+        intent1.putExtra("requestCode",reqCode);
 
         //create pendingIntent for Action
         PendingIntent pendingIntent = PendingIntent.getService(
@@ -79,26 +80,6 @@ public class NotificationReceiver extends BroadcastReceiver {
         NotificationCompat.Action action = new NotificationCompat.Action(
                 R.drawable.ic_delete_black,
                 "DONE THIS",
-                pendingIntent);
-
-        return action;
-    }
-
-    private NotificationCompat.Action ignoreReminderAction(Context context){
-
-        Intent intent2 = new Intent(context, HandleActionIntent.class);
-        intent2.setAction(HandleAction.ACTION_CHANGE);
-
-        //create pendingIntent for Action
-        PendingIntent pendingIntent = PendingIntent.getService(
-                context,
-                ACTION_REQUEST_CODE2,
-                intent2,
-                PendingIntent.FLAG_CANCEL_CURRENT);
-
-        NotificationCompat.Action action = new NotificationCompat.Action(
-                R.drawable.ic_event_note,
-                "CHANGE DATE",
                 pendingIntent);
 
         return action;

@@ -57,15 +57,25 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void onDisplayGroupList(){
+
+        int i = getFragmentManager().getBackStackEntryCount();
+        Log.d("i = ", String.valueOf(i));
+
+        if(getFragmentManager().getBackStackEntryCount() > 0){
+            getFragmentManager().popBackStackImmediate();
+        }
         GroupListFragment groupListFragment = new GroupListFragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.addToBackStack("groupFragmeny");
 
         Bundle arg = new Bundle();
         arg.putString("selectedIconId", String.valueOf(selectedIconId));
         groupListFragment.setArguments(arg);
-        transaction.replace(viewId, groupListFragment);
-        transaction.addToBackStack(null);
+        transaction.add(viewId, groupListFragment);
         transaction.commit();
+
+        int i2 = getFragmentManager().getBackStackEntryCount();
+        Log.d("i2 = ", String.valueOf(i2));
     }
 
     public void onDisPlayTodoListInGroup(String selectedGroup){
@@ -73,24 +83,34 @@ public class MainActivity extends AppCompatActivity
         ListInGroupFragment listInGroupFragment = new ListInGroupFragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
+        int i = getFragmentManager().getBackStackEntryCount();
+        Log.d("i = ", String.valueOf(i));
+
+
         if(screensize_large == true && selectedTodoId == null)
             viewId = R.id.rightPaneContainer;
 
-        transaction.replace(viewId, listInGroupFragment);
+        transaction.add(viewId, listInGroupFragment);
 
-        transaction.addToBackStack(null);
+        transaction.addToBackStack("listInGroup");
         transaction.commit();
 
         Bundle bundle = new Bundle();
         bundle.putString("selectedGroup", selectedGroup);
         listInGroupFragment.setArguments(bundle);
 
+        int i2 = getFragmentManager().getBackStackEntryCount();
+        Log.d("i2 = ", String.valueOf(i2));
+
     }
 
     public void onDisplayAddEditFragment(){
+        int i = getFragmentManager().getBackStackEntryCount();
+        Log.d("i = ", String.valueOf(i));
+
         AddEditFragment addEditFragment = new AddEditFragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(viewId, addEditFragment);
+        transaction.add(viewId, addEditFragment);
         transaction.addToBackStack(null);
         transaction.commit();
         Bundle arg = new Bundle();
@@ -98,6 +118,8 @@ public class MainActivity extends AppCompatActivity
         arg.putString("selectedGroupName",selectedGroupName);
         arg.putInt("selectedGroupPosition", selectedGroupPosition);
         addEditFragment.setArguments(arg);
+        int i2 = getFragmentManager().getBackStackEntryCount();
+        Log.d("i2 = ", String.valueOf(i2));
     }
 
     public void onDisPlaySearchResult(String newText){
@@ -116,7 +138,7 @@ public class MainActivity extends AppCompatActivity
         AllTodolistFragment allTodolistFragment = new AllTodolistFragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(viewId, allTodolistFragment);
-        transaction.addToBackStack(null);
+//        transaction.addToBackStack(null);
         transaction.commit();
     }
 
@@ -133,16 +155,29 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onClosePage(String selectedGroup) {
 
-        getSupportFragmentManager().popBackStack();
-        ListInGroupFragment listInGroupFragment = new ListInGroupFragment();
-        Bundle arg = new Bundle();
-        arg.putString("selectedGroup", selectedGroup);
-        listInGroupFragment.setArguments(arg);
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        int i = getFragmentManager().getBackStackEntryCount();
+        Log.d("i = ", String.valueOf(i));
 
-        transaction.replace(viewId, listInGroupFragment);
-//        transaction.addToBackStack(null);
-        transaction.commit();
+        while(getFragmentManager().getBackStackEntryCount() > 0){
+            getFragmentManager().popBackStackImmediate();
+        }
+
+        int i2 = getFragmentManager().getBackStackEntryCount();
+        Log.d("i2 = ", String.valueOf(i2));
+
+        onDisplayGroupList();
+        onDisPlayTodoListInGroup(selectedGroup);
+//        ListInGroupFragment listInGroupFragment = new ListInGroupFragment();
+//        Bundle arg = new Bundle();
+//        arg.putString("selectedGroup", selectedGroup);
+//        listInGroupFragment.setArguments(arg);
+//        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+//
+//        transaction.replace(viewId, listInGroupFragment);
+//        transaction.commit();
+
+        int i3 = getFragmentManager().getBackStackEntryCount();
+        Log.d("i3 = ", String.valueOf(i3));
     }
 
 
@@ -268,7 +303,7 @@ public class MainActivity extends AppCompatActivity
                 //If at least one letter in SearchView, it moves to SearchResultFragment
                 //Otherwise stay GroupListFragment
                 if(newText.matches("")){
-                    onDisplayAllTodolist();
+//                    onDisplayAllTodolist();
                 }else{
                     onDisPlaySearchResult(newText);
                 }
@@ -302,5 +337,12 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Log.d("","");
+//        if(getFragmentManager().getBackStackEntryCount() > 0){
+//            getFragmentManager().popBackStackImmediate();
+//        }
+    }
 }

@@ -98,14 +98,6 @@ public class ListInGroupFragment extends Fragment {
             }
         });
 
-//        fab_back = (FloatingActionButton) view.findViewById(R.id.fab_back);
-//        fab_back.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                listGroupInFragmentInterface.onBackToGroupList();
-//            }
-//        });
-
         //initialize listview
         listView = (ListView)view.findViewById(R.id.listview_second);
         //create adapter

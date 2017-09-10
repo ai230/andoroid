@@ -24,6 +24,7 @@
 
         <receiver android:name=".Notification.NotificationReceiver"/>
 
+        <service android:name=".Notification.HandleActionIntent"/>
 
     </application>
 

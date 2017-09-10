@@ -9,6 +9,7 @@ import android.content.Intent;
 
 public class HandleActionIntent extends IntentService{
 
+    int todoId;
     public HandleActionIntent() {
         super("HandleActionIntent");
     }
@@ -16,8 +17,9 @@ public class HandleActionIntent extends IntentService{
     @Override
     protected void onHandleIntent(Intent intent) {
 
+        todoId = intent.getIntExtra("requestCode", todoId);
         String action = intent.getAction();
-        HandleAction.executeTask(this, action);
+        HandleAction.executeTask(this, action, todoId);
 
     }
 }

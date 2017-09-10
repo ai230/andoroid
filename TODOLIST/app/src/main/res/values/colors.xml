@@ -11,6 +11,9 @@
     <color name="colorMainBar">#48CFBD</color>
 
     <color name="colorDay">#faf9c8</color>
+    <color name="color1">#c8d8fa</color>
+    <color name="color2">#dca7f7</color>
+    <color name="color3">#f7b8dc</color>
 
 
 </resources>

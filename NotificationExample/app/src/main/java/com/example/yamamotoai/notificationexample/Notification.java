@@ -13,7 +13,6 @@ public class Notification extends AppCompatActivity {
     }
 
     public void NotificationButtonClicked(View view){
-
         NotificationUtil.reminderUser(this);
     }
 }
