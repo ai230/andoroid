@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
-import android.preference.DialogPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
@@ -17,7 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.NumberPicker;
 
-import com.example.yamamotoai.todolist.MainActivity;
+import com.example.yamamotoai.todolist.Main.MainActivity;
 import com.example.yamamotoai.todolist.R;
 /**
  * Created by yamamotoai on 2017-09-11.
@@ -26,13 +25,8 @@ import com.example.yamamotoai.todolist.R;
 public class SettingActivityFragment extends PreferenceFragment {
 
     NumberPicker picker;
+    private Preference prefReminder, prefDay;
 
-    private SharedPreferences pref;
-    private SharedPreferences.OnSharedPreferenceChangeListener prefListner;
-    private CheckBoxPreference prefCheckReminder;
-    private Preference prefReminder;
-    private Preference prefDay;
-    int s;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +36,7 @@ public class SettingActivityFragment extends PreferenceFragment {
         toggleEnabled(MainActivity.NOTIFICATION_REMINDER);
 
         prefDay = findPreference(MainActivity.PREF_KEY_DAY);
-        prefDay.setSummary("Your reminder is " + MainActivity.NOTIFICATION_DAYS);
+        prefDay.setSummary(getString(R.string.pref_days_summary,MainActivity.NOTIFICATION_DAYS));
         prefDay.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -63,8 +57,8 @@ public class SettingActivityFragment extends PreferenceFragment {
                         picker.setValue(MainActivity.NOTIFICATION_DAYS);
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                        builder.setTitle(getString(R.string.pref_days_summary))
-                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        builder.setTitle(R.string.picker_title)
+                                .setPositiveButton(R.string.ok_button, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
                                         int pickedValue = picker.getValue();
@@ -73,10 +67,12 @@ public class SettingActivityFragment extends PreferenceFragment {
                                         editor.putInt(MainActivity.PREF_KEY_DAY, pickedValue);
                                         editor.commit();
                                         //Set Summary
-                                        prefDay.setSummary("Your reminder is " + pickedValue);
+                                        prefDay.setSummary(getString(R.string.pref_days_summary, pickedValue));
+
+                                        MainActivity.NOTIFICATION_DAYS = pickedValue;
                                     }
                                 })
-                                .setNegativeButton("CANCEL", null)
+                                .setNegativeButton(R.string.cancel_button, null)
                                 .setView(view);
 
                         return builder.create();
@@ -110,9 +106,9 @@ public class SettingActivityFragment extends PreferenceFragment {
         getPreferenceScreen().findPreference(MainActivity.PREF_KEY_DAY).setEnabled(boo);
         prefReminder = findPreference(MainActivity.PREF_KEY_REMINDER);
         if(MainActivity.NOTIFICATION_REMINDER) {
-            prefReminder.setSummary("Notification ON");
+            prefReminder.setSummary(R.string.pref_reminder_summary_on);
         }else {
-            prefReminder.setSummary("Notification OFF");
+            prefReminder.setSummary(R.string.pref_reminder_summary_off);
         }
     }
 

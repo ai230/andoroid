@@ -1,4 +1,4 @@
-package com.example.yamamotoai.todolist;
+package com.example.yamamotoai.todolist.Main;
 
 import android.app.FragmentTransaction;
 import android.app.SearchManager;
@@ -10,12 +10,11 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.yamamotoai.todolist.Preferences.SettingActivity;
-import com.example.yamamotoai.todolist.Preferences.SettingActivityFragment;
+import com.example.yamamotoai.todolist.R;
 
 public class MainActivity extends AppCompatActivity
         implements GroupListFragment.GroupListFragmentInterface,
@@ -49,8 +48,8 @@ public class MainActivity extends AppCompatActivity
         sharedPrefReminder = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
         NOTIFICATION_REMINDER = sharedPrefReminder.getBoolean(PREF_KEY_REMINDER, false);
 
-        SharedPreferences sharedPrefDay = getSharedPreferences(PREF_KEY_DAY, Context.MODE_PRIVATE);
-        NOTIFICATION_DAYS = sharedPrefDay.getInt(PREF_KEY_DAY, 1);
+        SharedPreferences sharedPrefDay = getPreferences(Context.MODE_PRIVATE);
+        NOTIFICATION_DAYS = sharedPrefDay.getInt(PREF_KEY_DAY, Context.MODE_PRIVATE);
 
 
 //        Display display = getWindowManager().getDefaultDisplay();

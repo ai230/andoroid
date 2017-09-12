@@ -1,15 +1,12 @@
 package com.example.yamamotoai.todolist.Notification;
 
 import android.app.AlarmManager;
-import android.app.FragmentTransaction;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
-import com.example.yamamotoai.todolist.AddEditFragment;
-import com.example.yamamotoai.todolist.MainActivity;
+import com.example.yamamotoai.todolist.Main.MainActivity;
 import com.example.yamamotoai.todolist.data.DatabaseHandler;
 
 import java.util.Calendar;

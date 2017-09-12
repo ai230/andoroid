@@ -1,20 +1,17 @@
-package com.example.yamamotoai.todolist;
+package com.example.yamamotoai.todolist.Main;
 
 import android.app.Fragment;
 import android.content.Context;
-import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
+import com.example.yamamotoai.todolist.R;
 import com.example.yamamotoai.todolist.data.DatabaseHandler;
 
 import java.util.ArrayList;

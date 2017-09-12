@@ -1,4 +1,4 @@
-package com.example.yamamotoai.todolist;
+package com.example.yamamotoai.todolist.Main;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -10,6 +10,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.yamamotoai.todolist.R;
 
 import java.util.List;
 

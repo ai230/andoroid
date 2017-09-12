@@ -22,15 +22,20 @@
 
     <!--PREFERENCES-->
     <string name="pref_key_reminder">key_reminder</string>
-    <string name="pref_reminder_title">Set reminder</string>
-    <string name="pref_reminder_summary">Check yes</string>
+    <string name="pref_reminder_title">Set Notification</string>
+    <string name="pref_reminder_summary">Set Notification</string>
+    <string name="pref_reminder_summary_on">Notification ON</string>
+    <string name="pref_reminder_summary_off">Notification OFF</string>
 
     <string name="pref_key_day">key_day</string>
-    <string name="pref_days_summary">Select number</string>
-    <string name="pref_days_title">days for reminder</string>
-
+    <string name="pref_days_title">Select day for Notification</string>
+    <string name="pref_days_summary">Get Notification before %1$d day(s)</string>
+    <string name="pref_days_summary2"> day(s)</string>
     <string name="title_activity_settings">SETTING</string>
 
-
+    <!--NumberPicker-->
+    <string name="picker_title">Select days for notification</string>
+    <string name="ok_button">OK</string>
+    <string name="cancel_button">CANCEL</string>
 
 </resources>

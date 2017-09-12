@@ -10,7 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
 
-import com.example.yamamotoai.todolist.MainActivity;
+import com.example.yamamotoai.todolist.Main.MainActivity;
 import com.example.yamamotoai.todolist.R;
 
 /**

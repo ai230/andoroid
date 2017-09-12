@@ -1,4 +1,4 @@
-package com.example.yamamotoai.todolist;
+package com.example.yamamotoai.todolist.Main;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.example.yamamotoai.todolist.R;
 import com.example.yamamotoai.todolist.data.DatabaseHandler;
 
 import java.util.ArrayList;

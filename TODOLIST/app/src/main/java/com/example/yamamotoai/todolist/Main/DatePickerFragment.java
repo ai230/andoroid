@@ -1,4 +1,4 @@
-package com.example.yamamotoai.todolist;
+package com.example.yamamotoai.todolist.Main;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;

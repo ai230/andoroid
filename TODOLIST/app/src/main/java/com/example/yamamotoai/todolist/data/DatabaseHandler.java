@@ -2,17 +2,14 @@ package com.example.yamamotoai.todolist.data;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.example.yamamotoai.todolist.TODO;
+import com.example.yamamotoai.todolist.Main.TODO;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

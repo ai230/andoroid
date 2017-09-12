@@ -1,26 +1,24 @@
-package com.example.yamamotoai.todolist;
+package com.example.yamamotoai.todolist.Main;
 
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.yamamotoai.todolist.MyComparator;
+import com.example.yamamotoai.todolist.R;
 import com.example.yamamotoai.todolist.data.DatabaseHandler;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -97,6 +95,9 @@ public class ListInGroupFragment extends Fragment {
                 listGroupInFragmentInterface.onDisplayAddingPage(selectedGroupPosition, selectedGroupName);
             }
         });
+
+        //Sort by date using comparator
+        Collections.sort(todoListInGroup, MyComparator.DateComparator);
 
         //initialize listview
         listView = (ListView)view.findViewById(R.id.listview_second);
