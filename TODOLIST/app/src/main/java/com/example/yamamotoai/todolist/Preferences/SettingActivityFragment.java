@@ -63,9 +63,14 @@ public class SettingActivityFragment extends PreferenceFragment {
                                     public void onClick(DialogInterface dialogInterface, int i) {
                                         int pickedValue = picker.getValue();
                                         //Set picker value into SharedPreference
-                                        SharedPreferences.Editor editor = getActivity().getPreferences(Context.MODE_PRIVATE).edit();
+                                        SharedPreferences prefs = getActivity().getSharedPreferences(MainActivity.PREF_KEY_DAY, Context.MODE_PRIVATE);
+                                        SharedPreferences.Editor editor = prefs.edit();
                                         editor.putInt(MainActivity.PREF_KEY_DAY, pickedValue);
                                         editor.commit();
+
+//                                        SharedPreferences sharedPref = getActivity().getSharedPreferences(MainActivity.PREF_KEY_DAY, Context.MODE_PRIVATE);
+//                                        int d = sharedPref.getInt(MainActivity.PREF_KEY_DAY, 1);
+
                                         //Set Summary
                                         prefDay.setSummary(getString(R.string.pref_days_summary, pickedValue));
 

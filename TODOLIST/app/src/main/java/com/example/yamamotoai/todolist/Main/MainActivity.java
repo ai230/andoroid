@@ -1,5 +1,6 @@
 package com.example.yamamotoai.todolist.Main;
 
+import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.app.SearchManager;
 import android.content.Context;
@@ -24,10 +25,8 @@ public class MainActivity extends AppCompatActivity
         , AllTodolistFragment.AllTodolistFragmentInterface{
 
     public static final String PREF_KEY_REMINDER = "key_reminder";
-    public static final String PREF_KEY_REMINDER1 = "key_reminder1";
     public static final String PREF_KEY_DAY = "key_day";
     public static int NOTIFICATION_DAYS;
-    public static int NOTIFICATION_REMINDER_NUM;
     public static boolean NOTIFICATION_REMINDER;
 
     private String selectedTodoId, selectedGroupName;
@@ -38,19 +37,23 @@ public class MainActivity extends AppCompatActivity
     SearchManager searchManager;
     SearchView searchView;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_main);
+
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         SharedPreferences sharedPrefReminder = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPrefReminder = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
         NOTIFICATION_REMINDER = sharedPrefReminder.getBoolean(PREF_KEY_REMINDER, false);
 
-        SharedPreferences sharedPrefDay = getPreferences(Context.MODE_PRIVATE);
-        NOTIFICATION_DAYS = sharedPrefDay.getInt(PREF_KEY_DAY, Context.MODE_PRIVATE);
 
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+        sharedPref = getSharedPreferences(PREF_KEY_DAY, Context.MODE_PRIVATE);
+        NOTIFICATION_DAYS = sharedPref.getInt(PREF_KEY_DAY, 1);
 
 //        Display display = getWindowManager().getDefaultDisplay();
 //        int orientation = Configuration.ORIENTATION_UNDEFINED;

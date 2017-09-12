@@ -4,6 +4,7 @@ import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.yamamotoai.todolist.Notification.NotificationUtil;
+import com.example.yamamotoai.todolist.Preferences.SettingActivity;
 import com.example.yamamotoai.todolist.R;
 import com.example.yamamotoai.todolist.alert.AlertDialogFragment;
 import com.example.yamamotoai.todolist.alert.AlertDialogFragment2;
@@ -85,6 +87,9 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
 
         View view = inflater.inflate(R.layout.fragment_add, container, false);
         setHasOptionsMenu(true);
+
+//        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+//        int d = sharedPref.getInt(MainActivity.PREF_KEY_DAY, 1);
 
         fragmentManager = getFragmentManager();
         Bundle arg = getArguments();
