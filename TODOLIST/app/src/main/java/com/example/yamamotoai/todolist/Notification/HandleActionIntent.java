@@ -17,7 +17,7 @@ public class HandleActionIntent extends IntentService{
     @Override
     protected void onHandleIntent(Intent intent) {
 
-        todoId = intent.getIntExtra("requestCode", todoId);
+        todoId = intent.getIntExtra(NotificationUtil.REQUEST_CODE, todoId);
         String action = intent.getAction();
         HandleAction.executeTask(this, action, todoId);
 

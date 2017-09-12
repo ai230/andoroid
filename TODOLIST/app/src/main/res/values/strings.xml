@@ -1,17 +1,36 @@
 <resources>
-    <string name="action_settings">Settings</string>
-    <string name="action_delete">Delete</string>
+
     <string name="app_name">MyTodolist</string>
     <string name="string1">Lorem ipsum dolor sit amet.</string>
     <string name="string2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sollicitudin nec nunc sed suscipit. Sed elit libero, rhoncus ut varius quis, faucibus mollis nulla. </string>
+
+    <!--AddEdit-->
     <string name="tile">Title</string>
     <string name="group">Group</string>
     <string name="newgroup">NEW GROUP</string>
     <string name="hint">Type here...</string>
 
+    <!--MENU-->
+    <string name="action_settings">Settings</string>
+    <string name="action_delete">Delete</string>
     <string name="menu_delete">DELETE</string>
     <string name="menu_search">SEARCH</string>
     <string name="search_hint">SEARCH_HINT</string>
+
+    <!--NOTIFICATION-->
+    <string name="notifiTitle">DONE THIS</string>
+
+    <!--PREFERENCES-->
+    <string name="pref_key_reminder">key_reminder</string>
+    <string name="pref_reminder_title">Set reminder</string>
+    <string name="pref_reminder_summary">Check yes</string>
+
+    <string name="pref_key_day">key_day</string>
+    <string name="pref_days_summary">Select number</string>
+    <string name="pref_days_title">days for reminder</string>
+
+    <string name="title_activity_settings">SETTING</string>
+
 
 
 </resources>

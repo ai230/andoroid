@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="Notification"
+        android:key="pref_key_storage_settings">
+
+        <CheckBoxPreference
+            android:key="@string/pref_key_reminder"
+            android:title="@string/pref_reminder_title"
+            android:summary="@string/pref_reminder_summary"
+            android:defaultValue="true" />
+
+        <Preference
+            android:key="@string/pref_key_day"
+            android:title="@string/pref_days_title"
+            android:summary="@string/pref_days_summary"
+            android:defaultValue="1"/>
+
+    </PreferenceCategory>
+
+
+
+</PreferenceScreen>

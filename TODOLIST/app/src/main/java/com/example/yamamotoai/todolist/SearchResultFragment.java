@@ -23,7 +23,7 @@ import java.util.List;
 public class SearchResultFragment extends Fragment {
 
     ListView listView;
-    ListInGroupAdapter adapter;
+    AllTodolistAdapter adapter;
     private List<TODO> todo_List_temp = new ArrayList<TODO>();
     private List<TODO> todo_List = new ArrayList<TODO>();
 
@@ -56,7 +56,7 @@ public class SearchResultFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        View view = inflater.inflate(R.layout.fragment_todolist, container, false);
+        View view = inflater.inflate(R.layout.fragment_all_todolist, container, false);
         //read new data from database
         db = new DatabaseHandler(getActivity());
         todo_List = db.readDatabase(todo_List);
@@ -64,15 +64,33 @@ public class SearchResultFragment extends Fragment {
         if(bundle != null)
             newText = bundle.getString("newText");
 
-        if(!newText.equals(""))
+        //If strings in searchview is "" all todolist show
+        if(newText.equals(""))
+            todo_List_temp = todo_List;
+        else
             createList(view, newText);
-//        searchResultInterface.searchResultData(newText);
+
 
         fab_add = (FloatingActionButton) view.findViewById(R.id.fab_todolist);
         fab_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 searchResultInterface.onDisplayAddingPageInSearch();
+            }
+        });
+
+        //initialize listview
+        listView = (ListView)view.findViewById(R.id.listview_second);
+        //create adapter
+        adapter = new AllTodolistAdapter(getActivity(), todo_List_temp);
+        //set adapter to the listview
+        listView.setAdapter(adapter);
+        //set item listener to the listview
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                TODO todo_temp = todo_List_temp.get(position);
+                searchResultInterface.onDisplayAddingPageForEditingInSearch(String.valueOf(todo_temp.getId()), todo_temp.getGroup());
             }
         });
 
@@ -89,20 +107,7 @@ public class SearchResultFragment extends Fragment {
                 todo_List_temp.add(item);
             }
         }
-        //initialize listview
-        listView = (ListView)view.findViewById(R.id.listview_second);
-        //create adapter
-        adapter = new ListInGroupAdapter(getActivity(), todo_List_temp, false);
-        //set adapter to the listview
-        listView.setAdapter(adapter);
-        //set item listener to the listview
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                TODO todo_temp = todo_List_temp.get(position);
-                searchResultInterface.onDisplayAddingPageForEditingInSearch(String.valueOf(todo_temp.getId()), todo_temp.getGroup());
-            }
-        });
+
     }
 
 }

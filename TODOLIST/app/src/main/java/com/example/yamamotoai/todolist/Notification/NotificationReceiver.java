@@ -20,17 +20,16 @@ import com.example.yamamotoai.todolist.R;
 //When you add or update todolist notification is set before 1 day.
 public class NotificationReceiver extends BroadcastReceiver {
 
-    private static final int ACTION_REQUEST_CODE1 = 14;
-    private static final int ACTION_REQUEST_CODE2 = 15;
+    private static final int ACTION_REQUEST_CODE = 14;
 
 
     int reqCode;
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        reqCode = Integer.parseInt(intent.getStringExtra("reqCode"));
-        String todoTitle = intent.getStringExtra("todoTitle");
-        String todoDate = intent.getStringExtra("todoDate");
+        reqCode = Integer.parseInt(intent.getStringExtra(NotificationUtil.REQUEST_CODE));
+        String todoTitle = intent.getStringExtra(NotificationUtil.REQUEST_TODO_TITLE);
+        String todoDate = intent.getStringExtra(NotificationUtil.REQUEST_TODO_DATE);
         String msgText = todoDate + " " + todoTitle;
         String msgTitle = "MyTodolist";
 
@@ -48,6 +47,7 @@ public class NotificationReceiver extends BroadcastReceiver {
                 .setLargeIcon(getBitmapIcon(context, R.drawable.launcher_icon))
                 .setContentTitle(msgTitle)
                 .setContentText(msgText)
+
                 .addAction(DoneThisTodo(context));
 
         mBuilder.setContentIntent(pendingIntent);
@@ -68,12 +68,12 @@ public class NotificationReceiver extends BroadcastReceiver {
 
         Intent intent1 = new Intent(context, HandleActionIntent.class);
         intent1.setAction(HandleAction.ACTION_DONE);
-        intent1.putExtra("requestCode",reqCode);
+        intent1.putExtra(NotificationUtil.REQUEST_CODE,reqCode);
 
         //create pendingIntent for Action
         PendingIntent pendingIntent = PendingIntent.getService(
                 context,
-                ACTION_REQUEST_CODE1,
+                ACTION_REQUEST_CODE,
                 intent1,
                 PendingIntent.FLAG_CANCEL_CURRENT);
 

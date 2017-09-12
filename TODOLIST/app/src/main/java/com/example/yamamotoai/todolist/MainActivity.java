@@ -1,22 +1,21 @@
 package com.example.yamamotoai.todolist;
 
-import android.app.AlarmManager;
 import android.app.FragmentTransaction;
-import android.app.PendingIntent;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
-import java.util.Calendar;
+import com.example.yamamotoai.todolist.Preferences.SettingActivity;
+import com.example.yamamotoai.todolist.Preferences.SettingActivityFragment;
 
 public class MainActivity extends AppCompatActivity
         implements GroupListFragment.GroupListFragmentInterface,
@@ -25,17 +24,34 @@ public class MainActivity extends AppCompatActivity
         SearchResultFragment.SearchResultInterface
         , AllTodolistFragment.AllTodolistFragmentInterface{
 
-    private String selectedTodoId;
-    private String selectedGroupName;
+    public static final String PREF_KEY_REMINDER = "key_reminder";
+    public static final String PREF_KEY_REMINDER1 = "key_reminder1";
+    public static final String PREF_KEY_DAY = "key_day";
+    public static int NOTIFICATION_DAYS;
+    public static int NOTIFICATION_REMINDER_NUM;
+    public static boolean NOTIFICATION_REMINDER;
+
+    private String selectedTodoId, selectedGroupName;
     private int selectedGroupPosition;
     public boolean screensize_large = false;
     private int viewId = R.id.fragmentContainer;
 
-    private int selectedIconId;
+    SearchManager searchManager;
+    SearchView searchView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_main);
+
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+        SharedPreferences sharedPrefReminder = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPrefReminder = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+        NOTIFICATION_REMINDER = sharedPrefReminder.getBoolean(PREF_KEY_REMINDER, false);
+
+        SharedPreferences sharedPrefDay = getSharedPreferences(PREF_KEY_DAY, Context.MODE_PRIVATE);
+        NOTIFICATION_DAYS = sharedPrefDay.getInt(PREF_KEY_DAY, 1);
+
 
 //        Display display = getWindowManager().getDefaultDisplay();
 //        int orientation = Configuration.ORIENTATION_UNDEFINED;
@@ -47,7 +63,6 @@ public class MainActivity extends AppCompatActivity
             screensize_large = true;
         }
 
-
         onDisplayGroupList();
 
     }
@@ -58,24 +73,16 @@ public class MainActivity extends AppCompatActivity
 
     public void onDisplayGroupList(){
 
-        int i = getFragmentManager().getBackStackEntryCount();
-        Log.d("i = ", String.valueOf(i));
-
         if(getFragmentManager().getBackStackEntryCount() > 0){
             getFragmentManager().popBackStackImmediate();
         }
         GroupListFragment groupListFragment = new GroupListFragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.addToBackStack("groupFragmeny");
+        transaction.addToBackStack(null);
 
-        Bundle arg = new Bundle();
-        arg.putString("selectedIconId", String.valueOf(selectedIconId));
-        groupListFragment.setArguments(arg);
         transaction.add(viewId, groupListFragment);
         transaction.commit();
 
-        int i2 = getFragmentManager().getBackStackEntryCount();
-        Log.d("i2 = ", String.valueOf(i2));
     }
 
     public void onDisPlayTodoListInGroup(String selectedGroup){
@@ -83,30 +90,22 @@ public class MainActivity extends AppCompatActivity
         ListInGroupFragment listInGroupFragment = new ListInGroupFragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
-        int i = getFragmentManager().getBackStackEntryCount();
-        Log.d("i = ", String.valueOf(i));
-
-
         if(screensize_large == true && selectedTodoId == null)
             viewId = R.id.rightPaneContainer;
 
         transaction.add(viewId, listInGroupFragment);
 
-        transaction.addToBackStack("listInGroup");
+        transaction.addToBackStack(null);
         transaction.commit();
 
         Bundle bundle = new Bundle();
         bundle.putString("selectedGroup", selectedGroup);
         listInGroupFragment.setArguments(bundle);
 
-        int i2 = getFragmentManager().getBackStackEntryCount();
-        Log.d("i2 = ", String.valueOf(i2));
 
     }
 
     public void onDisplayAddEditFragment(){
-        int i = getFragmentManager().getBackStackEntryCount();
-        Log.d("i = ", String.valueOf(i));
 
         AddEditFragment addEditFragment = new AddEditFragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
@@ -118,30 +117,32 @@ public class MainActivity extends AppCompatActivity
         arg.putString("selectedGroupName",selectedGroupName);
         arg.putInt("selectedGroupPosition", selectedGroupPosition);
         addEditFragment.setArguments(arg);
-        int i2 = getFragmentManager().getBackStackEntryCount();
-        Log.d("i2 = ", String.valueOf(i2));
+
     }
 
     public void onDisPlaySearchResult(String newText){
         SearchResultFragment searchResults = new SearchResultFragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(viewId, searchResults);
-//        transaction.addToBackStack(null);
         transaction.commit();
 
         Bundle arg = new Bundle();
         arg.putString("newText", newText);
         searchResults.setArguments(arg);
+
     }
 
-    public void onDisplayAllTodolist(){
-        AllTodolistFragment allTodolistFragment = new AllTodolistFragment();
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(viewId, allTodolistFragment);
-//        transaction.addToBackStack(null);
-        transaction.commit();
-    }
+//    public void onDisplayAllTodolist(){
+//        AllTodolistFragment allTodolistFragment = new AllTodolistFragment();
+//        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+//        transaction.replace(viewId, allTodolistFragment);
+//        transaction.commit();
+//    }
 
+
+    ////////////////////////////////////////////////////////////
+    //INTERFACE
+    ////////////////////////////////////////////////////////////
     //Method for GroupListFragmentInterface
     @Override
     public void onDisplayTodoListPage(int position, String selectedGroup) {
@@ -155,29 +156,15 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onClosePage(String selectedGroup) {
 
-        int i = getFragmentManager().getBackStackEntryCount();
-        Log.d("i = ", String.valueOf(i));
-
+        //Pop all existing fragment that was added to a container
         while(getFragmentManager().getBackStackEntryCount() > 0){
             getFragmentManager().popBackStackImmediate();
         }
 
-        int i2 = getFragmentManager().getBackStackEntryCount();
-        Log.d("i2 = ", String.valueOf(i2));
-
+        //add all fragment
         onDisplayGroupList();
         onDisPlayTodoListInGroup(selectedGroup);
-//        ListInGroupFragment listInGroupFragment = new ListInGroupFragment();
-//        Bundle arg = new Bundle();
-//        arg.putString("selectedGroup", selectedGroup);
-//        listInGroupFragment.setArguments(arg);
-//        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//
-//        transaction.replace(viewId, listInGroupFragment);
-//        transaction.commit();
 
-        int i3 = getFragmentManager().getBackStackEntryCount();
-        Log.d("i3 = ", String.valueOf(i3));
     }
 
 
@@ -216,7 +203,6 @@ public class MainActivity extends AppCompatActivity
             listInGroupFragment.setArguments(arg);
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(viewId, listInGroupFragment);
-//            transaction.addToBackStack(null);
             transaction.commit();
         }
 
@@ -282,15 +268,16 @@ public class MainActivity extends AppCompatActivity
             transaction.commit();
         }
     }
-
-
+    ////////////////////////////////////////////////////////////
+    //MENU
+    ////////////////////////////////////////////////////////////
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -300,17 +287,10 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                //If at least one letter in SearchView, it moves to SearchResultFragment
-                //Otherwise stay GroupListFragment
-                if(newText.matches("")){
-//                    onDisplayAllTodolist();
-                }else{
-                    onDisPlaySearchResult(newText);
-                }
-                return false;
+                onDisPlaySearchResult(newText);
+                return true;
             }
         });
-
         return true;
     }
 
@@ -323,26 +303,36 @@ public class MainActivity extends AppCompatActivity
 
         switch (id){
             case R.id.action_settings:
+                startActivity(new Intent(this, SettingActivity.class));
                 break;
             case R.id.action_search:
-
                 break;
-//            case R.id.action_add:
-//                Log.d("","");
-//                break;
-//            case R.id.action_delete:
-//                Log.d("","");
-//                break;
+
         }
         return super.onOptionsItemSelected(item);
     }
 
+
+
+    ////////////////////////////////////////////////////////////
+    //BackButton
+    ////////////////////////////////////////////////////////////
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Log.d("","");
-//        if(getFragmentManager().getBackStackEntryCount() > 0){
-//            getFragmentManager().popBackStackImmediate();
-//        }
+        //If no back stack fragment exist( = 0) show GroupList
+        //ToolBar title will be app name or group name
+        if(getFragmentManager().getBackStackEntryCount() == 0){
+            onDisplayGroupList();
+        }else if(getFragmentManager().getBackStackEntryCount() == 1){
+            setActionbarTitle(getString(R.string.app_name));
+        }else if(getFragmentManager().getBackStackEntryCount() == 2){
+            setActionbarTitle(selectedGroupName);
+        }
+
+        //when the SearchView is activated it close the searchview
+        if (!searchView.isIconified()) {
+            searchView.setIconified(true);
+        }
     }
 }

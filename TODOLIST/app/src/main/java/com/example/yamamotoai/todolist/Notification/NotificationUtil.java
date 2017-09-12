@@ -19,6 +19,9 @@ import java.util.Calendar;
 
 public class NotificationUtil {
 
+    public static String REQUEST_CODE = "requestCode";
+    public static String REQUEST_TODO_DATE = "todoDate";
+    public static String REQUEST_TODO_TITLE = "todoTitle";
 
     public static void notificationActionDoneThisTodo(Context context, int todoId){
 
@@ -40,9 +43,9 @@ public class NotificationUtil {
         calendar.add(Calendar.SECOND, sec);
         Long alertTime = calendar.getTimeInMillis();
         Intent alarmIntent = new Intent(context, NotificationReceiver.class);
-        alarmIntent.putExtra("reqCode", String.valueOf(reqCode));
-        alarmIntent.putExtra("todoDate", todoDate);
-        alarmIntent.putExtra("todoTitle", todoTitle);
+        alarmIntent.putExtra(REQUEST_CODE, String.valueOf(reqCode));
+        alarmIntent.putExtra(REQUEST_TODO_DATE, todoDate);
+        alarmIntent.putExtra(REQUEST_TODO_TITLE, todoTitle);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
                 context , reqCode, alarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 

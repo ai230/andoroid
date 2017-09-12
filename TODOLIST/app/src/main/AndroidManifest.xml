@@ -26,6 +26,7 @@
 
         <service android:name=".Notification.HandleActionIntent"/>
 
+        <activity android:name=".Preferences.SettingActivity" />
     </application>
 
 </manifest>

@@ -50,7 +50,7 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
     private final int NOTIFICATION_DAYS_BEFORE = 1;
     DatabaseHandler dbHandler;
 
-    TextView dateTextView;
+    TextView dateTextView, remindTextview;
     TextInputLayout titleEditText, contentEditText;
 
     EditText editTextNewGroup;
@@ -104,7 +104,6 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
                 TODOid = Integer.parseInt(arg.getString("TODOid"));
                 isEditing = true;
             }
-
         }
 
         dbHandler = new DatabaseHandler(getActivity());
@@ -161,7 +160,6 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
         int day = c.get(Calendar.DAY_OF_MONTH);
         c.set(year, month, day);
 
-//        String dateString = year + "-" + month + "-" + day;
         String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         dateTextView.setText(date);
 
@@ -182,6 +180,11 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
             ((MainActivity)getActivity()).setActionbarTitle("NEW TODO");
         }
 
+        remindTextview = (TextView) view.findViewById(R.id.textview_remind);
+        if(MainActivity.NOTIFICATION_REMINDER)
+            remindTextview.setText("Notification ON :\n Before " + MainActivity.NOTIFICATION_DAYS + " Days");
+        else
+            remindTextview.setText("Notification OFF");
         return view;
     }
 
@@ -213,7 +216,10 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
-        inflater.inflate(R.menu.menu_add_edit, menu);
+        if(isEditing)
+            inflater.inflate(R.menu.menu_add_edit, menu);
+        else
+            inflater.inflate(R.menu.menu_new, menu);
     }
 
     @Override
@@ -241,7 +247,7 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
                     alertDialogFragment.show(fragmentManager,"Alert flagment");
                 } else{
                     //If it is editting
-                    if(isEditing == true){
+                    if(isEditing){
                         TODO todoEdit = new TODO();
                         todoEdit.setId(TODOid);
                         todoEdit.setDate(date);
@@ -258,8 +264,10 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
                         Toast.makeText(mContext,"SAVED",Toast.LENGTH_SHORT).show();
                     }
 
-                    //setNotification
-                    NotificationUtil.setNotification(mContext, ListInGroupAdapter.caluculateDayDiff(date),TODOid, date, title);
+                    if(MainActivity.NOTIFICATION_REMINDER){
+                        //setNotification
+                        NotificationUtil.setNotification(mContext, ListInGroupAdapter.caluculateDayDiff(date),TODOid, date, title);
+                    }
 
                     //close move to list
                     addEditFragmentInterface.onClosePage(group);

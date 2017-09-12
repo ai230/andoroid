@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
+        Log.d("---CHOICE",CHOICES);
         //Listnener that when you changed the preferences and will reset quiz
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(preferenceChangeListener);
     }

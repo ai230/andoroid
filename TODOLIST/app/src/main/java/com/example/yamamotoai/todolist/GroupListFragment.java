@@ -58,8 +58,7 @@ public class GroupListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-//        LayoutInflater inflater =
+
         View view = inflater.inflate(R.layout.fragment_grouplist, container, false);
 
         //set title
@@ -85,8 +84,6 @@ public class GroupListFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 groupListFragmentInterface.onDisplayTodoListPage(position, groupList.get(position));
-
-                Toast.makeText(getActivity(), "position = " + position, Toast.LENGTH_SHORT).show();
             }
         });
         listView_main.setAdapter(adapter);
