@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.example.yamamotoai.todolist.AddEditFragment;
+import com.example.yamamotoai.todolist.MainActivity;
 import com.example.yamamotoai.todolist.data.DatabaseHandler;
 
 import java.util.Calendar;
@@ -38,7 +39,7 @@ public class NotificationUtil {
 
     public static void setNotification(Context context, int days, int reqCode, String todoDate, String todoTitle) {
 
-        int sec = (days - 1) * 86400;
+        int sec = (days - MainActivity.NOTIFICATION_DAYS) * 86400;
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.SECOND, sec);
         Long alertTime = calendar.getTimeInMillis();

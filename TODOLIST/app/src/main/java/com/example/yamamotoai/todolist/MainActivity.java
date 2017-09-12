@@ -121,23 +121,15 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void onDisPlaySearchResult(String newText){
+
         SearchResultFragment searchResults = new SearchResultFragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(viewId, searchResults);
+        transaction.add(viewId, searchResults);
         transaction.commit();
-
         Bundle arg = new Bundle();
         arg.putString("newText", newText);
         searchResults.setArguments(arg);
-
     }
-
-//    public void onDisplayAllTodolist(){
-//        AllTodolistFragment allTodolistFragment = new AllTodolistFragment();
-//        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//        transaction.replace(viewId, allTodolistFragment);
-//        transaction.commit();
-//    }
 
 
     ////////////////////////////////////////////////////////////
@@ -251,7 +243,7 @@ public class MainActivity extends AppCompatActivity
     public void onDisplayAddingPageForEditingInSearch(String id, String selectedGroup) {
         selectedTodoId = id;
         selectedGroupName = selectedGroup;
-        onDisPlayTodoListInGroup(selectedGroupName);
+//        onDisPlayTodoListInGroup(selectedGroupName);
         onDisplayAddEditFragment();
     }
 
@@ -320,6 +312,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+
         //If no back stack fragment exist( = 0) show GroupList
         //ToolBar title will be app name or group name
         if(getFragmentManager().getBackStackEntryCount() == 0){
