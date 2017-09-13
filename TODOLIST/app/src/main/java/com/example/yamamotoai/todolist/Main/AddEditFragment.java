@@ -4,6 +4,7 @@ import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
@@ -45,9 +47,9 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
     private final int NOTIFICATION_DAYS_BEFORE = 1;
     DatabaseHandler dbHandler;
 
-    TextView dateTextView, remindTextview;
+    TextView dateTextView;
     TextInputLayout titleEditText, contentEditText;
-
+    Button settingBtn;
     EditText editTextNewGroup;
     ImageButton calendarImgBtn;
     Spinner groupSpinner;
@@ -66,6 +68,7 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
     public interface AddEditFragmentInterface
     {
         void onClosePage(String selectedGroup);
+        void onDisplaySettingActivity();
     }
 
     @Override
@@ -178,11 +181,15 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
             ((MainActivity)getActivity()).setActionbarTitle("NEW TODO");
         }
 
-        remindTextview = (TextView) view.findViewById(R.id.textview_remind);
+        settingBtn = (Button) view.findViewById(R.id.btn_setting);
+        settingBtn.setOnClickListener(this);
         if(MainActivity.NOTIFICATION_REMINDER)
-            remindTextview.setText("Notification ON :\n Before " + MainActivity.NOTIFICATION_DAYS + " Days");
+            if(MainActivity.NOTIFICATION_DAYS == 1)
+                settingBtn.setText(getString(R.string.btn_text_on1, MainActivity.NOTIFICATION_DAYS));
+            else
+                settingBtn.setText(getString(R.string.btn_text_on2, MainActivity.NOTIFICATION_DAYS));
         else
-            remindTextview.setText("Notification OFF");
+            settingBtn.setText(R.string.btn_text_off);
         return view;
     }
 
@@ -202,6 +209,9 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
                 newDateFragment.show(getFragmentManager(), "datePicker");
                 break;
 
+            case R.id.btn_setting:
+                addEditFragmentInterface.onDisplaySettingActivity();
+                break;
             default:
                 break;
         }
@@ -280,9 +290,13 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
                 addEditFragmentInterface.onClosePage(selectedGroupName);
                 NotificationUtil.cancelNotification(mContext, TODOid);
                 break;
+
         }
         return super.onOptionsItemSelected(item);
 
     }
 
+    private void changedNotifiDay(){
+
+    }
 }

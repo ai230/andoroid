@@ -1,6 +1,5 @@
 package com.example.yamamotoai.todolist.Main;
 
-import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.app.SearchManager;
 import android.content.Context;
@@ -31,7 +30,7 @@ public class MainActivity extends AppCompatActivity
 
     private String selectedTodoId, selectedGroupName;
     private int selectedGroupPosition;
-    public boolean screensize_large = false;
+//    public boolean screensize_large = false;
     private int viewId = R.id.fragmentContainer;
 
     SearchManager searchManager;
@@ -59,11 +58,11 @@ public class MainActivity extends AppCompatActivity
 //        int orientation = Configuration.ORIENTATION_UNDEFINED;
 //        if(display.getSize(); == )
 
-        int screensize = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
-        if(screensize == Configuration.SCREENLAYOUT_SIZE_XLARGE){
-            viewId = R.id.leftPaneContainer;
-            screensize_large = true;
-        }
+//        int screensize = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
+//        if(screensize == Configuration.SCREENLAYOUT_SIZE_XLARGE){
+//            viewId = R.id.leftPaneContainer;
+//            screensize_large = true;
+//        }
 
         onDisplayGroupList();
 
@@ -92,11 +91,10 @@ public class MainActivity extends AppCompatActivity
         ListInGroupFragment listInGroupFragment = new ListInGroupFragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
-        if(screensize_large == true && selectedTodoId == null)
-            viewId = R.id.rightPaneContainer;
+//        if(screensize_large == true && selectedTodoId == null)
+//            viewId = R.id.rightPaneContainer;
 
         transaction.add(viewId, listInGroupFragment);
-
         transaction.addToBackStack(null);
         transaction.commit();
 
@@ -134,9 +132,9 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    ////////////////////////////////////////////////////////////
-    //INTERFACE
-    ////////////////////////////////////////////////////////////
+    /* ---------------------------------------------------------------------- */
+    /* Implement of Interface                                                 */
+    /* ---------------------------------------------------------------------- */
     //Method for GroupListFragmentInterface
     @Override
     public void onDisplayTodoListPage(int position, String selectedGroup) {
@@ -158,7 +156,14 @@ public class MainActivity extends AppCompatActivity
         //add all fragment
         onDisplayGroupList();
         onDisPlayTodoListInGroup(selectedGroup);
+    }
 
+    //Method for AddEditFragment
+    @Override
+    public void onDisplaySettingActivity() {
+        Intent intent = new Intent(this, SettingActivity.class);
+        intent.putExtra("AccessFromAddEditFragment",true);
+        startActivity(intent);
     }
 
 
@@ -190,49 +195,18 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackToGroupList() {
         onDisplayGroupList();
-        if(screensize_large){
-            ListInGroupFragment listInGroupFragment = new ListInGroupFragment();
-            Bundle arg = new Bundle();
-            arg.putString("selectedGroup", selectedGroupName);
-            listInGroupFragment.setArguments(arg);
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.replace(viewId, listInGroupFragment);
-            transaction.commit();
-        }
+//        if(screensize_large){
+//            ListInGroupFragment listInGroupFragment = new ListInGroupFragment();
+//            Bundle arg = new Bundle();
+//            arg.putString("selectedGroup", selectedGroupName);
+//            listInGroupFragment.setArguments(arg);
+//            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+//            transaction.replace(viewId, listInGroupFragment);
+//            transaction.commit();
+//        }
 
     }
 
-
-//    public void setDeleteBtn(){
-//        fab.setImageResource(R.drawable.ic_delete);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                //TODO) set delete method
-//                List<String> arrayTemp = new ArrayList<String>();
-//                for(TODO item: todoListInGroup){
-//                    if(item.isSelected)
-//                        arrayTemp.add(String.valueOf(item.getId()));
-//                }
-//                String[] arr = new String[arrayTemp.size()];
-//                arr = arrayTemp.toArray(arr);
-//                db.deleteFromDatabase(arr);
-//                Toast.makeText(SecondActivity.this, "Data delete",Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//
-//    }
-//
-//    public void setAddBtn(){
-//        fab.setImageResource(R.drawable.ic_add);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(SecondActivity.this, AdditionActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-//    }
 
     //SearchResulrInterface
     @Override
@@ -252,19 +226,19 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackToGroupListInSearch() {
         onDisplayGroupList();
-        if(screensize_large){
-            ListInGroupFragment listInGroupFragment = new ListInGroupFragment();
-            Bundle arg = new Bundle();
-            arg.putString("selectedGroup", selectedGroupName);
-            listInGroupFragment.setArguments(arg);
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.replace(R.id.rightPaneContainer, listInGroupFragment);
-            transaction.commit();
-        }
+//        if(screensize_large){
+//            ListInGroupFragment listInGroupFragment = new ListInGroupFragment();
+//            Bundle arg = new Bundle();
+//            arg.putString("selectedGroup", selectedGroupName);
+//            listInGroupFragment.setArguments(arg);
+//            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+//            transaction.replace(R.id.rightPaneContainer, listInGroupFragment);
+//            transaction.commit();
+//        }
     }
-    ////////////////////////////////////////////////////////////
-    //MENU
-    ////////////////////////////////////////////////////////////
+    /* ---------------------------------------------------------------------- */
+    /* Toolbar menu                                                           */
+    /* ---------------------------------------------------------------------- */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -308,9 +282,10 @@ public class MainActivity extends AppCompatActivity
 
 
 
-    ////////////////////////////////////////////////////////////
-    //BackButton
-    ////////////////////////////////////////////////////////////
+    /* ---------------------------------------------------------------------- */
+    /* BackButton                                                             */
+    /* ---------------------------------------------------------------------- */
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -330,4 +305,35 @@ public class MainActivity extends AppCompatActivity
             searchView.setIconified(true);
         }
     }
+
+    //    public void setDeleteBtn(){
+//        fab.setImageResource(R.drawable.ic_delete);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                //TODO) set delete method
+//                List<String> arrayTemp = new ArrayList<String>();
+//                for(TODO item: todoListInGroup){
+//                    if(item.isSelected)
+//                        arrayTemp.add(String.valueOf(item.getId()));
+//                }
+//                String[] arr = new String[arrayTemp.size()];
+//                arr = arrayTemp.toArray(arr);
+//                db.deleteFromDatabase(arr);
+//                Toast.makeText(SecondActivity.this, "Data delete",Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//
+//    }
+//
+//    public void setAddBtn(){
+//        fab.setImageResource(R.drawable.ic_add);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(SecondActivity.this, AdditionActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+//    }
 }
