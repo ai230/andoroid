@@ -1,4 +1,4 @@
-package com.example.yamamotoai.todolist.Main;
+package com.example.yamamotoai.todolist.Fragment;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.example.yamamotoai.todolist.R;
+import com.example.yamamotoai.todolist.TODO;
 
 import java.util.ArrayList;
 import java.util.List;

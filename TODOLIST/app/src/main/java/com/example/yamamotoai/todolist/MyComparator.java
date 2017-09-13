@@ -1,7 +1,5 @@
 package com.example.yamamotoai.todolist;
 
-import com.example.yamamotoai.todolist.Main.TODO;
-
 import java.util.Comparator;
 
 /**

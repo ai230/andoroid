@@ -9,8 +9,8 @@
     <string name="group">Group</string>
     <string name="newgroup">NEW GROUP</string>
     <string name="hint">Type here...</string>
-    <string name="btn_text_on1">Notification ON :\n %1d day</string>
-    <string name="btn_text_on2">Notification ON :\n %1d days</string>
+    <string name="btn_text_on1">Notification : ON\nAmount of day : %1d day</string>
+    <string name="btn_text_on2">Notification : ON\nAmount of days : %1d days</string>
     <string name="btn_text_off">Notification OFF</string>
 
     <!--MENU-->

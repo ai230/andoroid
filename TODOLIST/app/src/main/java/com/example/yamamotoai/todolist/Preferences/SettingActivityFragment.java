@@ -7,16 +7,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.NumberPicker;
 
-import com.example.yamamotoai.todolist.Main.MainActivity;
+import com.example.yamamotoai.todolist.MainActivity;
 import com.example.yamamotoai.todolist.R;
 /**
  * Created by yamamotoai on 2017-09-11.

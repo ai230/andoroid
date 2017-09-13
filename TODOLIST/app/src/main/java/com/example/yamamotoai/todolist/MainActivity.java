@@ -1,27 +1,35 @@
-package com.example.yamamotoai.todolist.Main;
+package com.example.yamamotoai.todolist;
 
 import android.app.FragmentTransaction;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
+import com.example.yamamotoai.todolist.Fragment.AddEditFragment;
+import com.example.yamamotoai.todolist.Fragment.AllTodolistFragment;
+import com.example.yamamotoai.todolist.Fragment.GroupListFragment;
+import com.example.yamamotoai.todolist.Fragment.ListInGroupFragment;
+import com.example.yamamotoai.todolist.Fragment.SearchResultFragment;
 import com.example.yamamotoai.todolist.Preferences.SettingActivity;
-import com.example.yamamotoai.todolist.R;
 
 public class MainActivity extends AppCompatActivity
         implements GroupListFragment.GroupListFragmentInterface,
         AddEditFragment.AddEditFragmentInterface,
         ListInGroupFragment.ListGroupInFragmentInterface,
         SearchResultFragment.SearchResultInterface
-        , AllTodolistFragment.AllTodolistFragmentInterface{
+        , AllTodolistFragment.AllTodolistFragmentInterface {
 
     public static final String PREF_KEY_REMINDER = "key_reminder";
     public static final String PREF_KEY_DAY = "key_day";
@@ -42,17 +50,15 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_main);
 
-
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+
+        //Getting NOTIFICATION_REMINDER from SharedPreference
         SharedPreferences sharedPrefReminder = PreferenceManager.getDefaultSharedPreferences(this);
-        sharedPrefReminder = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
         NOTIFICATION_REMINDER = sharedPrefReminder.getBoolean(PREF_KEY_REMINDER, false);
 
-
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-        sharedPref = getSharedPreferences(PREF_KEY_DAY, Context.MODE_PRIVATE);
-        NOTIFICATION_DAYS = sharedPref.getInt(PREF_KEY_DAY, 1);
+        //Getting NOTIFICATION_DAYS from SharedPreference
+        SharedPreferences sharedPref = getSharedPreferences(MainActivity.PREF_KEY_DAY, Context.MODE_PRIVATE);
+        MainActivity.NOTIFICATION_DAYS = sharedPref.getInt(MainActivity.PREF_KEY_DAY, 1);
 
 //        Display display = getWindowManager().getDefaultDisplay();
 //        int orientation = Configuration.ORIENTATION_UNDEFINED;
@@ -65,6 +71,7 @@ public class MainActivity extends AppCompatActivity
 //        }
 
         onDisplayGroupList();
+//        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
     }
 
@@ -101,7 +108,6 @@ public class MainActivity extends AppCompatActivity
         Bundle bundle = new Bundle();
         bundle.putString("selectedGroup", selectedGroup);
         listInGroupFragment.setArguments(bundle);
-
 
     }
 
@@ -161,9 +167,7 @@ public class MainActivity extends AppCompatActivity
     //Method for AddEditFragment
     @Override
     public void onDisplaySettingActivity() {
-        Intent intent = new Intent(this, SettingActivity.class);
-        intent.putExtra("AccessFromAddEditFragment",true);
-        startActivity(intent);
+        startActivity(new Intent(this, SettingActivity.class));
     }
 
 
@@ -236,6 +240,7 @@ public class MainActivity extends AppCompatActivity
 //            transaction.commit();
 //        }
     }
+
     /* ---------------------------------------------------------------------- */
     /* Toolbar menu                                                           */
     /* ---------------------------------------------------------------------- */
@@ -306,6 +311,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+
     //    public void setDeleteBtn(){
 //        fab.setImageResource(R.drawable.ic_delete);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -336,4 +342,23 @@ public class MainActivity extends AppCompatActivity
 //            }
 //        });
 //    }
+
+
+    //In order to unfocus from edittext when you clicked outside of edittext
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if ( v instanceof EditText) {
+                Rect outRect = new Rect();
+                v.getGlobalVisibleRect(outRect);
+                if (!outRect.contains((int)event.getRawX(), (int)event.getRawY())) {
+                    v.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        }
+        return super.dispatchTouchEvent(event);
+    }
 }

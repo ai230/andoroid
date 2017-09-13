@@ -1,4 +1,4 @@
-package com.example.yamamotoai.todolist.Main;
+package com.example.yamamotoai.todolist.Fragment;
 
 import android.app.Fragment;
 import android.content.Context;
@@ -13,8 +13,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.yamamotoai.todolist.MainActivity;
 import com.example.yamamotoai.todolist.MyComparator;
 import com.example.yamamotoai.todolist.R;
+import com.example.yamamotoai.todolist.TODO;
 import com.example.yamamotoai.todolist.data.DatabaseHandler;
 
 import java.util.ArrayList;
@@ -134,7 +136,7 @@ public class ListInGroupFragment extends Fragment {
                 //TODO) set delete method
                 List<String> arrayTemp = new ArrayList<String>();
                 for(TODO item: todoListInGroup){
-                    if(item.isSelected)
+                    if(item.isSelected())
                         arrayTemp.add(String.valueOf(item.getId()));
                 }
                 String[] arr = new String[arrayTemp.size()];

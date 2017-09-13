@@ -6,7 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
-import com.example.yamamotoai.todolist.Main.MainActivity;
+import com.example.yamamotoai.todolist.MainActivity;
 import com.example.yamamotoai.todolist.data.DatabaseHandler;
 
 import java.util.Calendar;

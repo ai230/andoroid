@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.example.yamamotoai.todolist.Main.TODO;
+import com.example.yamamotoai.todolist.TODO;
 
 import java.util.List;
 

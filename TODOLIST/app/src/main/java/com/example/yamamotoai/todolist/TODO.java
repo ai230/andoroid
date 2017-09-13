@@ -1,4 +1,4 @@
-package com.example.yamamotoai.todolist.Main;
+package com.example.yamamotoai.todolist;
 
 import java.io.Serializable;
 

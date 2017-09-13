@@ -1,14 +1,13 @@
-package com.example.yamamotoai.todolist.Main;
+package com.example.yamamotoai.todolist.Fragment;
 
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,9 +23,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.yamamotoai.todolist.MainActivity;
 import com.example.yamamotoai.todolist.Notification.NotificationUtil;
-import com.example.yamamotoai.todolist.Preferences.SettingActivity;
 import com.example.yamamotoai.todolist.R;
+import com.example.yamamotoai.todolist.TODO;
 import com.example.yamamotoai.todolist.alert.AlertDialogFragment;
 import com.example.yamamotoai.todolist.alert.AlertDialogFragment2;
 import com.example.yamamotoai.todolist.data.DatabaseHandler;
@@ -90,9 +90,6 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
 
         View view = inflater.inflate(R.layout.fragment_add, container, false);
         setHasOptionsMenu(true);
-
-//        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-//        int d = sharedPref.getInt(MainActivity.PREF_KEY_DAY, 1);
 
         fragmentManager = getFragmentManager();
         Bundle arg = getArguments();
@@ -183,6 +180,20 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
 
         settingBtn = (Button) view.findViewById(R.id.btn_setting);
         settingBtn.setOnClickListener(this);
+        setSettingBtnText();
+
+        return view;
+    }
+
+    //When it came back from preference it will call and change it to new data of text
+    @Override
+    public void onResume() {
+        super.onResume();
+        setSettingBtnText();
+    }
+
+
+    private void setSettingBtnText(){
         if(MainActivity.NOTIFICATION_REMINDER)
             if(MainActivity.NOTIFICATION_DAYS == 1)
                 settingBtn.setText(getString(R.string.btn_text_on1, MainActivity.NOTIFICATION_DAYS));
@@ -190,7 +201,6 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
                 settingBtn.setText(getString(R.string.btn_text_on2, MainActivity.NOTIFICATION_DAYS));
         else
             settingBtn.setText(R.string.btn_text_off);
-        return view;
     }
 
     //implement DatePickerFragmentInterface
@@ -217,13 +227,15 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
         }
     }
 
-    ///////////////////////////////////////////////////////
-    //Menu
-    ///////////////////////////////////////////////////////
+    /* ---------------------------------------------------------------------- */
+    /* Toolbar menu                                                           */
+    /* ---------------------------------------------------------------------- */
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        //menu for MainActivity clear
         menu.clear();
+        //Create new menu for edit todo or new todo
         if(isEditing)
             inflater.inflate(R.menu.menu_add_edit, menu);
         else
@@ -235,6 +247,7 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
         int id = item.getItemId();
 
         switch (id){
+
             case R.id.action_save:
                 dbHandler = new DatabaseHandler(getActivity());
                 title = titleEditText.getEditText().getText().toString();
@@ -281,6 +294,7 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
                     addEditFragmentInterface.onClosePage(group);
                 }
                 break;
+
             case R.id.action_delete:
                 String[] ids = new String[1];
                 ids[0] = String.valueOf(TODOid);
@@ -296,7 +310,4 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
 
     }
 
-    private void changedNotifiDay(){
-
-    }
 }

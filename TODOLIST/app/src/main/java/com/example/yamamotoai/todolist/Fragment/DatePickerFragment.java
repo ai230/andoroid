@@ -1,15 +1,13 @@
-package com.example.yamamotoai.todolist.Main;
+package com.example.yamamotoai.todolist.Fragment;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.os.Bundle;
 import android.widget.DatePicker;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Created by yamamotoai on 2017-08-01.
