@@ -1,6 +1,6 @@
 package com.example.yamamotoai.todolist;
 
-import android.app.FragmentTransaction;
+import android.support.v4.app.FragmentTransaction;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
@@ -71,8 +72,6 @@ public class MainActivity extends AppCompatActivity
 //        }
 
         onDisplayGroupList();
-//        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
     }
 
     public void setActionbarTitle(String title){
@@ -85,7 +84,7 @@ public class MainActivity extends AppCompatActivity
             getFragmentManager().popBackStackImmediate();
         }
         GroupListFragment groupListFragment = new GroupListFragment();
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.addToBackStack(null);
 
         transaction.add(viewId, groupListFragment);
@@ -96,7 +95,7 @@ public class MainActivity extends AppCompatActivity
     public void onDisPlayTodoListInGroup(String selectedGroup){
 
         ListInGroupFragment listInGroupFragment = new ListInGroupFragment();
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
 //        if(screensize_large == true && selectedTodoId == null)
 //            viewId = R.id.rightPaneContainer;
@@ -114,7 +113,7 @@ public class MainActivity extends AppCompatActivity
     public void onDisplayAddEditFragment(){
 
         AddEditFragment addEditFragment = new AddEditFragment();
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.add(viewId, addEditFragment);
         transaction.addToBackStack(null);
         transaction.commit();
@@ -126,11 +125,11 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public void onDisPlaySearchResult(String newText){
 
+    public void onDisPlaySearchResult(String newText){
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         SearchResultFragment searchResults = new SearchResultFragment();
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.add(viewId, searchResults);
+        transaction.replace(viewId, searchResults, "searchfragment");
         transaction.commit();
         Bundle arg = new Bundle();
         arg.putString("newText", newText);
@@ -223,22 +222,7 @@ public class MainActivity extends AppCompatActivity
     public void onDisplayAddingPageForEditingInSearch(String id, String selectedGroup) {
         selectedTodoId = id;
         selectedGroupName = selectedGroup;
-//        onDisPlayTodoListInGroup(selectedGroupName);
         onDisplayAddEditFragment();
-    }
-
-    @Override
-    public void onBackToGroupListInSearch() {
-        onDisplayGroupList();
-//        if(screensize_large){
-//            ListInGroupFragment listInGroupFragment = new ListInGroupFragment();
-//            Bundle arg = new Bundle();
-//            arg.putString("selectedGroup", selectedGroupName);
-//            listInGroupFragment.setArguments(arg);
-//            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//            transaction.replace(R.id.rightPaneContainer, listInGroupFragment);
-//            transaction.commit();
-//        }
     }
 
     /* ---------------------------------------------------------------------- */
@@ -294,6 +278,14 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag("searchfragment");
+        if(fragment != null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .remove(fragment)
+                    .commit();
+        }
 
         //If no back stack fragment exist( = 0) show GroupList
         //ToolBar title will be app name or group name

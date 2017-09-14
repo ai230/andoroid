@@ -1,6 +1,6 @@
 package com.example.yamamotoai.todolist.Fragment;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -38,7 +38,6 @@ public class SearchResultFragment extends Fragment {
     public interface SearchResultInterface{
         void onDisplayAddingPageInSearch();
         void onDisplayAddingPageForEditingInSearch(String SelectedTodoId, String selectedGroupName);
-        void onBackToGroupListInSearch();
     }
 
     @Override
@@ -67,9 +66,10 @@ public class SearchResultFragment extends Fragment {
             newText = bundle.getString("newText");
 
         //If strings in searchview is "" all todolist show
+        todo_List_temp = new ArrayList<>();
         if(newText.equals(""))
             todo_List_temp = todo_List;
-        else
+        if(!newText.equals(""))
             createList(view, newText);
 
 
@@ -102,7 +102,6 @@ public class SearchResultFragment extends Fragment {
 
     public void createList(View view, String newText){
 
-        todo_List_temp = new ArrayList<>();
         for(TODO item: todo_List){
             if(item.getTitle().toLowerCase().contains(newText.toLowerCase())
                     || item.getContent().toLowerCase().contains(newText.toLowerCase())){

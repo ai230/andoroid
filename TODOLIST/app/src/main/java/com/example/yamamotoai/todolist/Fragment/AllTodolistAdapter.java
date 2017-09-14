@@ -60,7 +60,6 @@ public class AllTodolistAdapter extends BaseAdapter{
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.fragment_all_todolist_row, null);
         holder.checkBox = (CheckBox) view.findViewById(R.id.checkbox1);
-//        holder.idTextview = (TextView) view.findViewById(R.id.textview_id1);
         holder.dateTextview = (TextView) view.findViewById(R.id.textview_date1);
         holder.daysTextview = (TextView) view.findViewById(R.id.textview_days1);
         holder.titleTextview = (TextView) view.findViewById(R.id.textview_title1);
@@ -69,7 +68,6 @@ public class AllTodolistAdapter extends BaseAdapter{
 
         int days = ListInGroupAdapter.caluculateDayDiff(todo.getDate());
 
-//        holder.idTextview.setText(String.valueOf(todo.getId()));
         holder.dateTextview.setText(todo.getDate());
         holder.daysTextview.setText(String.valueOf(days));
         holder.titleTextview.setText(todo.getTitle());

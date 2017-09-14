@@ -1,13 +1,12 @@
 package com.example.yamamotoai.todolist.Fragment;
 
-import android.app.DialogFragment;
-import android.app.Fragment;
-import android.app.FragmentManager;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,7 +27,6 @@ import com.example.yamamotoai.todolist.Notification.NotificationUtil;
 import com.example.yamamotoai.todolist.R;
 import com.example.yamamotoai.todolist.TODO;
 import com.example.yamamotoai.todolist.alert.AlertDialogFragment;
-import com.example.yamamotoai.todolist.alert.AlertDialogFragment2;
 import com.example.yamamotoai.todolist.data.DatabaseHandler;
 
 import java.text.SimpleDateFormat;
@@ -44,7 +42,6 @@ import java.util.List;
 public class AddEditFragment extends Fragment implements View.OnClickListener, DatePickerFragment.DatePickerFragmentInterface {
 
     Context mContext;
-    private final int NOTIFICATION_DAYS_BEFORE = 1;
     DatabaseHandler dbHandler;
 
     TextView dateTextView;
@@ -53,7 +50,6 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
     EditText editTextNewGroup;
     ImageButton calendarImgBtn;
     Spinner groupSpinner;
-    FragmentManager fragmentManager;
 
     String title, group, content, date;
 
@@ -91,7 +87,6 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
         View view = inflater.inflate(R.layout.fragment_add, container, false);
         setHasOptionsMenu(true);
 
-        fragmentManager = getFragmentManager();
         Bundle arg = getArguments();
         if(arg != null){
             selectedGroupName = arg.getString("selectedGroupName");
@@ -233,7 +228,7 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        //menu for MainActivity clear
+        //Menu for MainActivity clear
         menu.clear();
         //Create new menu for edit todo or new todo
         if(isEditing)
@@ -261,11 +256,8 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
                 //Show alert if title is empty
                 if (title.matches("")){
                     AlertDialogFragment alertDialogFragment = new AlertDialogFragment();
-                    alertDialogFragment.show(fragmentManager,"Alert flagment");
+                    alertDialogFragment.show(getFragmentManager() ,"Alert flagment");
                     //Show alert if the tabtitle that is created is already exist
-                } else if (group_list.contains(editTextNewGroup.getText().toString().toUpperCase())){
-                    AlertDialogFragment2 alertDialogFragment = new AlertDialogFragment2();
-                    alertDialogFragment.show(fragmentManager,"Alert flagment");
                 } else{
                     //If it is editting
                     if(isEditing){
