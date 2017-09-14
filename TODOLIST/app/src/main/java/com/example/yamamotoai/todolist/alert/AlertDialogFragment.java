@@ -17,7 +17,7 @@ public class AlertDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
-                .setTitle("Title is blank")
+                .setTitle("Group is blank")
                 .setMessage("Please enter group.")
                 .setPositiveButton("OK", null)
                 .setIcon(R.drawable.launcher_icon)

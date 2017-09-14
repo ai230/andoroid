@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -69,6 +70,7 @@ public class ListInGroupFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_todolist, container, false);
 
+        setHasOptionsMenu(true);
         bundle = this.getArguments();
         if(bundle != null) {
             //getting selectedGroup position and name from MainActivity
@@ -158,5 +160,12 @@ public class ListInGroupFragment extends Fragment {
 //                startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.action_save).setVisible(false);
+        menu.findItem(R.id.action_delete).setVisible(false);
+        menu.findItem(R.id.action_search).setVisible(true);
     }
 }

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.example.yamamotoai.todolist.MainActivity;
 import com.example.yamamotoai.todolist.R;
 import com.example.yamamotoai.todolist.TODO;
 import com.example.yamamotoai.todolist.data.DatabaseHandler;

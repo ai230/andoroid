@@ -1,5 +1,6 @@
 package com.example.yamamotoai.todolist;
 
+import android.support.v4.app.AppLaunchChecker;
 import android.support.v4.app.FragmentTransaction;
 import android.app.SearchManager;
 import android.content.Context;
@@ -11,6 +12,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -51,6 +53,11 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_main);
 
+//        if(AppLaunchChecker.hasStartedFromLauncher(this)){
+//            Log.d("","");
+//        }else{
+//            Log.d("","");
+//        }
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         //Getting NOTIFICATION_REMINDER from SharedPreference
@@ -177,6 +184,12 @@ public class MainActivity extends AppCompatActivity
         onDisplayAddEditFragment();
     }
 
+    //Method for GroupListFragmentInterface
+    @Override
+    public void onSearchView(String newText) {
+        onDisPlaySearchResult(newText);
+    }
+
     //Method for ListGroupInFragmentInterface
     @Override
     public void onDisplayAddingPage(int position, String selectedGroup) {
@@ -228,10 +241,16 @@ public class MainActivity extends AppCompatActivity
     /* ---------------------------------------------------------------------- */
     /* Toolbar menu                                                           */
     /* ---------------------------------------------------------------------- */
+    MenuItem item_save;
+    MenuItem item_delete;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        item_save = menu.findItem(R.id.action_save);
+        item_save.setVisible(false);
+        item_delete = menu.findItem(R.id.action_delete);
+        item_delete.setVisible(false);
 
         searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
@@ -244,8 +263,13 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                onDisPlaySearchResult(newText);
-                return true;
+                //if searchView is not active , do nothing
+                if(searchView.isIconified()){
+                    newText = null;
+                }else{
+                    onDisPlaySearchResult(newText);
+                }
+                return false;
             }
         });
         return true;
@@ -262,8 +286,6 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_settings:
                 startActivity(new Intent(this, SettingActivity.class));
                 break;
-            case R.id.action_search:
-                break;
 
         }
         return super.onOptionsItemSelected(item);
@@ -279,6 +301,7 @@ public class MainActivity extends AppCompatActivity
     public void onBackPressed() {
         super.onBackPressed();
 
+        //When it comes bake from searchview , find the fragment by tag, and remove it
         Fragment fragment = getSupportFragmentManager().findFragmentByTag("searchfragment");
         if(fragment != null) {
             getSupportFragmentManager()
@@ -287,6 +310,8 @@ public class MainActivity extends AppCompatActivity
                     .commit();
         }
 
+        item_save.setVisible(false);
+        item_delete.setVisible(false);
         //If no back stack fragment exist( = 0) show GroupList
         //ToolBar title will be app name or group name
         if(getFragmentManager().getBackStackEntryCount() == 0){
@@ -297,12 +322,31 @@ public class MainActivity extends AppCompatActivity
             setActionbarTitle(selectedGroupName);
         }
 
-        //when the SearchView is activated it close the searchview
+//        when the SearchView is activated it close the searchview
         if (!searchView.isIconified()) {
             searchView.setIconified(true);
         }
     }
 
+
+
+    //In order to unfocus from edittext when you clicked outside of edittext
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if ( v instanceof EditText) {
+                Rect outRect = new Rect();
+                v.getGlobalVisibleRect(outRect);
+                if (!outRect.contains((int)event.getRawX(), (int)event.getRawY())) {
+                    v.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        }
+        return super.dispatchTouchEvent(event);
+    }
 
     //    public void setDeleteBtn(){
 //        fab.setImageResource(R.drawable.ic_delete);
@@ -334,23 +378,4 @@ public class MainActivity extends AppCompatActivity
 //            }
 //        });
 //    }
-
-
-    //In order to unfocus from edittext when you clicked outside of edittext
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            View v = getCurrentFocus();
-            if ( v instanceof EditText) {
-                Rect outRect = new Rect();
-                v.getGlobalVisibleRect(outRect);
-                if (!outRect.contains((int)event.getRawX(), (int)event.getRawY())) {
-                    v.clearFocus();
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                }
-            }
-        }
-        return super.dispatchTouchEvent(event);
-    }
 }

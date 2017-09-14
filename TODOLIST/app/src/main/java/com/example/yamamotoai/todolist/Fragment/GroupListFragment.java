@@ -1,11 +1,16 @@
 package com.example.yamamotoai.todolist.Fragment;
 
+import android.app.SearchManager;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -40,6 +45,7 @@ public class GroupListFragment extends Fragment {
     public interface GroupListFragmentInterface {
         void onDisplayTodoListPage(int position, String groupName);
         void onDisplayAddingPage(); // group = null
+        void onSearchView(String newText);
     }
 
     @Override
@@ -59,6 +65,7 @@ public class GroupListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_grouplist, container, false);
+//        setHasOptionsMenu(true);
 
         //set title
         ((MainActivity)getActivity()).setActionbarTitle(getResources().getString(R.string.app_name));
@@ -98,4 +105,9 @@ public class GroupListFragment extends Fragment {
         return view;
     }
 
+//    @Override
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        menu.clear();
+//        inflater.inflate(R.menu.menu_main, menu);
+//    }
 }

@@ -2,7 +2,7 @@ package com.example.yamamotoai.todolist.alert;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
+import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 
 import com.example.yamamotoai.todolist.R;
@@ -17,8 +17,8 @@ public class AlertDialogFragment2 extends DialogFragment{
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
-                .setTitle("Group is blank")
-                .setMessage("Please enter group.")
+                .setTitle("Title is blank")
+                .setMessage("Please enter title.")
                 .setPositiveButton("OK", null)
                 .setIcon(R.drawable.launcher_icon)
                 .create();
