@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,6 +55,7 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
     TextInputLayout titleEditText, contentEditText;
     TextView dateTextView;
     ImageButton calendarImgBtn;
+    LinearLayout linearLayout_date;
     Button settingBtn;
 
     String title, group, content, date;
@@ -103,6 +105,8 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
         }
 
         dbHandler = new DatabaseHandler(getActivity());
+
+        /* Group */
         todoList = dbHandler.readDatabase(todoList);
         int count = 0;
         for (TODO item : todoList) {
@@ -116,17 +120,9 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
         }
         group_list.add("NEW GROUP");
 
-        dateTextView = (TextView) view.findViewById(R.id.textview_date);
-        titleEditText = (TextInputLayout) view.findViewById(R.id.edittext_title);
-        contentEditText = (TextInputLayout) view.findViewById(R.id.edittext_content);
-        editTextNewGroup = (EditText) view.findViewById(R.id.edittext_group);
-        calendarImgBtn = (ImageButton) view.findViewById(R.id.datePickerButton);
-        calendarImgBtn.setOnClickListener(this);
-
-        //Spinner for group
+        //Spinner
         groupSpinner = (Spinner) view.findViewById(R.id.spiner_group);
         groupSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if ((group_list.size() - 1) == position) {
@@ -136,7 +132,6 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
                     editTextNewGroup.setVisibility(View.GONE);
                 }
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 //do nothing so far
@@ -147,9 +142,20 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
         groupSpinner.setAdapter(spinnerArrayAdapter);
         //Set default value to the spinner
         groupSpinner.setSelection(selectedGroupPosition);
-        //set visibility = GONE
+
+        editTextNewGroup = (EditText) view.findViewById(R.id.edittext_group);
         editTextNewGroup.setVisibility(View.GONE);
 
+
+        /* Title */
+        titleEditText = (TextInputLayout) view.findViewById(R.id.edittext_title);
+
+        /* Note */
+        contentEditText = (TextInputLayout) view.findViewById(R.id.edittext_content);
+
+
+
+        /* Date */
         Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH) + 1;
@@ -157,7 +163,19 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
         c.set(year, month, day);
 
         String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        calendarImgBtn = (ImageButton) view.findViewById(R.id.datePickerButton);
+        calendarImgBtn.setOnClickListener(this);
+
+        dateTextView = (TextView) view.findViewById(R.id.textview_date);
         dateTextView.setText(date);
+
+        linearLayout_date = (LinearLayout)view.findViewById(R.id.linealayout_date);
+        linearLayout_date.setOnClickListener(this);
+
+        /*Notification*/
+        settingBtn = (Button) view.findViewById(R.id.btn_setting);
+        settingBtn.setOnClickListener(this);
+        setSettingBtnText();
 
         //if it is edit data
         if(isEditing){
@@ -175,10 +193,6 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
             //set title
             ((MainActivity)getActivity()).setActionbarTitle("NEW TODO");
         }
-
-        settingBtn = (Button) view.findViewById(R.id.btn_setting);
-        settingBtn.setOnClickListener(this);
-        setSettingBtnText();
 
         return view;
     }
@@ -201,11 +215,19 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
             settingBtn.setText(R.string.btn_text_off);
     }
 
+    /* ---------------------------------------------------------------------- */
+    /* Interface                                                              */
+    /* ---------------------------------------------------------------------- */
+
     //implement DatePickerFragmentInterface
     @Override
     public void onReturnDate(String date) {
         dateTextView.setText(date);
     }
+
+    /* ---------------------------------------------------------------------- */
+    /* onClick                                                                */
+    /* ---------------------------------------------------------------------- */
 
     @Override
     public void onClick(View view) {
@@ -220,6 +242,11 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
             case R.id.btn_setting:
                 addEditFragmentInterface.onDisplaySettingActivity();
                 break;
+
+            case R.id.linealayout_date:
+                DialogFragment newDateFragment1 = new DatePickerFragment();
+                newDateFragment1.setTargetFragment(this,0);
+                newDateFragment1.show(getFragmentManager(), "datePicker");
             default:
                 break;
         }

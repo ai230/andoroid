@@ -5,10 +5,11 @@
     <string name="string2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sollicitudin nec nunc sed suscipit. Sed elit libero, rhoncus ut varius quis, faucibus mollis nulla. </string>
 
     <!--AddEdit-->
-    <string name="tile">Title</string>
+    <string name="tile">Title(Required)</string>
     <string name="group">Group</string>
+    <string name="note">Note</string>
     <string name="newgroup">NEW GROUP</string>
-    <string name="hint">Type here...</string>
+    <string name="hint">Type here..(Required)</string>
     <string name="btn_text_on1">Notification : ON\nAmount of day : %1d day</string>
     <string name="btn_text_on2">Notification : ON\nAmount of days : %1d days</string>
     <string name="btn_text_off">Notification OFF</string>
@@ -32,9 +33,9 @@
 
     <string name="pref_key_day">key_day</string>
     <string name="pref_days_title">Amount of days for notification</string>
-    <string name="pref_days_summary1">Get Notification before %1$d day</string>
-    <string name="pref_days_summary2">Get Notification before %1$d days</string>
-    <string name="title_activity_settings">SETTING</string>
+    <string name="pref_days_summary1">Get Notification in %1$d day</string>
+    <string name="pref_days_summary2">Get Notification in %1$d days</string>
+    <string name="title_activity_settings">Setting</string>
 
     <!--NumberPicker-->
     <string name="picker_title">Select amount of days</string>

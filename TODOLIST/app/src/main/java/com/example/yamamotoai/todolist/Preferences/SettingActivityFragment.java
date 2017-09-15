@@ -34,7 +34,10 @@ public class SettingActivityFragment extends PreferenceFragment {
         toggleEnabled(MainActivity.NOTIFICATION_REMINDER);
 
         prefDay = findPreference(MainActivity.PREF_KEY_DAY);
-        prefDay.setSummary(getString(R.string.pref_days_summary1,MainActivity.NOTIFICATION_DAYS));
+        if(MainActivity.NOTIFICATION_DAYS == 1)
+            prefDay.setSummary(getString(R.string.pref_days_summary1,MainActivity.NOTIFICATION_DAYS));
+        else
+            prefDay.setSummary(getString(R.string.pref_days_summary2,MainActivity.NOTIFICATION_DAYS));
         prefDay.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -67,13 +70,14 @@ public class SettingActivityFragment extends PreferenceFragment {
                                         editor.commit();
 
 
+                                        MainActivity.NOTIFICATION_DAYS = pickedValue;
                                         //Set Summary
                                         if(MainActivity.NOTIFICATION_DAYS == 1)
                                             prefDay.setSummary(getString(R.string.pref_days_summary1, pickedValue));
                                         else
                                             prefDay.setSummary(getString(R.string.pref_days_summary2, pickedValue));
 
-                                        MainActivity.NOTIFICATION_DAYS = pickedValue;
+
                                     }
                                 })
                                 .setNegativeButton(R.string.cancel_button, null)

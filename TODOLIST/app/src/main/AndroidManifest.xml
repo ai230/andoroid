@@ -34,7 +34,8 @@
 
         <service android:name=".Notification.HandleActionIntent" />
 
-        <activity android:name=".Preferences.SettingActivity" />
+        <activity android:name=".Preferences.SettingActivity"
+            android:label="@string/title_activity_settings"/>
 
     </application>
 

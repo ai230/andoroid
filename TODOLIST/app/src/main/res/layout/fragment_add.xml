@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textAppearance="?android:textAppearanceSmall">
+            android:textAppearance="?android:textAppearanceMedium">
 
         </Spinner>
 
@@ -65,7 +65,7 @@
             android:maxLines="10"
             android:gravity="top"
             android:id="@+id/editText3"
-            android:hint="Note"
+            android:hint="@string/note"
             android:imeOptions="actionNext"
             android:scrollbars="vertical"
             android:inputType="textMultiLine" />
@@ -78,6 +78,7 @@
         android:layout_gravity="right">
 
         <LinearLayout
+            android:id="@+id/linealayout_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"

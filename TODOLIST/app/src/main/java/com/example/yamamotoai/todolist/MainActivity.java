@@ -27,6 +27,8 @@ import com.example.yamamotoai.todolist.Fragment.ListInGroupFragment;
 import com.example.yamamotoai.todolist.Fragment.SearchResultFragment;
 import com.example.yamamotoai.todolist.Preferences.SettingActivity;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity
         implements GroupListFragment.GroupListFragmentInterface,
         AddEditFragment.AddEditFragmentInterface,
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity
     SearchView searchView;
 
 
+    boolean isSearching = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,16 +90,12 @@ public class MainActivity extends AppCompatActivity
 
     public void onDisplayGroupList(){
 
-        if(getFragmentManager().getBackStackEntryCount() > 0){
-            getFragmentManager().popBackStackImmediate();
-        }
         GroupListFragment groupListFragment = new GroupListFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.addToBackStack(null);
 
-        transaction.add(viewId, groupListFragment);
+        transaction.add(viewId, groupListFragment, "groupListFragment");
         transaction.commit();
-
     }
 
     public void onDisPlayTodoListInGroup(String selectedGroup){
@@ -107,7 +106,7 @@ public class MainActivity extends AppCompatActivity
 //        if(screensize_large == true && selectedTodoId == null)
 //            viewId = R.id.rightPaneContainer;
 
-        transaction.add(viewId, listInGroupFragment);
+        transaction.add(viewId, listInGroupFragment, "listInGroupFragment");
         transaction.addToBackStack(null);
         transaction.commit();
 
@@ -119,9 +118,10 @@ public class MainActivity extends AppCompatActivity
 
     public void onDisplayAddEditFragment(){
 
+        isSearching = false;
         AddEditFragment addEditFragment = new AddEditFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(viewId, addEditFragment);
+        transaction.add(viewId, addEditFragment, "addEditFragment");
         transaction.addToBackStack(null);
         transaction.commit();
         Bundle arg = new Bundle();
@@ -129,7 +129,6 @@ public class MainActivity extends AppCompatActivity
         arg.putString("selectedGroupName",selectedGroupName);
         arg.putInt("selectedGroupPosition", selectedGroupPosition);
         addEditFragment.setArguments(arg);
-
     }
 
 
@@ -161,10 +160,11 @@ public class MainActivity extends AppCompatActivity
     public void onClosePage(String selectedGroup) {
 
         //Pop all existing fragment that was added to a container
-        while(getFragmentManager().getBackStackEntryCount() > 0){
-            getFragmentManager().popBackStackImmediate();
+        while(getSupportFragmentManager().getBackStackEntryCount() > 0){
+            getSupportFragmentManager().popBackStackImmediate();
         }
 
+        int v = getSupportFragmentManager().getBackStackEntryCount();
         //add all fragment
         onDisplayGroupList();
         onDisPlayTodoListInGroup(selectedGroup);
@@ -182,12 +182,6 @@ public class MainActivity extends AppCompatActivity
     public void onDisplayAddingPage() {
         selectedTodoId = null;
         onDisplayAddEditFragment();
-    }
-
-    //Method for GroupListFragmentInterface
-    @Override
-    public void onSearchView(String newText) {
-        onDisPlaySearchResult(newText);
     }
 
     //Method for ListGroupInFragmentInterface
@@ -263,8 +257,9 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public boolean onQueryTextChange(String newText) {
+
                 //if searchView is not active , do nothing
-                if(searchView.isIconified()){
+                if(searchView.isIconified() || !isSearching){
                     newText = null;
                 }else{
                     onDisPlaySearchResult(newText);
@@ -302,32 +297,33 @@ public class MainActivity extends AppCompatActivity
         super.onBackPressed();
 
         //When it comes bake from searchview , find the fragment by tag, and remove it
-        Fragment fragment = getSupportFragmentManager().findFragmentByTag("searchfragment");
-        if(fragment != null) {
+        Fragment searchFragment = getSupportFragmentManager().findFragmentByTag("searchfragment");
+        if(searchFragment != null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .remove(fragment)
+                    .remove(searchFragment)
                     .commit();
         }
 
+        //save and delete button are hidden here
         item_save.setVisible(false);
         item_delete.setVisible(false);
         //If no back stack fragment exist( = 0) show GroupList
         //ToolBar title will be app name or group name
-        if(getFragmentManager().getBackStackEntryCount() == 0){
+        if(getSupportFragmentManager().getBackStackEntryCount() == 0){
             onDisplayGroupList();
-        }else if(getFragmentManager().getBackStackEntryCount() == 1){
+        }else if(getSupportFragmentManager().getBackStackEntryCount() == 1){
             setActionbarTitle(getString(R.string.app_name));
-        }else if(getFragmentManager().getBackStackEntryCount() == 2){
+        }else if(getSupportFragmentManager().getBackStackEntryCount() == 2){
             setActionbarTitle(selectedGroupName);
         }
 
 //        when the SearchView is activated it close the searchview
+        isSearching = true;
         if (!searchView.isIconified()) {
             searchView.setIconified(true);
         }
     }
-
 
 
     //In order to unfocus from edittext when you clicked outside of edittext

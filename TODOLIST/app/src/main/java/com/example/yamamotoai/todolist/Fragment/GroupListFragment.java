@@ -45,7 +45,6 @@ public class GroupListFragment extends Fragment {
     public interface GroupListFragmentInterface {
         void onDisplayTodoListPage(int position, String groupName);
         void onDisplayAddingPage(); // group = null
-        void onSearchView(String newText);
     }
 
     @Override
