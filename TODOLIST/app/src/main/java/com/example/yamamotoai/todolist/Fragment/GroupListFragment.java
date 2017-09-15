@@ -94,6 +94,8 @@ public class GroupListFragment extends Fragment {
         listView_main.setAdapter(adapter);
 
         fab_add = (FloatingActionButton) view.findViewById(R.id.fab_grouplist);
+        if(MainActivity.landscap_mode)
+            fab_add.setVisibility(View.GONE);
         fab_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

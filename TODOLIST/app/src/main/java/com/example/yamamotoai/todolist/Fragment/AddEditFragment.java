@@ -64,6 +64,7 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
 
     int selectedGroupPosition;
     String selectedGroupName;
+    boolean isOnlyDataInGroup;
 
     AddEditFragmentInterface addEditFragmentInterface;
     public interface AddEditFragmentInterface
@@ -100,6 +101,7 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
             //if new data id & selectedGroup = null
             if(arg.getString("TODOid") != null){
                 TODOid = Integer.parseInt(arg.getString("TODOid"));
+                isOnlyDataInGroup = arg.getBoolean("isOnlyData");
                 isEditing = true;
             }
         }
@@ -326,6 +328,10 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
                 dbHandler = new DatabaseHandler(getActivity());
                 dbHandler.deleteFromDatabase(ids);
                 //close move to list
+                //If the data is only one data in the group selectedGroupName will be first one
+                if(isOnlyDataInGroup){
+                    selectedGroupName = group_list.get(0);
+                }
                 addEditFragmentInterface.onClosePage(selectedGroupName);
                 NotificationUtil.cancelNotification(mContext, TODOid);
                 break;

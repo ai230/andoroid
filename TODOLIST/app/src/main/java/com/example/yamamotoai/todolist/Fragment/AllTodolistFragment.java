@@ -28,17 +28,19 @@ public class AllTodolistFragment extends Fragment {
     ListView listView;
     AllTodolistAdapter adapter;
     private List<TODO> todoList = new ArrayList<TODO>();
+    private List<TODO> todoListInGroup = new ArrayList<TODO>();
 
     DatabaseHandler db;
     Bundle bundle;
     FloatingActionButton fab_add;
 
+    boolean isOnlyDataInGroup;
+
     private AllTodolistFragmentInterface allTodolistFragmentInterface;
     public interface AllTodolistFragmentInterface
     {
         void onDisplayAddingPage();
-        void onDisplayAddingPageForEditing(String SelectedTodoId, String selectedGroupName);
-        void onBackToGroupList();
+        void onDisplayAddingPageForEditing(String SelectedTodoId, String selectedGroupName, boolean isOnlyDataInGroup);
     }
 
     @Override
@@ -61,9 +63,13 @@ public class AllTodolistFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_all_todolist, container, false);
 
+        isOnlyDataInGroup = false;
+
         //read new data from database
         db = new DatabaseHandler(getActivity());
         todoList = db.readDatabase(todoList);
+
+        todoList = new ArrayList<>();
 
         fab_add = (FloatingActionButton) view.findViewById(R.id.fab_todolist);
         fab_add.setOnClickListener(new View.OnClickListener() {
@@ -85,10 +91,18 @@ public class AllTodolistFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
-                allTodolistFragmentInterface.onDisplayAddingPageForEditing(String.valueOf(todoList.get(position).getId()), todoList.get(position).getGroup());
+                for(TODO todo: todoList){
+                    if(todo.getGroup().toUpperCase().matches(todoList.get(position).getGroup())){
+                        todoListInGroup.add(todo);
+                    }
+                }
+                if(todoListInGroup.size() == 1)
+                    isOnlyDataInGroup = true;
+                allTodolistFragmentInterface.onDisplayAddingPageForEditing(String.valueOf(todoList.get(position).getId()), todoList.get(position).getGroup(), isOnlyDataInGroup);
             }
         });
 
         return view;
     }
+
 }

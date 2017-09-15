@@ -21,9 +21,10 @@
             </intent-filter>
         </activity>
 
+        <!--android:configChanges="keyboardHidden|orientation|screenSize"-->
+
         <activity
-            android:name=".MainActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize">
+            android:name=".MainActivity">
 
             <meta-data
                 android:name="android.app.searchable"

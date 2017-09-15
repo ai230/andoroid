@@ -39,17 +39,17 @@ public class ListInGroupFragment extends Fragment {
     boolean isDeleteBtnClicked = false;
     int selectedGroupPosition;
     FloatingActionButton fab_add;
-    FloatingActionButton fab_back;
 
     String selectedGroupName;
     Bundle bundle;
+
+    boolean isOnlyDataInGroup;
 
     private ListGroupInFragmentInterface listGroupInFragmentInterface;
     public interface ListGroupInFragmentInterface
     {
         void onDisplayAddingPage(int position, String selectedGroup);
-        void onDisplayAddingPageForEditing(String SelectedTodoId, String selectedGroupName);
-        void onBackToGroupList();
+        void onDisplayAddingPageForEditing(String SelectedTodoId, String selectedGroupName, boolean isOnlyData);
     }
 
     @Override
@@ -86,6 +86,7 @@ public class ListInGroupFragment extends Fragment {
         todoList = db.readDatabase(todoList);
 
         //create only this group of todolist
+        isOnlyDataInGroup = false;
         organizedGroup(selectedGroupName);
 
         //setting app title to selectedGroup name
@@ -109,12 +110,16 @@ public class ListInGroupFragment extends Fragment {
         adapter = new ListInGroupAdapter(getActivity(), todoListInGroup, isDeleteBtnClicked);
         //set adapter to the listview
         listView.setAdapter(adapter);
+        //check if data is only one or not for delete todo
+        if(todoListInGroup.size() == 1)
+            isOnlyDataInGroup = true;
         //set item listener to the listview
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
-                listGroupInFragmentInterface.onDisplayAddingPageForEditing(String.valueOf(todoListInGroup.get(position).getId()), selectedGroupName);
+                listGroupInFragmentInterface.onDisplayAddingPageForEditing(String.valueOf(todoListInGroup.get(position).getId()), selectedGroupName, isOnlyDataInGroup);
+
             }
         });
 

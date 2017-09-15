@@ -1,5 +1,6 @@
 package com.example.yamamotoai.todolist;
 
+import android.content.res.Configuration;
 import android.support.v4.app.AppLaunchChecker;
 import android.support.v4.app.FragmentTransaction;
 import android.app.SearchManager;
@@ -43,7 +44,8 @@ public class MainActivity extends AppCompatActivity
 
     private String selectedTodoId, selectedGroupName;
     private int selectedGroupPosition;
-//    public boolean screensize_large = false;
+    public boolean screensize_large = false;
+    public static boolean landscap_mode = false;
     private int viewId = R.id.fragmentContainer;
 
     SearchManager searchManager;
@@ -51,6 +53,7 @@ public class MainActivity extends AppCompatActivity
 
 
     boolean isSearching = true;
+    boolean isOnlyDataInGroup = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +64,12 @@ public class MainActivity extends AppCompatActivity
 //        }else{
 //            Log.d("","");
 //        }
+        Configuration configuration = getResources().getConfiguration();
+        if(configuration.orientation == Configuration.ORIENTATION_LANDSCAPE){
+            landscap_mode = true;
+        }else{
+            landscap_mode = false;
+        }
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         //Getting NOTIFICATION_REMINDER from SharedPreference
@@ -71,16 +80,9 @@ public class MainActivity extends AppCompatActivity
         SharedPreferences sharedPref = getSharedPreferences(MainActivity.PREF_KEY_DAY, Context.MODE_PRIVATE);
         MainActivity.NOTIFICATION_DAYS = sharedPref.getInt(MainActivity.PREF_KEY_DAY, 1);
 
-//        Display display = getWindowManager().getDefaultDisplay();
-//        int orientation = Configuration.ORIENTATION_UNDEFINED;
-//        if(display.getSize(); == )
-
-//        int screensize = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
-//        if(screensize == Configuration.SCREENLAYOUT_SIZE_XLARGE){
-//            viewId = R.id.leftPaneContainer;
-//            screensize_large = true;
-//        }
-
+        if(landscap_mode){
+            viewId = R.id.leftPaneContainer;
+        }
         onDisplayGroupList();
     }
 
@@ -103,9 +105,10 @@ public class MainActivity extends AppCompatActivity
         ListInGroupFragment listInGroupFragment = new ListInGroupFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-//        if(screensize_large == true && selectedTodoId == null)
-//            viewId = R.id.rightPaneContainer;
-
+        if(landscap_mode){
+            viewId = R.id.rightPaneContainer;
+            selectedGroupName = selectedGroup;
+        }
         transaction.add(viewId, listInGroupFragment, "listInGroupFragment");
         transaction.addToBackStack(null);
         transaction.commit();
@@ -128,6 +131,7 @@ public class MainActivity extends AppCompatActivity
         arg.putString("TODOid",selectedTodoId);
         arg.putString("selectedGroupName",selectedGroupName);
         arg.putInt("selectedGroupPosition", selectedGroupPosition);
+        arg.putBoolean("isOnlyData", isOnlyDataInGroup);
         addEditFragment.setArguments(arg);
     }
 
@@ -164,10 +168,18 @@ public class MainActivity extends AppCompatActivity
             getSupportFragmentManager().popBackStackImmediate();
         }
 
-        int v = getSupportFragmentManager().getBackStackEntryCount();
-        //add all fragment
-        onDisplayGroupList();
-        onDisPlayTodoListInGroup(selectedGroup);
+
+        if(landscap_mode){
+            viewId = R.id.leftPaneContainer;
+            onDisplayGroupList();
+            viewId = R.id.rightPaneContainer;
+            onDisPlayTodoListInGroup(selectedGroup);
+        }else{
+            //add all fragment
+            onDisplayGroupList();
+            onDisPlayTodoListInGroup(selectedGroup);
+        }
+
     }
 
     //Method for AddEditFragment
@@ -195,28 +207,12 @@ public class MainActivity extends AppCompatActivity
 
     //Method for ListGroupInFragmentInterface
     @Override
-    public void onDisplayAddingPageForEditing(String id, String selectedGroup) {
+    public void onDisplayAddingPageForEditing(String id, String selectedGroup, boolean isOnlyData) {
         selectedTodoId = id;
         selectedGroupName = selectedGroup;
+        isOnlyDataInGroup = isOnlyData;
         onDisplayAddEditFragment();
     }
-
-    //Method for ListGroupInFragmentInterface
-    @Override
-    public void onBackToGroupList() {
-        onDisplayGroupList();
-//        if(screensize_large){
-//            ListInGroupFragment listInGroupFragment = new ListInGroupFragment();
-//            Bundle arg = new Bundle();
-//            arg.putString("selectedGroup", selectedGroupName);
-//            listInGroupFragment.setArguments(arg);
-//            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//            transaction.replace(viewId, listInGroupFragment);
-//            transaction.commit();
-//        }
-
-    }
-
 
     //SearchResulrInterface
     @Override
@@ -308,14 +304,31 @@ public class MainActivity extends AppCompatActivity
         //save and delete button are hidden here
         item_save.setVisible(false);
         item_delete.setVisible(false);
-        //If no back stack fragment exist( = 0) show GroupList
-        //ToolBar title will be app name or group name
-        if(getSupportFragmentManager().getBackStackEntryCount() == 0){
+
+
+        if(landscap_mode){
+            //Pop all existing fragment that was added to a container
+            while(getSupportFragmentManager().getBackStackEntryCount() > 0){
+                getSupportFragmentManager().popBackStackImmediate();
+            }
+            viewId = R.id.leftPaneContainer;
             onDisplayGroupList();
-        }else if(getSupportFragmentManager().getBackStackEntryCount() == 1){
-            setActionbarTitle(getString(R.string.app_name));
-        }else if(getSupportFragmentManager().getBackStackEntryCount() == 2){
-            setActionbarTitle(selectedGroupName);
+            viewId = R.id.rightPaneContainer;
+            if(selectedGroupName != null){
+                onDisPlayTodoListInGroup(selectedGroupName);
+                setActionbarTitle(selectedGroupName);
+            }
+
+        }else{
+            //If no back stack fragment exist( = 0) show GroupList
+            //ToolBar title will be app name or group name
+            if(getSupportFragmentManager().getBackStackEntryCount() == 0){
+                onDisplayGroupList();
+            }else if(getSupportFragmentManager().getBackStackEntryCount() == 1){
+                setActionbarTitle(getString(R.string.app_name));
+            }else if(getSupportFragmentManager().getBackStackEntryCount() == 2){
+                setActionbarTitle(selectedGroupName);
+            }
         }
 
 //        when the SearchView is activated it close the searchview
