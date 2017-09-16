@@ -36,10 +36,7 @@ public class GroupListFragment extends Fragment {
     private List<String> groupList = new ArrayList<String>();
 
     DatabaseHandler db;
-    boolean isDeleteBtnClicked = false;
     FloatingActionButton fab_add;
-
-    private int selectedIconId;
 
     GroupListFragmentInterface groupListFragmentInterface;
     public interface GroupListFragmentInterface {
@@ -70,9 +67,7 @@ public class GroupListFragment extends Fragment {
         ((MainActivity)getActivity()).setActionbarTitle(getResources().getString(R.string.app_name));
 
         Bundle arg = getArguments();
-        if(arg != null){
-            selectedIconId = Integer.parseInt(arg.getString("selectedIconId"));
-        }
+
         db = new DatabaseHandler(getActivity());
         //Always getting new data
         todoList = new ArrayList<>();
@@ -96,6 +91,7 @@ public class GroupListFragment extends Fragment {
         fab_add = (FloatingActionButton) view.findViewById(R.id.fab_grouplist);
         if(MainActivity.landscap_mode)
             fab_add.setVisibility(View.GONE);
+
         fab_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

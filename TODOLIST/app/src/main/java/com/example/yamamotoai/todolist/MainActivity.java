@@ -22,7 +22,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.example.yamamotoai.todolist.Fragment.AddEditFragment;
-import com.example.yamamotoai.todolist.Fragment.AllTodolistFragment;
 import com.example.yamamotoai.todolist.Fragment.GroupListFragment;
 import com.example.yamamotoai.todolist.Fragment.ListInGroupFragment;
 import com.example.yamamotoai.todolist.Fragment.SearchResultFragment;
@@ -34,8 +33,7 @@ public class MainActivity extends AppCompatActivity
         implements GroupListFragment.GroupListFragmentInterface,
         AddEditFragment.AddEditFragmentInterface,
         ListInGroupFragment.ListGroupInFragmentInterface,
-        SearchResultFragment.SearchResultInterface
-        , AllTodolistFragment.AllTodolistFragmentInterface {
+        SearchResultFragment.SearchResultInterface {
 
     public static final String PREF_KEY_REMINDER = "key_reminder";
     public static final String PREF_KEY_DAY = "key_day";
@@ -51,19 +49,21 @@ public class MainActivity extends AppCompatActivity
     SearchManager searchManager;
     SearchView searchView;
 
+    boolean isGroupEmpty;
 
     boolean isSearching = true;
     boolean isOnlyDataInGroup = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_main);
 
-//        if(AppLaunchChecker.hasStartedFromLauncher(this)){
-//            Log.d("","");
-//        }else{
-//            Log.d("","");
-//        }
+        if(AppLaunchChecker.hasStartedFromLauncher(this)){
+            Log.d("","");
+        }else{
+            Log.d("","");
+        }
         Configuration configuration = getResources().getConfiguration();
         if(configuration.orientation == Configuration.ORIENTATION_LANDSCAPE){
             landscap_mode = true;
@@ -82,8 +82,16 @@ public class MainActivity extends AppCompatActivity
 
         if(landscap_mode){
             viewId = R.id.leftPaneContainer;
+            onDisplayGroupList();
+            viewId = R.id.rightPaneContainer;
+            if(selectedGroupName == null){
+                selectedGroupName = "";
+            }
+            onDisPlayTodoListInGroup(selectedGroupName);
+        }else{
+            onDisplayGroupList();
         }
-        onDisplayGroupList();
+
     }
 
     public void setActionbarTitle(String title){
@@ -133,13 +141,14 @@ public class MainActivity extends AppCompatActivity
         arg.putInt("selectedGroupPosition", selectedGroupPosition);
         arg.putBoolean("isOnlyData", isOnlyDataInGroup);
         addEditFragment.setArguments(arg);
+        isGroupEmpty = false;
     }
 
 
     public void onDisPlaySearchResult(String newText){
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         SearchResultFragment searchResults = new SearchResultFragment();
-        transaction.replace(viewId, searchResults, "searchfragment");
+        transaction.replace(R.id.rightPaneContainer, searchResults, "searchfragment");
         transaction.commit();
         Bundle arg = new Bundle();
         arg.putString("newText", newText);
