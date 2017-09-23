@@ -26,6 +26,7 @@ import com.example.yamamotoai.todolist.Fragment.GroupListFragment;
 import com.example.yamamotoai.todolist.Fragment.ListInGroupFragment;
 import com.example.yamamotoai.todolist.Fragment.SearchResultFragment;
 import com.example.yamamotoai.todolist.Preferences.SettingActivity;
+import com.example.yamamotoai.todolist.data.DatabaseHandler;
 
 import java.util.List;
 
@@ -60,10 +61,12 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.content_main);
 
         if(AppLaunchChecker.hasStartedFromLauncher(this)){
-            Log.d("","");
+
         }else{
-            Log.d("","");
+
         }
+
+        //Orientation
         Configuration configuration = getResources().getConfiguration();
         if(configuration.orientation == Configuration.ORIENTATION_LANDSCAPE){
             landscap_mode = true;
@@ -148,7 +151,11 @@ public class MainActivity extends AppCompatActivity
     public void onDisPlaySearchResult(String newText){
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         SearchResultFragment searchResults = new SearchResultFragment();
-        transaction.replace(R.id.rightPaneContainer, searchResults, "searchfragment");
+
+        if(landscap_mode) {
+            transaction.replace(R.id.rightPaneContainer, searchResults, "searchfragment");
+        }
+        transaction.replace(viewId, searchResults, "searchfragment");
         transaction.commit();
         Bundle arg = new Bundle();
         arg.putString("newText", newText);

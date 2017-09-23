@@ -72,37 +72,65 @@
     </android.support.design.widget.TextInputLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="right">
+        android:orientation="horizontal">
 
         <LinearLayout
-            android:id="@+id/linealayout_date"
+            android:id="@+id/linea_check"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginRight="@dimen/activity_horizontal_margin">
+            android:orientation="horizontal"
+            android:layout_weight="1">
 
+            <CheckBox
+                android:id="@+id/checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Due date"
-                android:layout_gravity="left"
-                android:textAppearance="?android:textAppearanceSmall"
-                android:textColor="@color/colorGray"
-                android:layout_marginRight="@dimen/activity_horizontal_margin" />
-
-            <TextView
-                android:id="@+id/textview_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="2017/7/10"
+                android:text="Done Task"
+                android:textStyle="bold"
                 android:textAppearance="?android:textAppearanceMedium"
-                android:layout_gravity="left"
-                android:textColor="@color/colorGray" />
-
+                android:layout_gravity="center"/>
         </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="right"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:id="@+id/linealayout_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginRight="@dimen/activity_horizontal_margin">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Due date"
+                    android:layout_gravity="left"
+                    android:textAppearance="?android:textAppearanceSmall"
+                    android:textColor="@color/colorGray"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin" />
+
+                <TextView
+                    android:id="@+id/textview_date1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2017/7/10"
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:layout_gravity="left"
+                    android:textColor="@color/colorGray" />
+
+            </LinearLayout>
 
 
             <ImageButton
@@ -116,7 +144,10 @@
                 android:background="@drawable/day_background"
                 android:onClick="showDatePickerDialog"/>
 
+        </LinearLayout>
+
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

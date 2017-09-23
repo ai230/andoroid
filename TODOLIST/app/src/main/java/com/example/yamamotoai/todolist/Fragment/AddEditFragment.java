@@ -7,6 +7,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -29,6 +31,8 @@ import com.example.yamamotoai.todolist.R;
 import com.example.yamamotoai.todolist.TODO;
 import com.example.yamamotoai.todolist.alert.AlertDialogFragment;
 import com.example.yamamotoai.todolist.alert.AlertDialogFragment2;
+import com.example.yamamotoai.todolist.alert.DeleteDialogFragment;
+import com.example.yamamotoai.todolist.alert.DoneDialogFragment;
 import com.example.yamamotoai.todolist.data.DatabaseHandler;
 
 import java.text.SimpleDateFormat;
@@ -41,7 +45,11 @@ import java.util.List;
  * Created by yamamotoai on 2017-08-23.
  */
 
-public class AddEditFragment extends Fragment implements View.OnClickListener, DatePickerFragment.DatePickerFragmentInterface {
+public class AddEditFragment extends Fragment
+        implements View.OnClickListener
+        , DatePickerFragment.DatePickerFragmentInterface
+        , DoneDialogFragment.DoneDialogInterface
+        , DeleteDialogFragment.DeleteDialogInterface {
 
     Context mContext;
     DatabaseHandler dbHandler;
@@ -55,11 +63,12 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
     TextInputLayout titleEditText, contentEditText;
     TextView dateTextView;
     ImageButton calendarImgBtn;
-    LinearLayout linearLayout_date;
+    LinearLayout linearLayout_date, linearLayout_check;
     Button settingBtn;
+    CheckBox doneCheckbox;
 
     String title, group, content, date;
-
+    boolean isDone;
     Boolean isEditing = false;
 
     int selectedGroupPosition;
@@ -67,6 +76,8 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
     boolean isOnlyDataInGroup;
 
     AddEditFragmentInterface addEditFragmentInterface;
+
+
     public interface AddEditFragmentInterface
     {
         void onClosePage(String selectedGroup);
@@ -168,7 +179,7 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
         calendarImgBtn = (ImageButton) view.findViewById(R.id.datePickerButton);
         calendarImgBtn.setOnClickListener(this);
 
-        dateTextView = (TextView) view.findViewById(R.id.textview_date);
+        dateTextView = (TextView) view.findViewById(R.id.textview_date1);
         dateTextView.setText(date);
 
         linearLayout_date = (LinearLayout)view.findViewById(R.id.linealayout_date);
@@ -179,6 +190,45 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
         settingBtn.setOnClickListener(this);
         setSettingBtnText();
 
+        /*Checkbox*/
+        doneCheckbox = (CheckBox) view.findViewById(R.id.checkbox);
+        doneCheckbox.setChecked(isDone);
+        doneCheckbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(doneCheckbox.isChecked()){
+                    isDone = true;
+                    DoneDialogFragment doneDialogFragment = new DoneDialogFragment();
+                    doneDialogFragment.setTargetFragment(AddEditFragment.this,0);
+                    doneDialogFragment.show(getFragmentManager(), "Alert fragment");
+
+                }else{
+                    isDone = false;
+                }
+            }
+        });
+        linearLayout_check = (LinearLayout) view.findViewById(R.id.linea_check);
+        linearLayout_check.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //if it is isChecked it will be unChecked and false
+                if(doneCheckbox.isChecked())
+                    isDone = false;
+                else
+                    isDone = true;
+
+                doneCheckbox.setChecked(isDone);
+
+                if(doneCheckbox.isChecked()){
+                    DoneDialogFragment doneDialogFragment = new DoneDialogFragment();
+                    doneDialogFragment.setTargetFragment(AddEditFragment.this,0);
+                    doneDialogFragment.show(getFragmentManager(), "Alert fragment");
+
+                }
+            }
+        });
+
+
         //if it is edit data
         if(isEditing){
             //For editting data
@@ -187,6 +237,7 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
                     titleEditText.getEditText().setText(item.getTitle());
                     contentEditText.getEditText().setText(item.getContent());
                     dateTextView.setText(item.getDate());
+                    doneCheckbox.setChecked(item.isDone());
                 }
             }
             //set title
@@ -195,6 +246,7 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
             //set title
             ((MainActivity)getActivity()).setActionbarTitle("NEW TODO");
         }
+
 
         return view;
     }
@@ -221,10 +273,22 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
     /* Interface                                                              */
     /* ---------------------------------------------------------------------- */
 
-    //implement DatePickerFragmentInterface
+    //DatePickerFragmentInterface
     @Override
     public void onReturnDate(String date) {
         dateTextView.setText(date);
+    }
+
+    //DoneDialogInterface
+    @Override
+    public void onPositiveBtnClicked() {
+        save();
+    }
+
+    //DeleteDialogInterface
+    @Override
+    public void onPositiveDeleteBtnClicked() {
+        delete();
     }
 
     /* ---------------------------------------------------------------------- */
@@ -274,66 +338,17 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
         switch (id){
 
             case R.id.action_save:
-                dbHandler = new DatabaseHandler(getActivity());
-                title = titleEditText.getEditText().getText().toString();
-                group = groupSpinner.getSelectedItem().toString();
-                //if new group is entered the group name is getting from edittext
-                if (group == group_list.get(group_list.size() -1))
-                    group = editTextNewGroup.getText().toString().toUpperCase();
-                content = contentEditText.getEditText().getText().toString();
-                date = dateTextView.getText().toString();
 
-                //Show alert if title is empty
-                if (group.matches("")){
-                    AlertDialogFragment alertDialogFragment = new AlertDialogFragment();
-                    alertDialogFragment.show(getFragmentManager() ,"Alert flagment");
+                save();
 
-                    //Show alert if the group is empty
-                }else if(title.matches("")){
-                    AlertDialogFragment2 alertDialogFragment = new AlertDialogFragment2();
-                    alertDialogFragment.show(getFragmentManager() ,"Alert flagment");
-
-                }else{
-                    //If it is editting
-                    if(isEditing){
-                        TODO todoEdit = new TODO();
-                        todoEdit.setId(TODOid);
-                        todoEdit.setDate(date);
-                        todoEdit.setTitle(title);
-                        todoEdit.setGroup(group);
-                        todoEdit.setContent(content);
-                        dbHandler.updateDatabase(todoEdit);
-
-                        Toast.makeText(mContext,"UPDATED",Toast.LENGTH_SHORT).show();
-                        //New data
-                    }else{
-                        TODO todo = new TODO(date, title, group, content);
-                        TODOid = (int) dbHandler.writeDatabase(todo);
-                        Toast.makeText(mContext,"SAVED",Toast.LENGTH_SHORT).show();
-                    }
-
-                    if(MainActivity.NOTIFICATION_REMINDER){
-                        //setNotification
-                        NotificationUtil.setNotification(mContext, ListInGroupAdapter.caluculateDayDiff(date),TODOid, date, title);
-                    }
-
-                    //close move to list
-                    addEditFragmentInterface.onClosePage(group);
-                }
                 break;
 
             case R.id.action_delete:
-                String[] ids = new String[1];
-                ids[0] = String.valueOf(TODOid);
-                dbHandler = new DatabaseHandler(getActivity());
-                dbHandler.deleteFromDatabase(ids);
-                //close move to list
-                //If the data is only one data in the group selectedGroupName will be first one
-                if(isOnlyDataInGroup){
-                    selectedGroupName = group_list.get(0);
-                }
-                addEditFragmentInterface.onClosePage(selectedGroupName);
-                NotificationUtil.cancelNotification(mContext, TODOid);
+
+                DeleteDialogFragment deleteDialogFragment = new DeleteDialogFragment();
+                deleteDialogFragment.setTargetFragment(this,0);
+                deleteDialogFragment.show(getFragmentManager(),"");
+
                 break;
 
         }
@@ -341,4 +356,74 @@ public class AddEditFragment extends Fragment implements View.OnClickListener, D
 
     }
 
+    public void save() {
+
+        dbHandler = new DatabaseHandler(getActivity());
+        title = titleEditText.getEditText().getText().toString();
+        group = groupSpinner.getSelectedItem().toString();
+        //if new group is entered the group name is getting from edittext
+        if (group == group_list.get(group_list.size() -1))
+            group = editTextNewGroup.getText().toString().toUpperCase();
+        content = contentEditText.getEditText().getText().toString();
+        if(doneCheckbox.isChecked())
+            isDone = true;
+        else
+            isDone =false;
+
+        date = dateTextView.getText().toString();
+
+        String s = dateTextView.getText().toString();
+        //Show alert if title is empty
+        if (group.matches("")){
+            AlertDialogFragment alertDialogFragment = new AlertDialogFragment();
+            alertDialogFragment.show(getFragmentManager() ,"Alert flagment");
+
+            //Show alert if the group is empty
+        }else if(title.matches("")){
+            AlertDialogFragment2 alertDialogFragment = new AlertDialogFragment2();
+            alertDialogFragment.show(getFragmentManager() ,"Alert flagment");
+
+        }else {
+            //If it is editting
+            if (isEditing) {
+                TODO todoEdit = new TODO();
+                todoEdit.setId(TODOid);
+                todoEdit.setDate(date);
+                todoEdit.setTitle(title);
+                todoEdit.setGroup(group);
+                todoEdit.setContent(content);
+                todoEdit.setDone(isDone);
+                dbHandler.updateDatabase(todoEdit);
+
+                Toast.makeText(mContext, "UPDATED", Toast.LENGTH_SHORT).show();
+                //New data
+            } else {
+                TODO todo = new TODO(date, title, group, content, isDone);
+                TODOid = (int) dbHandler.writeDatabase(todo);
+                Toast.makeText(mContext, "SAVED", Toast.LENGTH_SHORT).show();
+            }
+
+            if (MainActivity.NOTIFICATION_REMINDER && !isDone) {
+                //setNotification
+                NotificationUtil.setNotification(mContext, ListInGroupAdapter.caluculateDayDiff(date), TODOid, date, title);
+            }
+
+            //close move to list
+            addEditFragmentInterface.onClosePage(group);
+        }
+    }
+
+    public void delete(){
+        String[] ids = new String[1];
+        ids[0] = String.valueOf(TODOid);
+        dbHandler = new DatabaseHandler(getActivity());
+        dbHandler.deleteFromDatabase(ids);
+        //close move to list
+        //If the data is only one data in the group selectedGroupName will be first one
+        if(isOnlyDataInGroup){
+            selectedGroupName = group_list.get(0);
+        }
+        addEditFragmentInterface.onClosePage(selectedGroupName);
+        NotificationUtil.cancelNotification(mContext, TODOid);
+    }
 }

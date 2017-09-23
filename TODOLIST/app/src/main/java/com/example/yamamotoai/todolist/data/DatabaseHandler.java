@@ -18,7 +18,7 @@ import java.util.List;
 
 public class DatabaseHandler extends SQLiteOpenHelper{
 
-    public static String DATABASE_NAME = "TODOLISTdb";
+    public static String DATABASE_NAME = "TODOLIST1db";
     public static int DATABASE_VERSION = 1;
 
     private static String TABLE_NAME = "TODOLIST";
@@ -27,6 +27,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
     private static String KEY_TITLE = "todoTitle";
     private static String KEY_GROUP = "todoGroup";
     private static String KEY_CONTENT = "todoContent";
+    private static String KEY_ISDONE = "todoIsDone";
 
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + TABLE_NAME + " (" +
@@ -34,7 +35,8 @@ public class DatabaseHandler extends SQLiteOpenHelper{
                     KEY_DATE + " TEXT," +
                     KEY_TITLE + " TEXT," +
                     KEY_GROUP + " TEXT," +
-                    KEY_CONTENT + " TEXT);";
+                    KEY_CONTENT + " TEXT," +
+                    KEY_ISDONE + " BIT);";
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXSISTS " + TABLE_NAME;
 
@@ -44,9 +46,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.d("---create table",SQL_CREATE_ENTRIES);
         db.execSQL(SQL_CREATE_ENTRIES);
-
     }
 
     @Override
@@ -61,7 +61,6 @@ public class DatabaseHandler extends SQLiteOpenHelper{
     }
 
     public List<TODO> readDatabase(List<TODO> list){
-//        list = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "Select * From " + TABLE_NAME;
         Cursor cursor = db.rawQuery(query, null);
@@ -74,6 +73,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
                 todo.setTitle(cursor.getString(2));
                 todo.setGroup(cursor.getString(3));
                 todo.setContent(cursor.getString(4));
+                todo.setDone(cursor.getInt(5) > 0);
                 list.add(todo);
             }while (cursor.moveToNext());
         }
@@ -87,6 +87,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         values.put(KEY_TITLE,todo.getTitle());
         values.put(KEY_GROUP,todo.getGroup());
         values.put(KEY_CONTENT,todo.getContent());
+        values.put(KEY_ISDONE,todo.isDone());
         long newRowId = db.insert(TABLE_NAME, null, values);
         db.close();
         return newRowId;
@@ -99,10 +100,18 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         values.put(KEY_TITLE,todo.getTitle());
         values.put(KEY_GROUP,todo.getGroup());
         values.put(KEY_CONTENT,todo.getContent());
+        values.put(KEY_ISDONE,todo.isDone());
         long updateRowId = db.update(TABLE_NAME, values, KEY_ID + " = ? ", new String[]{String.valueOf(todo.getId())});
         db.close();
     }
 
+    public void updateDatabaseDoneToTrue(int id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_ISDONE,1);
+        long updateRowId = db.update(TABLE_NAME, values, KEY_ID + " = ? ", new String[]{String.valueOf(id)});
+        db.close();
+    }
     public void deleteFromDatabase(String[] ids){
         SQLiteDatabase db = this. getWritableDatabase();
         String args = TextUtils.join(", ", ids);

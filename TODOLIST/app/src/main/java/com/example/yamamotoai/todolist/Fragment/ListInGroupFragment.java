@@ -33,6 +33,7 @@ public class ListInGroupFragment extends Fragment {
     ListView listView;
     ListInGroupAdapter adapter;
     private List<TODO> todoListInGroup;
+    private List<TODO> todoListInGroupDone;
     private List<TODO> todoList = new ArrayList<TODO>();
 
     DatabaseHandler db;
@@ -102,7 +103,10 @@ public class ListInGroupFragment extends Fragment {
         });
 
         //Sort by date using comparator
-        Collections.sort(todoListInGroup, MyComparator.DateComparator);
+//        Collections.sort(todoListInGroup, MyComparator.DateComparator);
+//        Collections.sort(todoListInGroupDone, MyComparator.DateComparator);
+
+        todoListInGroup.addAll(todoListInGroupDone);
 
         //initialize listview
         listView = (ListView)view.findViewById(R.id.listview_second);
@@ -128,9 +132,13 @@ public class ListInGroupFragment extends Fragment {
 
     public void organizedGroup(String selectedGroup){
         todoListInGroup = new ArrayList<>();
+        todoListInGroupDone = new ArrayList<>();
         for(TODO todo: todoList){
             if(todo.getGroup().toUpperCase().matches(selectedGroup)){
-                todoListInGroup.add(todo);
+                if(todo.isDone())
+                    todoListInGroupDone.add(todo);
+                else
+                    todoListInGroup.add(todo);
             }
         }
     }

@@ -23,11 +23,15 @@ public class NotificationUtil {
 
     public static void notificationActionDoneThisTodo(Context context, int todoId){
 
-        //Delete the TODO
-        String[] ids = new String[1];
-        ids[0] = String.valueOf(todoId);
+        //If delete
+//        String[] ids = new String[1];
+//        ids[0] = String.valueOf(todoId);
+
+        //Update database isDone = true;
         DatabaseHandler db = new DatabaseHandler(context);
-        db.deleteFromDatabase(ids);
+        db.updateDatabaseDoneToTrue(todoId);
+        //If delete
+//        db.deleteFromDatabase(ids);
 
         cancelNotification(context, todoId);
 

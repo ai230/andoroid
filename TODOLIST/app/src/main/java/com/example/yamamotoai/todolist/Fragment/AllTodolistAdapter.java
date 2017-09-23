@@ -1,11 +1,13 @@
 package com.example.yamamotoai.todolist.Fragment;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.yamamotoai.todolist.R;
@@ -36,6 +38,7 @@ public class AllTodolistAdapter extends BaseAdapter{
         TextView titleTextview;
         TextView groupTextview;
         TextView contentTextview;
+        LinearLayout linearLayout;
     }
 
     @Override
@@ -65,6 +68,7 @@ public class AllTodolistAdapter extends BaseAdapter{
         holder.titleTextview = (TextView) view.findViewById(R.id.textview_title1);
         holder.groupTextview = (TextView) view.findViewById(R.id.textview_group1);
         holder.contentTextview = (TextView) view.findViewById(R.id.textview_content1);
+        holder.linearLayout = (LinearLayout) view.findViewById(R.id.linealayout1);
 
         int days = ListInGroupAdapter.caluculateDayDiff(todo.getDate());
 
@@ -73,6 +77,15 @@ public class AllTodolistAdapter extends BaseAdapter{
         holder.titleTextview.setText(todo.getTitle());
         holder.groupTextview.setText(todo.getGroup());
         holder.contentTextview.setText(todo.getContent());
+        if(todo.isDone()) {
+            holder.linearLayout.setBackgroundColor(Color.LTGRAY);
+            holder.dateTextview.setTextColor(context.getResources().getColor(R.color.colorGray));
+            holder.titleTextview.setTextColor(context.getResources().getColor(R.color.colorGray));
+            holder.groupTextview.setTextColor(context.getResources().getColor(R.color.colorGray));
+            holder.contentTextview.setTextColor(context.getResources().getColor(R.color.colorGray));
+            holder.daysTextview.setTextColor(context.getResources().getColor(R.color.colorGray));
+
+        }
         return view;
     }
 }

@@ -1,12 +1,14 @@
 package com.example.yamamotoai.todolist.Fragment;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.yamamotoai.todolist.R;
@@ -41,6 +43,7 @@ public class ListInGroupAdapter extends BaseAdapter{
         TextView titleTextview;
         TextView groupTextview;
         TextView contentTextview;
+        LinearLayout linearLayout;
     }
     @Override
     public int getCount() {
@@ -65,13 +68,19 @@ public class ListInGroupAdapter extends BaseAdapter{
         LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.fragment_todolist_row, null);
         holder.checkBox = (CheckBox) rowView.findViewById(R.id.checkbox_second);
-//        holder.idTextview = (TextView) rowView.findViewById(R.id.textview_id);
         holder.dateTextview = (TextView) rowView.findViewById(R.id.textview_date);
         holder.daysTextview = (TextView) rowView.findViewById(R.id.textview_days);
         holder.titleTextview = (TextView) rowView.findViewById(R.id.textview_title);
-//        holder.groupTextview = (TextView) rowView.findViewById(R.id.textview_group);
         holder.contentTextview = (TextView) rowView.findViewById(R.id.textview_content);
+        holder.linearLayout = (LinearLayout) rowView.findViewById(R.id.linealayout1);
 
+        if(todo.isDone()) {
+            holder.linearLayout.setBackgroundColor(Color.LTGRAY);
+            holder.dateTextview.setTextColor(context.getResources().getColor(R.color.colorGray));
+            holder.titleTextview.setTextColor(context.getResources().getColor(R.color.colorGray));
+            holder.contentTextview.setTextColor(context.getResources().getColor(R.color.colorGray));
+            holder.daysTextview.setTextColor(context.getResources().getColor(R.color.colorGray));
+        }
         if(isEnabledDelete == false)
             holder.checkBox.setVisibility(View.GONE);
         else
@@ -80,18 +89,18 @@ public class ListInGroupAdapter extends BaseAdapter{
         holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("---","set checkbox");
                 todo.setSelected(holder.checkBox.isChecked());
             }
         });
 
-        int days = caluculateDayDiff(todo.getDate());
+        if(todo.getDate() != null){
+            int days = caluculateDayDiff(todo.getDate());
 
-//        holder.idTextview.setText(String.valueOf(todo.getId()));
-        holder.dateTextview.setText(todo.getDate());
-        holder.daysTextview.setText(String.valueOf(days));
+            holder.dateTextview.setText(todo.getDate());
+            holder.daysTextview.setText(String.valueOf(days));
+        }
+
         holder.titleTextview.setText(todo.getTitle());
-//        holder.groupTextview.setText(todo.getGroup());
         holder.contentTextview.setText(todo.getContent());
 
         return rowView;

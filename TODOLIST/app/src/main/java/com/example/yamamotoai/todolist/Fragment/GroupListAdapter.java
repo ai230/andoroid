@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.yamamotoai.todolist.Group;
 import com.example.yamamotoai.todolist.R;
 
 import java.util.List;
@@ -19,17 +20,16 @@ import java.util.List;
 public class GroupListAdapter extends BaseAdapter{
 
     Context context;
-    List<String> list;
+    List<Group> list;
 
 
-    public GroupListAdapter(Context context, List<String> list){
+    public GroupListAdapter(Context context, List<Group> list){
         this.context = context;
         this.list = list;
     }
 
     public class Holder{
-        ImageView imageView;
-        TextView textView;
+        TextView groupName, numOfDone, numOfTodo;
     }
     @Override
     public int getCount() {
@@ -51,10 +51,16 @@ public class GroupListAdapter extends BaseAdapter{
         final Holder holder = new Holder();
         LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.fragment_grouplist_row, null);
-//        holder.imageView = (ImageView) rowView.findViewById(R.id.imageview_group_row);
 
-        holder.textView = (TextView) rowView.findViewById(R.id.textview_group_row);
-        holder.textView.setText(list.get(position));
+        Group group = list.get(position);
+        holder.groupName = (TextView) rowView.findViewById(R.id.textview_group_row);
+        holder.numOfTodo = (TextView) rowView.findViewById(R.id.numOfList);
+        holder.numOfDone = (TextView) rowView.findViewById(R.id.numOfDone);
+
+        holder.groupName.setText(group.getGroup());
+        holder.numOfTodo.setText(String.valueOf(group.getNumOfTodo()));
+        holder.numOfDone.setText(String.valueOf(group.getNumOfDone()));
+
         return rowView;
     }
 

@@ -10,15 +10,17 @@ public class TODO  implements Serializable {
 
     int id;
     String date, title, group, content;
+    boolean isDone;
 
     boolean isSelected;
     public TODO(){};
 
-    public TODO(String date, String title, String group, String content) {
+    public TODO(String date, String title, String group, String content, boolean isDone) {
         this.date = date;
         this.title = title;
         this.group = group;
         this.content = content;
+        this.isDone = isDone;
         this.isSelected = false;
     }
 
@@ -47,6 +49,9 @@ public class TODO  implements Serializable {
         this.content = content;
     }
 
+    public void setDone(boolean done) {
+        isDone = done;
+    }
 
     public int getId() {
         return id;
@@ -70,5 +75,9 @@ public class TODO  implements Serializable {
 
     public boolean isSelected() {
         return isSelected;
+    }
+
+    public boolean isDone() {
+        return isDone;
     }
 }

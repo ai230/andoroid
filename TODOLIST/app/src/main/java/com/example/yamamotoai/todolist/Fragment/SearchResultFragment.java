@@ -27,6 +27,7 @@ public class SearchResultFragment extends Fragment {
     ListView listView;
     AllTodolistAdapter adapter;
     private List<TODO> todo_List_temp = new ArrayList<TODO>();
+    private List<TODO> todo_List_temp_done = new ArrayList<TODO>();
     private List<TODO> todo_List = new ArrayList<TODO>();
 
     FloatingActionButton fab_add;
@@ -67,10 +68,11 @@ public class SearchResultFragment extends Fragment {
 
         //If strings in searchview is "" all todolist show
         todo_List_temp = new ArrayList<>();
-        if(newText.equals(""))
-            todo_List_temp = todo_List;
-        if(!newText.equals(""))
-            createList(view, newText);
+        todo_List_temp_done = new ArrayList<>();
+//        if(newText.equals(""))
+//            todo_List_temp = todo_List;
+//        if(!newText.equals(""))
+        createList(view, newText);
 
 
         fab_add = (FloatingActionButton) view.findViewById(R.id.fab_todolist);
@@ -102,12 +104,28 @@ public class SearchResultFragment extends Fragment {
 
     public void createList(View view, String newText){
 
-        for(TODO item: todo_List){
-            if(item.getTitle().toLowerCase().contains(newText.toLowerCase())
-                    || item.getContent().toLowerCase().contains(newText.toLowerCase())){
-                todo_List_temp.add(item);
+        if(newText.matches("")){
+            for (TODO item: todo_List){
+                if(item.isDone()){
+                    todo_List_temp_done.add(item);
+                } else{
+                    todo_List_temp.add(item);
+                }
+            }
+        }else{
+            for(TODO item: todo_List){
+                if(item.getTitle().toLowerCase().contains(newText.toLowerCase())
+                        || item.getContent().toLowerCase().contains(newText.toLowerCase())){
+                    if(item.isDone()){
+                        todo_List_temp_done.add(item);
+                    } else{
+                        todo_List_temp.add(item);
+                    }
+
+                }
             }
         }
+        todo_List_temp.addAll(todo_List_temp_done);
 
     }
 
