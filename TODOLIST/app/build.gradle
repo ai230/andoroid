@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
     buildToolsVersion "26.0.0"
     defaultConfig {
-        applicationId "com.example.yamamotoai.todolist"
+        applicationId "com.project.yamamotoai.todolist"
         minSdkVersion 23
         targetSdkVersion 26
         versionCode 1
