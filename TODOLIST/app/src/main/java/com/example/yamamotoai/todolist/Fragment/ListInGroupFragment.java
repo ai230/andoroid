@@ -1,5 +1,6 @@
 package com.example.yamamotoai.todolist.Fragment;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -16,6 +18,8 @@ import android.widget.Toast;
 
 import com.example.yamamotoai.todolist.MainActivity;
 import com.example.yamamotoai.todolist.MyComparator;
+import com.example.yamamotoai.todolist.Notification.NotificationUtil;
+import com.example.yamamotoai.todolist.Preferences.SettingActivity;
 import com.example.yamamotoai.todolist.R;
 import com.example.yamamotoai.todolist.TODO;
 import com.example.yamamotoai.todolist.data.DatabaseHandler;
@@ -45,6 +49,7 @@ public class ListInGroupFragment extends Fragment {
     Bundle bundle;
 
     boolean isOnlyDataInGroup;
+    boolean isEnableSelect;
 
     private ListGroupInFragmentInterface listGroupInFragmentInterface;
     public interface ListGroupInFragmentInterface
@@ -103,8 +108,8 @@ public class ListInGroupFragment extends Fragment {
         });
 
         //Sort by date using comparator
-//        Collections.sort(todoListInGroup, MyComparator.DateComparator);
-//        Collections.sort(todoListInGroupDone, MyComparator.DateComparator);
+        Collections.sort(todoListInGroup, MyComparator.DateComparator);
+        Collections.sort(todoListInGroupDone, MyComparator.DateComparator);
 
         todoListInGroup.addAll(todoListInGroupDone);
 
@@ -148,17 +153,29 @@ public class ListInGroupFragment extends Fragment {
         fab_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO) set delete method
                 List<String> arrayTemp = new ArrayList<String>();
-                for(TODO item: todoListInGroup){
-                    if(item.isSelected())
-                        arrayTemp.add(String.valueOf(item.getId()));
+
+                for(int i = todoListInGroup.size()-1; i >= 0; i--){
+                    TODO todo = todoListInGroup.get(i);
+                    if(todo.isSelected()) {
+                        arrayTemp.add(String.valueOf(todo.getId()));
+                        todoListInGroup.remove(i);
+                    }
                 }
-                String[] arr = new String[arrayTemp.size()];
-                arr = arrayTemp.toArray(arr);
-                db.deleteFromDatabase(arr);
-                Toast.makeText(getActivity(), "Data delete",Toast.LENGTH_SHORT).show();
-            }
+
+                for(String id: arrayTemp){
+                    String[] ids = new String[1];
+                    ids[0] = id;
+                    DatabaseHandler dbHandler = new DatabaseHandler(getActivity());
+                    dbHandler.deleteFromDatabase(ids);
+                    NotificationUtil.cancelNotification(getActivity(), Integer.parseInt(id));
+                }
+
+                ListInGroupAdapter.isEnabledDelete = false;
+                adapter.notifyDataSetChanged();
+                setAddBtn();
+
+         }
         });
 
     }
@@ -168,9 +185,7 @@ public class ListInGroupFragment extends Fragment {
         fab_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("---","clicked");
-//                Intent intent = new Intent(SecondActivity.this, AdditionActivity.class);
-//                startActivity(intent);
+                listGroupInFragmentInterface.onDisplayAddingPage(selectedGroupPosition, selectedGroupName);
             }
         });
     }
@@ -180,5 +195,31 @@ public class ListInGroupFragment extends Fragment {
         menu.findItem(R.id.action_save).setVisible(false);
         menu.findItem(R.id.action_delete).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(true);
+        menu.findItem(R.id.action_select).setVisible(true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        switch (id){
+            case R.id.action_select:
+
+                if(ListInGroupAdapter.isEnabledDelete){
+                    ListInGroupAdapter.isEnabledDelete = false;
+                    setAddBtn();
+                }else{
+                    ListInGroupAdapter.isEnabledDelete = true;
+                    setDeleteBtn();
+                }
+
+                ((ListInGroupAdapter) listView.getAdapter()).notifyDataSetChanged();
+                break;
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

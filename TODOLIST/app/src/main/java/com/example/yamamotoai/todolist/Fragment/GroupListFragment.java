@@ -133,7 +133,12 @@ public class GroupListFragment extends Fragment {
         return view;
     }
 
-//    @Override
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.action_select).setVisible(false);
+    }
+
+    //    @Override
 //    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 //        menu.clear();
 //        inflater.inflate(R.menu.menu_main, menu);

@@ -325,6 +325,7 @@ public class AddEditFragment extends Fragment
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         menu.findItem(R.id.action_search).setVisible(false);
+        menu.findItem(R.id.action_select).setVisible(false);
         menu.findItem(R.id.action_save).setVisible(true);
         // If it is editing show delete button
         if(isEditing)

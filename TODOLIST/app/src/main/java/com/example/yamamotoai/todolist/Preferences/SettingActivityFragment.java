@@ -38,7 +38,7 @@ public class SettingActivityFragment extends PreferenceFragment {
             prefDay.setSummary(getString(R.string.pref_days_summary1,MainActivity.NOTIFICATION_DAYS));
         else
             prefDay.setSummary(getString(R.string.pref_days_summary2,MainActivity.NOTIFICATION_DAYS));
-        prefDay.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            prefDay.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 class MyDialog extends DialogFragment{

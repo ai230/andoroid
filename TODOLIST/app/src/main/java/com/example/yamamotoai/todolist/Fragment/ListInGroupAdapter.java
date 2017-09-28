@@ -27,7 +27,7 @@ public class ListInGroupAdapter extends BaseAdapter{
     private List<TODO> todoListInGroup;
     private List<TODO> todoList;
     private Context context;
-    boolean isEnabledDelete;
+    public static boolean isEnabledDelete;
 
     public ListInGroupAdapter(Context context, List<TODO> list, boolean isEnabledDelete){
         this.context = context;
@@ -67,7 +67,7 @@ public class ListInGroupAdapter extends BaseAdapter{
         final Holder holder = new Holder();
         LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.fragment_todolist_row, null);
-        holder.checkBox = (CheckBox) rowView.findViewById(R.id.checkbox_second);
+        holder.checkBox = (CheckBox) rowView.findViewById(R.id.checkbox_select);
         holder.dateTextview = (TextView) rowView.findViewById(R.id.textview_date);
         holder.daysTextview = (TextView) rowView.findViewById(R.id.textview_days);
         holder.titleTextview = (TextView) rowView.findViewById(R.id.textview_title);
@@ -81,10 +81,13 @@ public class ListInGroupAdapter extends BaseAdapter{
             holder.contentTextview.setTextColor(context.getResources().getColor(R.color.colorGray));
             holder.daysTextview.setTextColor(context.getResources().getColor(R.color.colorGray));
         }
-        if(isEnabledDelete == false)
+        if(isEnabledDelete == false) {
             holder.checkBox.setVisibility(View.GONE);
-        else
+            todo.setSelected(false);
+        } else {
             holder.checkBox.setVisibility(View.VISIBLE);
+            holder.checkBox.setChecked(todo.isSelected());
+        }
 
         holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override

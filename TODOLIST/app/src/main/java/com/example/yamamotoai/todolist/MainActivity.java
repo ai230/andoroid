@@ -249,6 +249,7 @@ public class MainActivity extends AppCompatActivity
     /* ---------------------------------------------------------------------- */
     MenuItem item_save;
     MenuItem item_delete;
+    MenuItem item_select;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -257,6 +258,9 @@ public class MainActivity extends AppCompatActivity
         item_save.setVisible(false);
         item_delete = menu.findItem(R.id.action_delete);
         item_delete.setVisible(false);
+        item_select = menu.findItem(R.id.action_select);
+        item_select.setVisible(false);
+
 
         searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
@@ -293,6 +297,9 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_settings:
                 startActivity(new Intent(this, SettingActivity.class));
                 break;
+//            case R.id.action_select:
+//                Log.d("","");
+//                break;
 
         }
         return super.onOptionsItemSelected(item);
