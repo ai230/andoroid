@@ -2,10 +2,10 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.0"
+    buildToolsVersion "2 6.0.0"
     defaultConfig {
-        applicationId "com.project.yamamotoai.todolist"
-        minSdkVersion 23
+        applicationId "com.project.ai.todolist"
+        minSdkVersion 21
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"

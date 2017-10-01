@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.project.yamamotoai.todolist">
+    package="com.project.ai.todolist">
 
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
 
@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name="com.project.yamamotoai.todolist.SplashActivity"
+        <activity android:name="com.project.ai.todolist.SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,18 +24,18 @@
         <!--android:configChanges="keyboardHidden|orientation|screenSize"-->
 
         <activity
-            android:name="com.project.yamamotoai.todolist.MainActivity">
+            android:name="com.project.ai.todolist.MainActivity">
 
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
 
-        <receiver android:name="com.project.yamamotoai.todolist.Notification.NotificationReceiver" />
+        <receiver android:name="com.project.ai.todolist.Notification.NotificationReceiver" />
 
-        <service android:name="com.project.yamamotoai.todolist.Notification.HandleActionIntent" />
+        <service android:name="com.project.ai.todolist.Notification.HandleActionIntent" />
 
-        <activity android:name="com.project.yamamotoai.todolist.Preferences.SettingActivity"
+        <activity android:name="com.project.ai.todolist.Preferences.SettingActivity"
             android:label="@string/title_activity_settings"/>
 
     </application>
