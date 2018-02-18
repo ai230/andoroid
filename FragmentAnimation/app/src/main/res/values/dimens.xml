@@ -1,0 +1,4 @@
+<resources>
+    <dimen name="margin_medium">16dp</dimen>
+    <dimen name="wizard_video_height">180dp</dimen>
+</resources>
